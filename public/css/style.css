@@ -1,0 +1,239 @@
+@import url(http://fonts.googleapis.com/css?family=Share:400,400italic,700,700italic);
+html {
+  margin: 0;
+}
+body {
+  margin: 0px 0px 20px 0px;
+  color: #000;
+  background-color: #e5e5e5;
+  font-family: 'share', monospace;
+  font-size: 2em;
+}
+a {
+  color: #000;
+  text-decoration: none;
+}
+a:hover {
+  color: #000;
+  text-decoration: none;
+}
+img {
+  min-width: 100%;
+  width: 100%;
+}
+button {
+  outline: none;
+  border: none;
+  background: none;
+}
+.demi {
+  width: 49%;
+  display: inline-block;
+  vertical-align: top;
+}
+/* CAPTURE PAGE
+---------------------------------*/
+.container {
+  width: 90%;
+}
+.header {
+  width: 100%;
+  background-color: #FFF;
+  padding: 15px 30px;
+  margin-bottom: 30px;
+}
+.header h1 {
+  margin: 0;
+  display: inline-block;
+}
+.header .btn-bibli {
+  width: 45px;
+  display: inline-block;
+  float: right;
+}
+.header .btn-right {
+  float: right;
+}
+.media-choice {
+  width: 40%;
+  margin: 0px auto 40px auto;
+}
+.media-choice .btn-choice {
+  width: 100%;
+  text-align: center;
+}
+.media-choice .btn-choice button {
+  color: #535353;
+  background-color: #cecece;
+  border: none;
+  margin: 0px 20px;
+  outline: none;
+  font-size: 1.4em;
+  padding: 5px 15px;
+}
+.media-choice .btn-choice button:hover {
+  color: #0038bb;
+  background-color: #48c2b5;
+  outline: none;
+}
+.media-choice .btn-choice button.active {
+  color: #0038bb;
+  background-color: #48c2b5;
+  outline: none;
+}
+.left {
+  width: 47%;
+  margin-right: 5%;
+  display: inline-block;
+  vertical-align: top;
+  background-color: #FFF;
+}
+.left .capture {
+  width: 100%;
+}
+.left .capture > div {
+  width: 80px;
+  margin: 0px auto 20px auto;
+}
+.left .capture button {
+  outline: none;
+  border: none;
+  background: none;
+  width: 80px;
+  margin: auto;
+}
+.left .capture .video-capture .video-save #stop-btn {
+  display: none;
+}
+.left .capture .stopmotion-capture {
+  width: 160px;
+}
+.left .capture .stopmotion-capture button {
+  display: inline-block;
+}
+.left .capture .stopmotion-capture #capture-sm {
+  display: none;
+}
+.left .capture .stopmotion-capture #stop-sm {
+  display: none;
+}
+.right {
+  width: 47%;
+  display: inline-block;
+  vertical-align: top;
+  background-color: #FFF;
+  position: relative;
+}
+.right .son {
+  display: none;
+}
+.right #camera-preview {
+  display: none;
+  width: 100%;
+}
+.video-view,
+.screenshot {
+  width: 80%;
+  margin: 50px auto 20px auto;
+}
+.video-view video,
+.screenshot canvas {
+  width: 100%;
+  background-color: #cecece;
+}
+.photo-capture,
+.video-capture,
+.stopmotion-capture,
+.audio-capture {
+  display: none;
+}
+.form-meta {
+  display: none;
+  padding: 10px 80px 0px 80px;
+  margin-bottom: 50px;
+}
+.form-meta input {
+  display: block;
+  width: 80%;
+  margin-bottom: 10px;
+  background-color: #e5e5e5;
+  border: none;
+  outline: none;
+  padding: 10px;
+}
+.form-meta textarea {
+  width: 80%;
+  height: 100px;
+  margin-bottom: 10px;
+  background-color: #e5e5e5;
+  border: none;
+  outline: none;
+}
+.form-meta.title {
+  margin-top: 20px;
+}
+.form-meta.title input {
+  display: inline-block;
+}
+.form-meta .valid {
+  display: inline-block;
+  width: 60px;
+  margin-top: -10px;
+}
+.form-meta .clear {
+  display: inline-block;
+  width: 60px;
+  margin-top: -10px;
+}
+.container-bibli {
+  width: 100%;
+  margin: auto;
+}
+.container-bibli .buffer {
+  background-color: #e5e5e5;
+}
+.container-bibli .buffer .buffer-header {
+  background-color: #cecece;
+}
+.container-bibli .buffer .buffer-header h2 {
+  margin: 0px;
+  padding: 20px 30px;
+  text-align: center;
+}
+.container-bibli .buffer ul {
+  height: 750px;
+  overflow-y: scroll;
+  padding: 40px 30px 30px 20px;
+}
+.container-bibli .buffer ul li {
+  list-style: none;
+  width: 32%;
+  display: inline-block;
+  vertical-align: top;
+  margin: 0px 10px 10px 0px;
+}
+.container-bibli .buffer ul li.images-bibli img {
+  border: 5px solid blue;
+}
+.container-bibli .buffer ul li.videos-bibli video {
+  width: 100%;
+  border: 5px solid green;
+}
+.container-bibli .buffer ul li.audios-bibli {
+  border: 5px solid red;
+}
+.container-bibli .montage {
+  height: 860px;
+  overflow-y: scroll;
+}
+.container-bibli .montage input {
+  width: 100%;
+  border: none;
+  text-align: center;
+  font-size: 30px;
+}
+.container-bibli .montage .block-content {
+  width: 100%;
+  height: 300px;
+  border-bottom: 4px dashed #CECECE;
+}

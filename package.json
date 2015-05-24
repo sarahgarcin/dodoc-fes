@@ -1,0 +1,23 @@
+{
+  "repository": {
+    "type": "git",
+    "url": "git://github.com//sarahgarcin/opendoc-tangible.git"
+  },
+  "dependencies": {
+    "download": "^3.3.0",
+    "express": "3.1.0",
+    "ffmpeg": "*",
+    "fluent-ffmpeg": "*",
+    "fs-extra": "^0.18.0",
+    "glob": "*",
+    "gm": "*",
+    "jade": "*",
+    "markdown": "*",
+    "phantom": "*",
+    "recordrtc-socketio": "*",
+    "socket.io": "*",
+    "sprintf-js": "*",
+    "underscore": "*",
+    "video-recorder": "*"
+  }
+}

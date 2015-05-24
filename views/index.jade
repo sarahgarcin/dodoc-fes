@@ -1,0 +1,21 @@
+doctype html
+html
+  head
+    link(rel='stylesheet', href='/css/style.css')
+    link(rel='stylesheet', href='/css/bootstrap.css')
+    title #{title}
+  body.index
+
+  h1 Page projet + liens vers les sessions 
+  
+  div.session
+    button#add-session Ajouter un compte
+
+
+
+    //- scripts
+    script(src='/socket.io/socket.io.js')
+    script var app = {}; app.session = "#{session}";
+    script(src='/js/jquery-1.11.1.js')
+
+    script(src='/js/index.js')

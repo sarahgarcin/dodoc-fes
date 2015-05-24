@@ -1,0 +1,24 @@
+doctype html
+html
+  head
+    link(href='http://fonts.googleapis.com/css?family=Karla:400,400italic,700,700italic' rel='stylesheet' type='text/css')
+    link(rel='stylesheet', href='/css/bootstrap.css')
+    link(rel='stylesheet', href='/css/style.css')
+    title #{session} | #{title}
+  body.feedback
+    header.header
+      a(href='/')
+        h1 DoDOC | #{session}
+      a(href="/select/#{session}/capture" class="capture-page btn-right") Prendre une photo
+
+    div.container-flux
+      
+      h2 Flux
+
+    //- scripts
+    script(src='/socket.io/socket.io.js')
+    script var app = {}; app.session = "#{session}";
+    script(src='/js/jquery-1.11.1.js')
+    script(type="text/javascript" src="/js/modernizr-2.0.6.custom.js")
+
+    script(src='/js/flux.js')

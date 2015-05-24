@@ -1,0 +1,278 @@
+@import url(http://fonts.googleapis.com/css?family=Share:400,400italic,700,700italic);
+@import 'variables.less';
+
+html {
+	margin:0;
+}
+
+body {
+  margin: 0px 0px 20px 0px;
+  color: #000;
+  background-color: #e5e5e5;
+  font-family: 'share', monospace;
+  font-size: 2em;
+}
+
+a{
+	color: #000;
+	text-decoration: none;
+}
+
+a:hover {
+	color: #000;
+	text-decoration: none;
+}
+
+img{
+	min-width: 100%;
+	width:100%;	
+}
+
+button{
+	outline: none;
+	border:none;
+	background: none;
+}
+
+.demi {
+	width:49%;
+	display: inline-block;
+	vertical-align: top;
+}
+
+
+/* CAPTURE PAGE
+---------------------------------*/
+.container {
+	width: 90%;
+}
+
+.header{
+	width: 100%;
+	background-color: #FFF;
+	padding: 15px 30px;
+	margin-bottom: 30px;
+	h1{
+		margin:0;
+		display: inline-block;
+	}
+	.btn-bibli{
+		// margin:0px auto 20px auto;
+		width:45px;
+		display: inline-block;
+		float: right;	
+	}
+	.btn-right{
+		float: right;	
+	}
+}
+
+.media-choice {
+	width:40%;
+	margin:0px auto 40px auto;
+	.btn-choice{
+		width: 100%;
+		text-align: center;
+		button{
+			color:@grisfonce;
+			background-color: @grisclair;
+			border:none;
+			margin: 0px 20px;
+			outline: none;
+			font-size: 1.4em;
+			padding: 5px 15px;
+			&:hover {
+				color:@bleumarine;
+				background-color: @bleuvert;
+				outline: none;
+			}
+			&.active {
+				color:@bleumarine;
+				background-color: @bleuvert;
+				outline: none;
+			}
+		}
+	}
+}
+
+
+.left {
+	width: 47%;
+	margin-right:5%;
+	display: inline-block;
+	vertical-align: top;
+	background-color: #FFF;
+	.capture{
+		width:100%;
+		&>div{
+			width:80px;
+			margin:0px auto 20px auto;
+		}
+		button{
+			outline: none;
+			border:none;
+			background: none;
+			width:80px;
+			margin: auto;
+		}
+		.video-capture{
+			.video-save{
+				#stop-btn{
+					display: none;
+				}
+			}
+		}
+		.stopmotion-capture{
+			width: 160px;
+			button {
+				display: inline-block;
+			}
+			#capture-sm{
+				display:none;
+			}
+			#stop-sm{
+				display: none;
+			}
+		}
+	}
+}
+
+.right {
+	width:47%;
+	display: inline-block;
+	vertical-align: top;
+	background-color: #FFF;
+	position: relative;
+
+	.son {
+		display: none;
+	}
+
+	#camera-preview {
+		display: none; 
+		width: 100%;
+	}
+}
+
+.video-view, .screenshot {
+	width: 80%;
+	margin:50px auto 20px auto;
+}
+
+.video-view video, .screenshot canvas{
+	width: 100%;
+	background-color: @grisclair;
+}
+
+
+.photo-capture, .video-capture, .stopmotion-capture, .audio-capture {
+	display: none;
+}
+
+.video-play{
+	//display: none;
+}
+
+.form-meta{
+	display: none;
+	padding:10px 80px 0px 80px;
+	margin-bottom: 50px;
+	input{
+		display: block;
+		width: 80%;
+		margin-bottom: 10px;
+		background-color: @gristresclair;
+		border:none;
+		outline: none;
+		padding: 10px;
+	}
+	textarea{
+		width: 80%;
+		height: 100px;
+		margin-bottom: 10px;
+		background-color: @gristresclair;
+		border:none;
+		outline: none;
+	}
+	&.title{
+		margin-top:20px; 
+		input{
+			display: inline-block;
+		}
+	}
+	.valid {
+		display: inline-block;
+		width: 60px;
+		// float: right;
+		margin-top: -10px;
+	}
+	.clear {
+		display: inline-block;
+		width: 60px;
+		// 	float: right;
+		margin-top: -10px;
+	}
+}
+
+// BIBLI PAGE ------
+.container-bibli {
+	width:100%;
+	margin: auto;
+	//font-family: 'share', sans-serif ; 
+	.buffer {
+		background-color:#e5e5e5;
+		.buffer-header{
+			background-color: #cecece;
+			h2{
+				margin: 0px;
+				padding: 20px 30px;
+				text-align: center;
+			}
+		}
+		ul{
+			height: 750px;
+			overflow-y: scroll;
+			padding: 40px 30px 30px 20px;
+			li{
+				list-style: none;
+				width: 32%;
+				// height: 215px;
+				display: inline-block;
+				vertical-align: top;
+				margin: 0px 10px 10px 0px;
+				&.images-bibli{
+					img{
+						border: 5px solid blue;
+					}
+				}
+				&.videos-bibli{
+					video{
+						width: 100%;
+						border: 5px solid green;
+					}	
+				}
+				&.audios-bibli{
+					border: 5px solid red;
+				}
+			}
+		}
+	}
+	.montage {
+		height: 860px;
+		overflow-y: scroll;
+		input{
+			width: 100%;
+			border: none;
+			text-align: center;
+			font-size: 30px;
+		}
+		.block-content{
+			width: 100%;
+			height: 300px;
+			border-bottom: 4px dashed #CECECE;
+		}
+	}
+}
+
+
+
