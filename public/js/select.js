@@ -10,9 +10,7 @@ jQuery(document).ready(function($) {
 	/* sockets */
 	socket.on('connect', onSocketConnect);
 	socket.on('error', onSocketError);
-	socket.on('listImages', ondisplayImage);
-	socket.on('listVideos', ondisplayVideos);
-	socket.on('listAudio', ondisplayAudio);
+	socket.on('listMedias', ondisplayMedias);
 
 	/**
 	* handlers
@@ -29,20 +27,19 @@ jQuery(document).ready(function($) {
 		console.log('Unable to connect to server', reason);
 	};
 
-	function ondisplayImage(array, json){
+	function ondisplayMedias(array, json){
 		for (var i = 0; i < array.length; i++) {    	
     	var extension = array[i].split('.').pop();
     	var identifiant =  array[i].replace("." + extension, "");
-    	console.log(extension);
+    	console.log(identifiant);
 			if(extension == "jpg"){
-				//console.log(array[i]);
 				$('.buffer ul').append("<li class='images-bibli' id='"+ identifiant+"'' ><img src='http://localhost:8080/" + app.session + "/" + array[i] + "'></li>");
 			}
 			if(extension == "webm" || extension == "mp4"){
-				$('.buffer ul').append("<li class='videos-bibli' id='"+ identifiant+"'' ><video src='http://localhost:8080/" + app.session + "/" + array[i] + "' controls></li>");
-				console.log(array[i]);
+				$('.buffer ul').append("<li class='videos-bibli' id='"+ identifiant+"'' ><video src='http://localhost:8080/" + app.session + "/" + array[i] + "' controls></li>");""
 			}
 			if(extension == "wav"){
+				$('.buffer ul').append("<li class='sons-bibli' id='"+ identifiant+"'' ><audio src='http://localhost:8080/" + app.session + "/" + array[i] + "' controls></li>");""
 				//console.log(array[i]);
 			}
 		}
@@ -52,6 +49,14 @@ jQuery(document).ready(function($) {
 		  //console.log(i + "-" + val["titre"]);
 		});
 		$.each(json["files"]["stopmotion"], function(i, val) {
+			$("#" + val['name']).append("<h3>" +val['titre'] + "</h3>");
+		  //console.log(i + "-" + val["titre"]);
+		});
+		$.each(json["files"]["videos"], function(i, val) {
+			$("#" + val['name']).append("<h3>" +val['titre'] + "</h3>");
+		  //console.log(i + "-" + val["titre"]);
+		});
+		$.each(json["files"]["audio"], function(i, val) {
 			$("#" + val['name']).append("<h3>" +val['titre'] + "</h3>");
 		  //console.log(i + "-" + val["titre"]);
 		});

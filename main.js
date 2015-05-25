@@ -32,9 +32,10 @@ module.exports = function(app, io){
 		socket.on("stopmotionCapture", onStopMotionCapture);
 		socket.on("videoCapture", onNewVideo);
 		socket.on("audioVideo", onNewAudioVideo);
-		//socket.on("audioVideoCapture", onNewAudioVideoCapture);
-		// socket.on("sonCapture", onNewSon);
-		//socket.on("saveVideo", SaveVideo);
+		socket.on("audioVideoCapture", onNewAudioVideoCapture);
+		//socket.on("audio", onNewAudio);
+		socket.on("audioCapture", onNewAudioCapture);
+
 	});
 
 	// events
@@ -45,7 +46,7 @@ module.exports = function(app, io){
 	};
 
 	function onNewUserSelect(req){
-		listImages(req);
+		listMedias(req);
 	}
 
 	//Ajoute le dossier de la session + l'ajouter à la liste des sessions
@@ -96,8 +97,8 @@ module.exports = function(app, io){
     });
 	}
 
-	//Liste les images sur la page select
-	function listImages(req){
+	//Liste les medias sur la page select
+	function listMedias(req){
 		//read json file to send data
 		var jsonFile = 'sessions/' + req.name + '/' +req.name+'.json';
 		var data = fs.readFileSync(jsonFile,"UTF-8");
@@ -108,28 +109,9 @@ module.exports = function(app, io){
 			var media = [];
 			if (err) return;
 			files.forEach(function(f) {
-				//console.log('Files: ' + f);
 				media.push(f);
 			});
-			io.sockets.emit('listImages', media,jsonObj);
-			// for (var i = 0; i < media.length; i++) {
-   //  		//console.log(media[i]);
-   //  		var extension = path.extname(media[i]);
-   //  		//var ID = media[i].replace(".jpg", "");
-			// 	//console.log(extension);
-			// 	if(extension == ".jpg"){
-			// 		// for(var key in jsonObj["files"]["images"]) {
-			// 		// 	console.log(jsonObj["files"]["images"][key]['name']);	
-			// 		// }
-			// 		io.sockets.emit('listImages', media[i], jsonObj);
-			// 	}
-			// 	if(extension == ".webm"){
-			// 		io.sockets.emit('listVideos', media[i]);
-			// 	}
-			// 	if(extension == ".wav"){
-			// 		io.sockets.emit('listAudio', media[i]);
-			// 	}
-			// }
+			io.sockets.emit('listMedias', media,jsonObj);
 		});
 		// fs.readdir(dir, function (err, files) {
 		// 	if (err)
@@ -269,7 +251,7 @@ module.exports = function(app, io){
 	function onNewAudioVideo(data){
     var fileName = currentDate;
     var VideoDirectory = 'sessions/' + data.name + '/audiovideo';
-    // console.log(VideoDirectory);
+    var sessionDirectory = 'sessions/' + data.name;
 		if(VideoDirectory){
 			fs.removeSync(VideoDirectory);
 		}
@@ -335,17 +317,94 @@ module.exports = function(app, io){
 	        .saveToFile(mergedFile);
 	}
 
-	// function onNewSon(req){
-	// 	console.log(req.dataURL);
-	// 	console.log(req.fileName);
-	// 	writeToDisk(req.dataURL, req.fileName, function(err) {
- //      if(err) {
- //          console.log(err);
- //      } else {
- //          console.log("Audio file was saved!");
- //      }
- //    });
+	function onNewAudioVideoCapture(req){
+		var VideoDirectory = 'sessions/' + req.name + '/audiovideo/';
+		var file = req.file.substring(0, 13);
+		//move wav file
+    var wav = fs.createReadStream(VideoDirectory + file +".wav");
+		var newWave = fs.createWriteStream('sessions/' + req.name + '/' + file + ".wav" );
+		wav.pipe(newWave);
+		//move video file
+    var video = fs.createReadStream(VideoDirectory + file +".webm");
+		var newVideo = fs.createWriteStream('sessions/' + req.name + '/' + file + ".webm" );
+		video.pipe(newVideo);
+		//move merge file
+    var merge = fs.createReadStream(VideoDirectory + req.file);
+		var newMerge = fs.createWriteStream('sessions/' + req.name + '/' + req.file );
+		merge.pipe(newMerge);
+
+		//add data to json file
+		var jsonFile = 'sessions/' + req.name + '/' +req.name+'.json';
+		var data = fs.readFileSync(jsonFile,"UTF-8");
+		var jsonObj = JSON.parse(data);
+		var jsonAdd = { "name" : currentDate, "titre" : req.titre, "légende" : req.legende, "tags" : req.tags};
+		jsonObj["files"]["videos"].push(jsonAdd);
+		fs.writeFile(jsonFile, JSON.stringify(jsonObj), function(err) {
+      if(err) {
+          console.log(err);
+      } else {
+          console.log("The file was saved!");
+      }
+    });
+	}
+
+	// function onNewAudio(req){
+	// 	var fileName = currentDate;
+ //    var fileWithExt = fileName + '.wav';
+ //    var fileExtension = fileWithExt.split('.').pop(),
+ //        fileRootNameWithBase = './sessions/' + req.name +'/'+ fileWithExt,
+ //        filePath = fileRootNameWithBase,
+ //        fileID = 2,
+ //        fileBuffer;
+
+ //    // @todo return the new filename to client
+ //    while (fs.existsSync(filePath)) {
+ //        filePath = fileRootNameWithBase + '(' + fileID + ').' + fileExtension;
+ //        fileID += 1;
+ //    }
+
+ //    dataURL = req.files.audio.dataURL.split(',').pop();
+ //    fileBuffer = new Buffer(dataURL, 'base64');
+ //    fs.writeFileSync(filePath, fileBuffer);
+
+
+ //    // console.log('filePath', filePath);
 	// }
+
+	function onNewAudioCapture(req){
+		//write video to disk
+		var fileName = currentDate;
+    var fileWithExt = fileName + '.wav';
+    var fileExtension = fileWithExt.split('.').pop(),
+        fileRootNameWithBase = './sessions/' + req.name +'/'+ fileWithExt,
+        filePath = fileRootNameWithBase,
+        fileID = 2,
+        fileBuffer;
+
+    // @todo return the new filename to client
+    while (fs.existsSync(filePath)) {
+        filePath = fileRootNameWithBase + '(' + fileID + ').' + fileExtension;
+        fileID += 1;
+    }
+
+    dataURL = req.files.audio.dataURL.split(',').pop();
+    fileBuffer = new Buffer(dataURL, 'base64');
+    fs.writeFileSync(filePath, fileBuffer);
+
+		//add data to json file
+		var jsonFile = 'sessions/' + req.name + '/' +req.name+'.json';
+		var data = fs.readFileSync(jsonFile,"UTF-8");
+		var jsonObj = JSON.parse(data);
+		var jsonAdd = { "name" : currentDate, "titre" : req.titre, "légende" : req.legende, "tags" : req.tags};
+		jsonObj["files"]["audio"].push(jsonAdd);
+		fs.writeFile(jsonFile, JSON.stringify(jsonObj), function(err) {
+      if(err) {
+          console.log(err);
+      } else {
+          console.log("The file was saved!");
+      }
+    });
+	}
 
 
 // helpers
