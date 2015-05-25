@@ -8,7 +8,7 @@ DoDoc is a documentation tool for children in classrooms.
 ##Installation
 
 ### Clone the repo
-```git clone https://github.com/sarahgarcin/opendoc-tangible.git```
+```git clone https://github.com/sarahgarcin/dodoc-fes.git```
 
 ###Install nodejs on your computer
 ####Installing on Linux
@@ -24,6 +24,7 @@ You can install a pre-built version of node.js via the  [downloads](https://node
 You can install a pre-built version of node.js via the  [downloads](https://nodejs.org/download/) page using a .exe or a .msi.
 
 ###Install dependencies
+In terminal go to the clone directory and enter the command
 ```npm install```
 
 ###Install ffmpeg
@@ -35,5 +36,5 @@ Run the server in the terminal
 ```node server.js```
 
 Go to browser and go to the url
-http://localhost:8888
+http://localhost:8080
 
