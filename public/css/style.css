@@ -215,7 +215,8 @@ button {
 .form-meta .clear {
   display: inline-block;
   width: 60px;
-  margin-top: -10px;
+  position: absolute;
+  right: 20px;
 }
 .container-bibli {
   width: 100%;

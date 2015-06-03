@@ -5,6 +5,11 @@ jQuery(document).ready(function($) {
 	var sessionId = '';
   //compteur d'image pour le stop motion
   var countImage = 0;
+  //compteur de clicks pour le stopmotion
+  var countPress = 0;
+  //compteur de click général
+  var countClick = 0;
+
 
 	/**
 	* Events
@@ -14,8 +19,8 @@ jQuery(document).ready(function($) {
 	socket.on('error', onSocketError);
 
   // fonctions
-  main();
   events();
+  main();
 
 	/**
 	* handlers
@@ -33,11 +38,66 @@ jQuery(document).ready(function($) {
 	};
 
   function events(){
-    $('#photo').on('click', function(){
+    $("#photo").addClass('active');
+    changeMedia();
+    //Keypress for powermate
+    function changeMedia(){
+      $("body").keypress(function(e){
+        countClick ++;
+        var code = e.keyCode || e.which;
+        var $activeButton = $(".btn-choice").find('.active');
+        if(countClick > 10){
+          countClick = 0;
+          if(code == 97) { //When A is pressed - Powermate Rotate to Right
+            var $nextButton = $activeButton.next();
+            $activeButton.removeClass('active');
+            if ($nextButton.length){
+              $nextButton.addClass('active');
+            }
+            else{
+              $nextButton = $(".btn-choice button").first().addClass('active');
+            }
+            //console.log("Powermate Rotate to Right");
+          }
+          if(code == 98) { //When B is pressed - Powermate Rotate to Left
+            var $prevButton = $activeButton.prev();
+            $activeButton.removeClass('active');
+            if ($prevButton.length){
+              $prevButton.addClass('active');
+            }
+            else{
+              $prevButton = $(".btn-choice button").last().addClass('active');
+            }
+            //console.log("Powermate Rotate to Left");
+          }
+          if(code == 97 || code == 98){
+            $(".form-meta.active").slideUp( "slow" ); 
+            $(".form-meta").removeClass('active');
+            if($('.screenshot .count-image')){
+              $('.screenshot .count-image').remove();
+            }
+            backAnimation();
+            countPress = 0;
+
+            if($("#photo").hasClass('active')){
+              photoDisplay();
+            }
+            if($("#video-btn").hasClass('active')){
+              videoDisplay();
+            }
+            if($("#stopmotion").hasClass('active')){
+              stopMotionDisplay();
+            }
+            if($("#audio").hasClass('active')){
+              audioDisplay();
+            }
+          }
+        }
+      });
+    }
+    function photoDisplay(){
       $('.screenshot .canvas-view').show();
       $('.screenshot video').hide();
-      $('.btn-choice').children().removeClass('active');
-      $(this).addClass('active');
       $('.photo-capture').css('display', 'block');
       $('.video-capture').css('display','none');
       $('.stopmotion-capture').css('display','none');
@@ -45,10 +105,8 @@ jQuery(document).ready(function($) {
       $(".son").css("display", "none");
       $('#video').show();
       $('#canvas-audio').hide();
-    });
-    $('#video-btn').on('click', function(){
-      $('.btn-choice').children().removeClass('active');
-      $(this).addClass('active');
+    }
+    function videoDisplay(){
       $('.photo-capture').css('display', 'none');
       $('.video-capture').css('display','block');
       $('.stopmotion-capture').css('display','none');
@@ -56,12 +114,10 @@ jQuery(document).ready(function($) {
       $(".son").css("display", "none");
       $('#video').show();
       $('#canvas-audio').hide();
-    });
-    $('#stopmotion').on('click', function(){
+    }
+    function stopMotionDisplay(){
       $('.screenshot .canvas-view').show();
       $('.screenshot #camera-preview').hide();
-      $('.btn-choice').children().removeClass('active');
-      $(this).addClass('active');
       $('.photo-capture').css('display', 'none');
       $('.video-capture').css('display','none');
       $('.stopmotion-capture').css('display','block');
@@ -69,11 +125,9 @@ jQuery(document).ready(function($) {
       $(".son").css("display", "none");
       $('#video').show();
       $('#canvas-audio').hide();
-    });
-    $('#audio').on('click', function(e){
+    }
+    function audioDisplay(){
       $('.screenshot #camera-preview').hide();
-      $('.btn-choice').children().removeClass('active');
-      $(this).addClass('active');
       $('.photo-capture').css('display', 'none');
       $('.video-capture').css('display','none');
       $('.stopmotion-capture').css('display','none');
@@ -82,23 +136,19 @@ jQuery(document).ready(function($) {
       $('.right .son').css('display', 'block');
       $('#video').hide();
       $('#canvas-audio').show();
-      createEqualizer();
-    });
-    $('.btn-choice button').on('click', function(){
-      $('.btn-choice button').attr("disabled", false);
-      $(this).attr("disabled",true);
-      $(".form-meta.active").slideUp( "slow" ); 
-      $(".form-meta").removeClass('active');
-      if($('.screenshot .count-image')){
-        $('.screenshot .count-image').remove();
-      }
+    }
+    $(".clear").off();
+    $(".clear").on("click", function(e){
+      console.log('File was delete');
+      socket.emit("deleteFile", {name:app.session});
       backAnimation();
+      e.stopPropagation;
     });
   }
 
   // Prend des photos et des stop motion
   function main(){
-    //définition des variables pour la photo et le stop motion
+  //définition des variables pour la photo et le stop motion
     var streaming = false,
         video        = document.querySelector('#video'),
         canvas       = document.querySelector('#canvas'),
@@ -110,82 +160,42 @@ jQuery(document).ready(function($) {
         width = 620,
         height = 0;
 
-    //Variable pour le son
-    var mediaStream = null;
-    var startRecording = document.getElementById('start-recording');
-    var stopRecording = document.getElementById('stop-recording');
-    var cameraPreview = document.getElementById('son');
-    var recordAudio;
-
-    //Variable pour la video
-    // you can set it equal to "false" to record only audio
-    var recordVideoSeparately = !!navigator.webkitGetUserMedia;
-    if (!!navigator.webkitGetUserMedia && !recordVideoSeparately) {
-        var cameraPreview = document.getElementById('camera-preview');
-        cameraPreview.parentNode.innerHTML = '<audio id="camera-preview" controls style="border: 1px solid rgb(15, 158, 238); width: 94%;"></audio> ';
-    }
-
-    var startVideoRecording = document.getElementById('record-btn');
-    var stopVideoRecording = document.getElementById('stop-btn');
-    var cameraPreview = document.getElementById('camera-preview');
-    var recordVideo;
+    //FIN variables Equalizer
 
     // Initialise getUserMedia
-    navigator.getMedia = ( navigator.getUserMedia ||
-                           navigator.webkitGetUserMedia ||
-                           navigator.mozGetUserMedia ||
-                           navigator.msGetUserMedia);
-    navigator.getMedia(
-      {
-        video: true,
-        audio: true
-      },
-      function(stream) {
-        if (navigator.mozGetUserMedia) {
-          video.mozSrcObject = stream;
-        } else {
-          var vendorURL = window.URL || window.webkitURL;
-          video.src = vendorURL.createObjectURL(stream);
+      navigator.getMedia = ( navigator.getUserMedia ||
+                             navigator.webkitGetUserMedia ||
+                             navigator.mozGetUserMedia ||
+                             navigator.msGetUserMedia);
+      navigator.getMedia(
+        {
+          video: true,
+          audio: true
+        },
+        function (stream) {
+          if (navigator.mozGetUserMedia) {
+            video.mozSrcObject = stream;
+          } else {
+            var vendorURL = window.URL || window.webkitURL;
+            video.src = vendorURL.createObjectURL(stream);
+          }
+          video.play();
+        },
+        function(err) {
+          alert(JSON.stringify(error));
         }
-        video.play();
-        // get user media pour le son
-        mediaStream = stream;
-        recordAudio = RecordRTC(stream, {
-            type: 'audio',
-            onAudioProcessStarted: function() {
-              recordVideoSeparately && recordVideo.startRecording();
-              cameraPreview.src = window.URL.createObjectURL(stream);
-              cameraPreview.play();
-              cameraPreview.muted = true;
-              cameraPreview.controls = true;
-            }
-        });
-        recordAudio.startRecording();
-        stopRecording.disabled = false;
-        //fin get user media son
-        //get user media pour la video
-        recordVideo = RecordRTC(stream, {
-          type: 'video'
-        });
-        recordAudio.startRecording();
-        stopVideoRecording.disabled = false;
-      },
-      function(err) {
-        console.log("An error occured! " + err);
-        alert(JSON.stringify(error));
-      }
-    );
+      );
 
-    video.addEventListener('canplay', function(ev){
-      if (!streaming) {
-        height = video.videoHeight / (video.videoWidth/width);
-        video.setAttribute('width', width);
-        video.setAttribute('height', height);
-        canvas.setAttribute('width', width);
-        canvas.setAttribute('height', height);
-        streaming = true;
-      }
-    }, false);
+      video.addEventListener('canplay', function(ev){
+        if (!streaming) {
+          height = video.videoHeight / (video.videoWidth/width);
+          video.setAttribute('width', width);
+          video.setAttribute('height', height);
+          canvas.setAttribute('width', width);
+          canvas.setAttribute('height', height);
+          streaming = true;
+        }
+      }, false);
 
     // fonction qui prend des photos et qui les envoie au serveur
     function takepicture() {
@@ -208,18 +218,54 @@ jQuery(document).ready(function($) {
     }
 
     function initEvents() {
-      // Event bouton prendre une photo
-      startbutton.addEventListener('click', function(ev){
-          takepicture();
-        //ev.preventDefault();
-        ev.stopPropagation();
-      }, false);
+      $("body").keypress(function(e){
+        // Taking pictures
+        var code = e.keyCode || e.which;
+        if($("#photo").hasClass('active')){
+          if(code == 32) { //When Space is pressed
+            takepicture();
+            console.log("taking a picture");
+          }
+        }
+        if($("#video-btn").hasClass('active')){
+          if(code == 32) {
+            audioVideo();
+            console.log("recording video");
+          }
+        }
+        if($("#stopmotion").hasClass('active')){
+          // Taking StopMotion
+          if(code == 32) { //When Space is pressed
+            countPress ++;
+            //console.log(countPress);
+            if(countPress == 1){
+              console.log("start a stopmotion");
+              startStopMotion();
+            }
+            else{
+              //console.log('test');
+              onStopMotionDirectory();
+              //socket.on('newStopMotionDirectory', onStopMotionDirectory);
+            }
+          }
+          if(code == 99){
+            console.log('OK');
+            stopStopMotion();
+            countPress = 0;
+          }
+        }
+        if($("#audio").hasClass('active')){
+          if(code == 32) {
+            createEqualizer();
+            audioCapture();
+            console.log("recording audio");
+          }
+        }
+      });
 
-      // Event bouton stop motion
       // Crée un nouveau stop motion + ajoute des images dedans + transforme le stop motion en vidéo
-      startsm.addEventListener('click', function(){
+      function startStopMotion(){
         countImage = 0;
-        console.log(countImage);
         $("#start-sm").hide(); $("#capture-sm").show(); $("#stop-sm").hide();
         $('.screenshot .canvas-view').show(); $('#camera-preview').hide();
         if($(".form-meta").hasClass('active')){
@@ -232,197 +278,264 @@ jQuery(document).ready(function($) {
         $('.right').animate({'left':'52%'}, 'slow');
         $('.screenshot').append('<p>Nouveau Stop Motion! Cliquez sur le bouton enregistrer pour commencer à prendre des photos</p>')
         socket.emit('newStopMotion', {id: sessionId, name: app.session});
-        socket.on('newStopMotionDirectory', onStopMotionDirectory);
-        function onStopMotionDirectory(dir){
-          capturesm.addEventListener('click', function(ev){
-            $("#stop-sm").show();
-            $('.screenshot p').remove();
-            countImage ++;
-            console.log(countImage);
-            $(".screenshot").append("<p class='count-image'></p>");
-            $(".screenshot .count-image").text("Image n°" + countImage);
-            takepictureMotion(dir, countImage);
-            ev.preventDefault();
-          }, false);
-          stopsm.addEventListener('click', function(ev){
-            $("#stop-sm").hide();
-            $("#start-sm").show();
-            $("#capture-sm").hide();
-            countImage = 0;
-            $('.screenshot .count-image').remove();
-            socket.emit('StopMotion', {id: sessionId, name: app.session, dir: dir});
-            $('.screenshot .canvas-view').hide();
-            setTimeout(function() {
-              $('.right').css('height', "auto");
-              $('#camera-preview').attr('src', 'http://localhost:8080/' + app.session + '/stopmotion.mp4')
-              //$('.screenshot').append("<video class='stopmotion-preview' src='http://localhost:8080/" + app.session + "/stopmotion.mp4' autoplay='true' controls='true' loop='true' width='620' height='465'></video>"); 
-              $('#camera-preview').show();
-              $(".form-meta").slideDown( "slow" ); 
-              $(".form-meta").addClass('active');
-              $("#valider").off('click');
-              $("#valider").on('click', function(e){
-                var titreSM = $('input.titre').val();
-                var legendeSM = $('textarea.legende').val();
-                var tagsSM = $('input.tags').val();
-                socket.emit('stopmotionCapture', {id: sessionId, name: app.session, titre: titreSM, legende: legendeSM, tags: tagsSM, dir: dir});
-                $(".form-meta input").val("");
-                $(".form-meta textarea").val("");
-                $(".form-meta.active").slideUp( "slow", function(){ 
-                  $(".form-meta").removeClass('active');
-                  $('.left').animate({'left':'30%'}, 'slow');
-                  $('.right').css("z-index", 3).removeClass('active').animate({'width':"200px", 'top':'60px', 'left':'87%', 'opacity': 0}, 500, function(){
-                    $(this).css({"z-index": -1, "width":"800px", 'top':"200px", 'left':'30%', 'opacity':1});
-                    $(".count-add-media").animate({'opacity': 1}, 700, function(){$(this).fadeOut(700);});
-                  });
-                });
-                $("#start-sm").show();
-                $("#capture-sm").hide();
-                $("#stop-sm").hide();
-                canvas.getContext('2d').clearRect(0, 0, canvas.width, canvas.height);
-              });
-            }, 1000);
-            $('.screenshot #camera-preview').hide();
-            ev.preventDefault();
-          }, false);
-        }
-        
-      });
+        //socket.on('newStopMotionDirectory', onStopMotionDirectory);
+      }
+             
+      function onStopMotionDirectory(){
+          console.log("start taking picture");
+          var dir = "sessions/" + app.session + "/stopmotion";
+          $("#stop-sm").show();
+          $('.screenshot p').remove();
+          countImage ++;
+          console.log(countImage);
+          $(".screenshot").append("<p class='count-image'></p>");
+          $(".screenshot .count-image").text("Image n°" + countImage);
+          takepictureMotion(dir, countImage);
+          //ev.preventDefault();
+      }
+
+      function stopStopMotion(){
+        var dir = "sessions/" + app.session + "/stopmotion";
+        $("#stop-sm").hide();
+        $("#start-sm").show();
+        $("#capture-sm").hide();
+        countImage = 0;
+        $('.screenshot .count-image').remove();
+        socket.emit('StopMotion', {id: sessionId, name: app.session, dir: dir});
+        $('.screenshot .canvas-view').hide();
+        setTimeout(function() {
+          $('.right').css('height', "auto");
+          $('#camera-preview').attr('src', 'https://localhost:8080/' + app.session + '/stopmotion.mp4')
+          $('#camera-preview').show();
+          $(".form-meta").slideDown( "slow" ).addClass('active'); 
+          socket.emit('stopmotionCapture', {id: sessionId, name: app.session, dir: dir});
+          //   $(".form-meta.active").slideUp( "slow", function(){ 
+          //     $(".form-meta").removeClass('active');
+          //     $('.left').animate({'left':'30%'}, 'slow');
+          //     $('.right').css("z-index", 3).removeClass('active').animate({'width':"200px", 'top':'60px', 'left':'87%', 'opacity': 0}, 500, function(){
+          //       $(this).css({"z-index": -1, "width":"800px", 'top':"200px", 'left':'30%', 'opacity':1});
+          //       $(".count-add-media").animate({'opacity': 1}, 700, function(){$(this).fadeOut(700);});
+          //     });
+          //   });
+          //   $("#start-sm").show();
+          //   $("#capture-sm").hide();
+          //   $("#stop-sm").hide();
+          //   canvas.getContext('2d').clearRect(0, 0, canvas.width, canvas.height);
+          // });
+        }, 1000);
+        //$('.screenshot #camera-preview').hide();
+      }
     }
-    initEvents();
-    audioCapture();
-    audioVideo();
 
     //Capture le flux audio
     function audioCapture(){
 
-      startRecording.onclick = function() {
+      //Variables
+      //var mediaStream = null;
+      var startRecording = document.getElementById('start-recording');
+      var stopRecording = document.getElementById('stop-recording');
+      var cameraPreview = document.getElementById('son');
+      
+      if(countPress == 1){
+        // Initialise getUserMedia
+        navigator.getMedia = ( navigator.getUserMedia ||
+                               navigator.webkitGetUserMedia ||
+                               navigator.mozGetUserMedia ||
+                               navigator.msGetUserMedia);
+        navigator.getMedia(
+          {
+            video: false,
+            audio: true
+          },
+          function (stream) {
+            // get user media pour le son
+            mediaStream = stream;
+            recordAudio = RecordRTC(stream, {
+                type: 'audio',
+            });
+            recordAudio.startRecording();
+          },
+          function(err) {
+            alert(JSON.stringify(error));
+          }
+        );
         startRecording.disabled = true;
         startRecording.style.display = "none";
         stopRecording.style.display = "block";
-      };
+        console.log(countPress);
+      }
 
-      stopRecording.onclick = function(e) {
-          startRecording.disabled = false;
-          stopRecording.disabled = true;
-          startRecording.style.display = "block";
-          stopRecording.style.display = "none";
-          cameraPreview.style.display = "block";
+      if(countPress > 1){
+        console.log(countPress);
+        
+        startRecording.disabled = false;
+        stopRecording.disabled = true;
+        startRecording.style.display = "block";
+        stopRecording.style.display = "none";
+        cameraPreview.style.display = "block";
 
-          // stop audio recorder
-          recordAudio.stopRecording(function(url) {
-            // get audio data-URL
-            recordAudio.getDataURL(function(audioDataURL) {
-              var files = {
-                  audio: {
-                      type: recordAudio.getBlob().type || 'audio/wav',
-                      dataURL: audioDataURL
-                  }
-              };
-              //socket.emit('audio', {files: files, id: sessionId, name: app.session});
-              console.log("Audio is recording url " + url);
-              cameraPreview.src = url;
-              cameraPreview.muted = false;
-              cameraPreview.play();
-              // $("#son").attr('src', url);
-              //document.getElementById('audio-url-preview').innerHTML = '<a href="' + url + '" target="_blank"></a>';
-              animateWindows(files, "audioCapture");
-              if (mediaStream) mediaStream.stop();
+        // stop audio recorder
+        recordAudio.stopRecording(function(url) {
+          // get audio data-URL
+          recordAudio.getDataURL(function(audioDataURL) {
+            var files = {
+                audio: {
+                    type: recordAudio.getBlob().type || 'audio/wav',
+                    dataURL: audioDataURL
+                }
+            };
+            //socket.emit('audio', {files: files, id: sessionId, name: app.session});
+            console.log("Audio is recording url " + url);
+            cameraPreview.src = url;
+            cameraPreview.muted = false;
+            cameraPreview.play();
+            // $("#son").attr('src', url);
+            //document.getElementById('audio-url-preview').innerHTML = '<a href="' + url + '" target="_blank"></a>';
+            animateWindows(files, "audioCapture");
+            if (mediaStream) mediaStream.stop();
           });
-          });
-      };
+        });
+        countPress = 0;
+      }
     }
   
     //Capture le flux audio et video
     function audioVideo(){
 
-      startVideoRecording.onclick = function() {
+      //Variables
+      // you can set it equal to "false" to record only audio
+      var recordVideoSeparately = !!navigator.webkitGetUserMedia;
+      if (!!navigator.webkitGetUserMedia && !recordVideoSeparately) {
+          var cameraPreview = document.getElementById('camera-preview');
+          cameraPreview.parentNode.innerHTML = '<audio id="camera-preview" controls style="border: 1px solid rgb(15, 158, 238); width: 94%;"></audio> ';
+      }
+      var startVideoRecording = document.getElementById('record-btn');
+      var stopVideoRecording = document.getElementById('stop-btn');
+      var cameraPreview = document.getElementById('camera-preview');
+      countPress ++;
+
+      if(countPress == 1){
+        // Initialise getUserMedia
+        navigator.getMedia = ( navigator.getUserMedia ||
+                               navigator.webkitGetUserMedia ||
+                               navigator.mozGetUserMedia ||
+                               navigator.msGetUserMedia);
+        navigator.getMedia(
+          {
+            video: true,
+            audio: true
+          },
+          function (stream) {
+            // get user media pour le son
+            mediaStream = stream;
+            recordAudio = RecordRTC(stream, {
+                type: 'audio',
+                onAudioProcessStarted: function() {
+                  //Useful to recover audio/video sync issues inside the browser
+                  recordVideoSeparately && recordVideo.startRecording();
+                  cameraPreview.src = window.URL.createObjectURL(stream);
+                  cameraPreview.play();
+                  cameraPreview.muted = true;
+                  cameraPreview.controls = true;
+                }
+            });
+            recordVideo = RecordRTC(stream, {
+              type: 'video'
+            });
+            recordAudio.startRecording();
+          },
+          function(err) {
+            alert(JSON.stringify(error));
+          }
+        );
+
         startVideoRecording.disabled = true;
         startVideoRecording.style.display = "none";
         stopVideoRecording.style.display = "block";
-      };
-      stopVideoRecording.onclick = function() {
-          startVideoRecording.disabled = false;
-          stopVideoRecording.disabled = true;
-          startVideoRecording.style.display = "block";
-          stopVideoRecording.style.display = "none";
-          cameraPreview.style.display = "block";
-          // stop audio recorder
-          recordVideoSeparately && recordAudio.stopRecording(function() {
-            // stop video recorder
-            recordVideo.stopRecording(function() {
-              // get audio data-URL
-              recordAudio.getDataURL(function(audioDataURL) {
-                // get video data-URL
-                recordVideo.getDataURL(function(videoDataURL) {
-                  var files = {
-                      audio: {
-                          type: recordAudio.getBlob().type || 'audio/wav',
-                          dataURL: audioDataURL
-                      },
-                      video: {
-                          type: recordVideo.getBlob().type || 'video/webm',
-                          dataURL: videoDataURL
-                      }
-                  };
-                  socket.emit('audioVideo', {files: files, id: sessionId, name: app.session});
-                  $('.screenshot .canvas-view').hide();
-                  $(".right").css('display', 'block').addClass('active');
-                  $('.left').animate({'left':'7%'}, 'slow');
-                  $('.right').animate({'left':'52%'}, 'slow', function(){
-                    $('.right').css('height', "auto");
-                    $(".form-meta").slideDown( "slow" ); 
-                    $(".form-meta").addClass('active');
-                    $("#valider").off('click');
-                  });
-                  if (mediaStream) mediaStream.stop();
-                });
-              });
-              cameraPreview.src = '';
-              cameraPreview.poster = 'http://localhost:8080/loading.gif';
-            });
-          });
-          // if firefox or if you want to record only audio
-          // stop audio recorder
-          !recordVideoSeparately && recordAudio.stopVideoRecording(function() {
+      }
+      if(countPress > 1){
+        countPress = 0;
+        startVideoRecording.disabled = false;
+        stopVideoRecording.disabled = true;
+        startVideoRecording.style.display = "block";
+        stopVideoRecording.style.display = "none";
+        cameraPreview.style.display = "block";
+        // stop audio recorder
+        recordVideoSeparately && recordAudio.stopRecording(function() {
+          // stop video recorder
+          recordVideo.stopRecording(function() {
             // get audio data-URL
             recordAudio.getDataURL(function(audioDataURL) {
-              var files = {
-                  audio: {
-                      type: recordAudio.getBlob().type || 'audio/wav',
-                      dataURL: audioDataURL
-                  }
-              };
-              socket.emit('audioVideo', {files: files, id: sessionId, name: app.session});
-              if (mediaStream) mediaStream.stop();
+              // get video data-URL
+              recordVideo.getDataURL(function(videoDataURL) {
+                var files = {
+                    audio: {
+                        type: recordAudio.getBlob().type || 'audio/wav',
+                        dataURL: audioDataURL
+                    },
+                    video: {
+                        type: recordVideo.getBlob().type || 'video/webm',
+                        dataURL: videoDataURL
+                    }
+                };
+                socket.emit('audioVideo', {files: files, id: sessionId, name: app.session});
+                $('.screenshot .canvas-view').hide();
+                $(".right").css('display', 'block').addClass('active');
+                $('.left').animate({'left':'7%'}, 'slow');
+                $('.right').animate({'left':'52%'}, 'slow', function(){
+                  $('.right').css('height', "auto");
+                  $(".form-meta").slideDown( "slow" ); 
+                  $(".form-meta").addClass('active');
+                });
+                if (mediaStream) mediaStream.stop();
+              });
             });
             cameraPreview.src = '';
-            cameraPreview.poster = 'http://localhost:8080/loading.gif';
+            cameraPreview.poster = 'https://localhost:8080/loading.gif';
           });
-      };
+        });
+        // if firefox or if you want to record only audio
+        // stop audio recorder
+        !recordVideoSeparately && recordAudio.stopVideoRecording(function() {
+          // get audio data-URL
+          recordAudio.getDataURL(function(audioDataURL) {
+            var files = {
+                audio: {
+                    type: recordAudio.getBlob().type || 'audio/wav',
+                    dataURL: audioDataURL
+                }
+            };
+            socket.emit('audioVideo', {files: files, id: sessionId, name: app.session});
+            if (mediaStream) mediaStream.stop();
+          });
+          cameraPreview.src = '';
+          cameraPreview.poster = 'https://localhost:8080/loading.gif';
+        });
+      }
       socket.on('merged', function(fileName, sessionName) {
-        href = 'http://localhost:8080/static/' + sessionName + '/audiovideo/' + fileName;
+        href = 'https://localhost:8080/static/' + sessionName + '/audiovideo/' + fileName;
         console.log('got file ' + href);
         cameraPreview.src = href
         cameraPreview.play();
         cameraPreview.muted = false;
         cameraPreview.controls = true;
-        $("#valider").on('click', function(e){
-          var titreVideo = $('input.titre').val();
-          var legendeVideo = $('textarea.legende').val();
-          var tagsVideo = $('input.tags').val();
+        // $("#valider").on('click', function(e){
+        //   var titreVideo = $('input.titre').val();
+        //   var legendeVideo = $('textarea.legende').val();
+        //   var tagsVideo = $('input.tags').val();
           //Confirme l'enregistrement de la vidéo et envoie les meta données. 
-          socket.emit('audioVideoCapture', {file:fileName, id: sessionId, name: app.session, titre: titreVideo, legende: legendeVideo, tags: tagsVideo});
-          $(".form-meta input").val("");
-          $(".form-meta textarea").val("");
-          $(".form-meta.active").slideUp( "slow", function(){ 
-            $(".form-meta").removeClass('active');
-            $('.left').animate({'left':'30%'}, 'slow');
-            $('.right').css("z-index", 3).removeClass('active').animate({'width':"200px", 'top':'60px', 'left':'87%', 'opacity': 0}, 500, function(){
-              $(this).css({"z-index": -1, "width":"800px", 'top':"200px", 'left':'30%', 'opacity':1});
-              $(".count-add-media").animate({'opacity': 1}, 700, function(){$(this).fadeOut(700);});
-            });
-          });
-        });
+          socket.emit('audioVideoCapture', {file:fileName, id: sessionId, name: app.session});
+          // $(".form-meta input").val("");
+          // $(".form-meta textarea").val("");
+          // $(".form-meta.active").slideUp( "slow", function(){ 
+          //   $(".form-meta").removeClass('active');
+          //   $('.left').animate({'left':'30%'}, 'slow');
+          //   $('.right').css("z-index", 3).removeClass('active').animate({'width':"200px", 'top':'60px', 'left':'87%', 'opacity': 0}, 500, function(){
+          //     $(this).css({"z-index": -1, "width":"800px", 'top':"200px", 'left':'30%', 'opacity':1});
+          //     $(".count-add-media").animate({'opacity': 1}, 700, function(){$(this).fadeOut(700);});
+          //   });
+          // });
+        // });
       });
       socket.on('ffmpeg-output', function(result) {
       });
@@ -430,115 +543,79 @@ jQuery(document).ready(function($) {
         alert(error);
       });
     } 
-  }  
 
-  //fenêtre de preview retroune au center
-  function backAnimation(){
-    if($(".right").hasClass('active')){
-      $('.left').animate({'left':'30%'}, 'slow');
-      $('.right').removeClass('active').animate({'top':'200px', 'left':'30%'}, 500,function(){$(this).css("display", "none")});
-    }
-  }
+    // CREATE A SOUND EQUALIZER
+    function createEqualizer(){
 
-  //animation des fenêtres à la capture
-  function animateWindows(data, capture){
-    //$('.screenshot .canvas-view').hide();
-    $(".right").css('display', 'block').addClass('active');
-    $('.left').animate({'left':'7%'}, 'slow');
-    $('.right').animate({'left':'52%'}, 'slow', function(){
-      $('.right').css('height', "auto");
-      $(".form-meta").slideDown( "slow" ); 
-      $(".form-meta").addClass('active');
-      $("#valider").off('click');
-      $("#valider").on('click', function(e){
-        var titre = $('input.titre').val();
-        var legende = $('textarea.legende').val();
-        var tags = $('input.tags').val();
-        socket.emit(capture, {data: data, id: sessionId, name: app.session, titre: titre, legende: legende, tags: tags});
-        $(".form-meta input").val("");
-        $(".form-meta textarea").val("");
-        $(".form-meta.active").slideUp( "slow", function(){ 
-          $(".form-meta").removeClass('active');
-          $('.left').animate({'left':'30%'}, 'slow');
-          $('.right').css("z-index", 3).removeClass('active').animate({'width':"200px", 'top':'60px', 'left':'87%', 'opacity': 0}, 500, function(){
-            $(this).css({"z-index": -1, "width":"800px", 'top':"200px", 'left':'30%', 'opacity':1});
-            $(".count-add-media").animate({'opacity': 1}, 700, function(){$(this).fadeOut(700);});
-          });
-        });
-      });
-    });
-  }
+      window.requestAnimFrame = (function(){
+        return  window.requestAnimationFrame       ||
+                window.webkitRequestAnimationFrame ||
+                window.mozRequestAnimationFrame    ||
+                function(callback, element){
+                  window.setTimeout(callback, 1000 / 60);
+                };
+      })();
 
-// CREATE A SOUND EQUALIZER
-  function createEqualizer(){
-    // Hack to handle vendor prefixes
-    navigator.getUserMedia = ( navigator.getUserMedia ||
-                               navigator.webkitGetUserMedia ||
-                               navigator.mozGetUserMedia ||
-                               navigator.msGetUserMedia);
+      window.AudioContext = (function(){
+          return  window.AudioContext || window.mozAudioContext;
+      })();
 
-    window.requestAnimFrame = (function(){
-      return  window.requestAnimationFrame       ||
-              window.webkitRequestAnimationFrame ||
-              window.mozRequestAnimationFrame    ||
-              function(callback, element){
-                window.setTimeout(callback, 1000 / 60);
-              };
-    })();
+      // Global Variables for Audio
+      var audioContext;
+      var analyserNode;
+      //var javascriptNode;
+      var sampleSize = 1024;  // number of samples to collect before analyzing
+                              // decreasing this gives a faster sonogram, increasing it slows it down
+      var amplitudeArray;     // array to hold frequency data
+      var audioStream;
+      countPress ++;
 
-    window.AudioContext = (function(){
-        return  window.webkitAudioContext || window.AudioContext || window.mozAudioContext;
-    })();
+      // Global Variables for Drawing
+      var column = 0;
+      var canvasWidth  = 620;
+      var canvasHeight = 256;
+      var ctx;
 
-    // Global Variables for Audio
-    var audioContext;
-    var analyserNode;
-    var javascriptNode;
-    var sampleSize = 1024;  // number of samples to collect before analyzing
-                            // decreasing this gives a faster sonogram, increasing it slows it down
-    var amplitudeArray;     // array to hold frequency data
-    var audioStream;
+      ctx = $("#canvas-audio").get()[0].getContext("2d");
 
-    // Global Variables for Drawing
-    var column = 0;
-    var canvasWidth  = 620;
-    var canvasHeight = 256;
-    var ctx;
-
-    ctx = $("#canvas-audio").get()[0].getContext("2d");
-
-    try {
-        audioContext = new AudioContext();
-    } catch(e) {
-        alert('Web Audio API is not supported in this browser');
-    }
-    startEqualizer();
-    $('#stop-recording').click(function(e){
-      stopEqualizer(e);
-    });
-
-    function startEqualizer(){
-      clearCanvas();
-      // get the input audio stream and set up the nodes
       try {
-          navigator.getUserMedia(
-            { video: false,
-              audio: true},
-            setupAudioNodes,
-            onError);
-      } catch (e) {
-          alert('webkitGetUserMedia threw exception :' + e);
+          audioContext = new AudioContext();
+      } catch(e) {
+          alert('Web Audio API is not supported in this browser');
       }
-    }
 
-    function stopEqualizer(e){
-      e.preventDefault();
-      javascriptNode.onaudioprocess = null;
-      if(audioStream) audioStream.stop();
-      if(sourceNode)  sourceNode.disconnect();
-    }
+      //Clear Equalizer Canvas
+      if(countPress == 1){
+        clearCanvas();
 
-    function setupAudioNodes(stream) {
+        // Initialise getUserMedia
+        navigator.getMedia = ( navigator.getUserMedia || navigator.webkitGetUserMedia || navigator.mozGetUserMedia || navigator.msGetUserMedia);
+        
+        navigator.getMedia(
+          {
+            video: false,
+            audio: true
+          },
+            setupAudioNodes,
+          function(err) {
+            alert(JSON.stringify(error));
+          }
+        );
+      }
+
+      //Stop Equalizer
+      if(countPress > 1){
+        javascriptNode.onaudioprocess = null;
+        if(audioStream) audioStream.stop();
+        if(sourceNode)  sourceNode.disconnect();
+        //countPress = 0;
+      }
+
+      // function stopEqualizer(){
+        
+      // }
+
+      function setupAudioNodes(stream) {
         // create the media stream from the audio input source (microphone)
         sourceNode = audioContext.createMediaStreamSource(stream);
         audioStream = stream;
@@ -565,49 +642,95 @@ jQuery(document).ready(function($) {
         sourceNode.connect(analyserNode);
         analyserNode.connect(javascriptNode);
         javascriptNode.connect(audioContext.destination);
+      }
+
+      function onError(e) {
+          console.log(e);
+      }
+
+      function drawTimeDomain() {
+          var minValue = 9999999;
+          var maxValue = 0;
+
+          for (var i = 0; i < amplitudeArray.length; i++) {
+              var value = amplitudeArray[i] / 256;
+              if(value > maxValue) {
+                  maxValue = value;
+              } else if(value < minValue) {
+                  minValue = value;
+              }
+          }
+
+          var y_lo = canvasHeight - (canvasHeight * minValue) - 1;
+          var y_hi = canvasHeight - (canvasHeight * maxValue) - 1;
+
+          ctx.fillStyle = 'red';
+          ctx.fillRect(column,y_lo, 1, y_hi - y_lo);
+
+          // loop around the canvas when we reach the end
+          column += 1;
+          if(column >= canvasWidth) {
+              column = 0;
+              clearCanvas();
+          }
+      }
+
+      function clearCanvas() {
+          column = 0;
+          ctx.clearRect(0, 0, canvasWidth, canvasHeight);
+          ctx.strokeStyle = 'blue';
+          var y = (canvasHeight / 2) + 0.5;
+          ctx.moveTo(0, y);
+          ctx.lineTo(canvasWidth-1, y);
+          ctx.stroke();
+      }
+
     }
 
-    function onError(e) {
-        console.log(e);
-    }
+    initEvents();
+    //createEqualizer();
+    // audioCapture();
+    // audioVideo();
+  }  
 
-    function drawTimeDomain() {
-        var minValue = 9999999;
-        var maxValue = 0;
-
-        for (var i = 0; i < amplitudeArray.length; i++) {
-            var value = amplitudeArray[i] / 256;
-            if(value > maxValue) {
-                maxValue = value;
-            } else if(value < minValue) {
-                minValue = value;
-            }
-        }
-
-        var y_lo = canvasHeight - (canvasHeight * minValue) - 1;
-        var y_hi = canvasHeight - (canvasHeight * maxValue) - 1;
-
-        ctx.fillStyle = 'red';
-        ctx.fillRect(column,y_lo, 1, y_hi - y_lo);
-
-        // loop around the canvas when we reach the end
-        column += 1;
-        if(column >= canvasWidth) {
-            column = 0;
-            clearCanvas();
-        }
-    }
-
-    function clearCanvas() {
-        column = 0;
-        ctx.clearRect(0, 0, canvasWidth, canvasHeight);
-        ctx.strokeStyle = 'blue';
-        var y = (canvasHeight / 2) + 0.5;
-        ctx.moveTo(0, y);
-        ctx.lineTo(canvasWidth-1, y);
-        ctx.stroke();
+  //fenêtre de preview retourne au center
+  function backAnimation(){
+    if($(".right").hasClass('active')){
+      $('.left').animate({'left':'30%'}, 'slow');
+      $('.right').removeClass('active').animate({'top':'200px', 'left':'30%'}, 500,function(){$(this).css("display", "none")});
     }
   }
+
+  //animation des fenêtres à la capture
+  function animateWindows(data, capture){
+    if(!$('.right').hasClass('active')){
+      //console.log('right class active')
+      $(".right").css('display', 'block').addClass('active');
+      $('.left').animate({'left':'7%'}, 'slow');
+      $('.right').animate({'left':'52%'}, 'slow', function(){
+        $('.right').css('height', "auto");
+        $(".form-meta").slideDown( "slow" ).addClass('active');
+        socket.emit(capture, {data: data, id: sessionId, name: app.session});
+      });
+    }
+    else{
+      //console.log('right NOT class active')
+      socket.emit(capture, {data: data, id: sessionId, name: app.session});
+    }
+  }
+  function timestampToDate(timestamp){
+    date = new Date(timestamp * 1000),
+    datevalues = [
+       date.getFullYear(),
+       date.getMonth()+1,
+       date.getDate(),
+       date.getHours(),
+       date.getMinutes(),
+       date.getSeconds(),
+    ];
+    console.log(datevalues);
+  }
+
 
   
 });

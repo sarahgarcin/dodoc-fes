@@ -35,6 +35,7 @@ module.exports = function(app, io){
 		socket.on("audioVideoCapture", onNewAudioVideoCapture);
 		//socket.on("audio", onNewAudio);
 		socket.on("audioCapture", onNewAudioCapture);
+		socket.on("deleteFile", deleteFile);
 
 	});
 
@@ -74,9 +75,24 @@ module.exports = function(app, io){
 		// });
 	}
 
+	function deleteFile(req){
+		var dir = 'sessions/' + req.name ;
+		console.log('delete file');
+		fs.readdir(dir,function(err,files){
+		    if(err) throw err;
+		    //remove last file
+		    //console.log(files[files.length - 2])
+		    fs.unlinkSync(dir + '/' + files[files.length - 2]);
+		    //console.log(files.length + " - " + files[files.length - 2]);
+		    // files.forEach(function(file){
+		    // 	//console.log(file);
+		    //     // do something with each file HERE!
+		    // });
+		 });
+	}
+
 	//ajoute les images au dossier de session
 	function onNewImage(req) {
-		console.log('test');
 		var imageBuffer = decodeBase64Image(req.data);
 		currentDate = Date.now();
 		filename = 'sessions/' + req.name + '/' + currentDate + '.jpg';
@@ -87,7 +103,7 @@ module.exports = function(app, io){
 		var jsonFile = 'sessions/' + req.name + '/' +req.name+'.json';
 		var data = fs.readFileSync(jsonFile,"UTF-8");
 		var jsonObj = JSON.parse(data);
-		var jsonAdd = { "name" : currentDate, "titre" : req.titre, "légende" : req.legende, "tags" : req.tags};
+		var jsonAdd = { "name" : currentDate};
 		jsonObj["files"]["images"].push(jsonAdd);
 		fs.writeFile(jsonFile, JSON.stringify(jsonObj), function(err) {
       if(err) {
@@ -205,7 +221,7 @@ module.exports = function(app, io){
 		var jsonFile = 'sessions/' + req.name + '/' +req.name+'.json';
 		var data = fs.readFileSync(jsonFile,"UTF-8");
 		var jsonObj = JSON.parse(data);
-		var jsonAdd = { "name" : currentDate, "titre" : req.titre, "légende" : req.legende, "tags" : req.tags};
+		var jsonAdd = { "name" : currentDate};
 		jsonObj["files"]["stopmotion"].push(jsonAdd);
 		fs.writeFile(jsonFile, JSON.stringify(jsonObj), function(err) {
       if(err) {
@@ -289,15 +305,15 @@ module.exports = function(app, io){
 		var VideoDirectory = 'sessions/' + req.name + '/audiovideo/';
 		var file = req.file.substring(0, 13);
 		//move wav file
-    var wav = fs.createReadStream(VideoDirectory + file +".wav");
+    	var wav = fs.createReadStream(VideoDirectory + file +".wav");
 		var newWave = fs.createWriteStream('sessions/' + req.name + '/' + file + ".wav" );
 		wav.pipe(newWave);
 		//move video file
-    var video = fs.createReadStream(VideoDirectory + file +".webm");
+    	var video = fs.createReadStream(VideoDirectory + file +".webm");
 		var newVideo = fs.createWriteStream('sessions/' + req.name + '/' + file + ".webm" );
 		video.pipe(newVideo);
 		//move merge file
-    var merge = fs.createReadStream(VideoDirectory + req.file);
+    	var merge = fs.createReadStream(VideoDirectory + req.file);
 		var newMerge = fs.createWriteStream('sessions/' + req.name + '/' + req.file );
 		merge.pipe(newMerge);
 
@@ -305,7 +321,7 @@ module.exports = function(app, io){
 		var jsonFile = 'sessions/' + req.name + '/' +req.name+'.json';
 		var data = fs.readFileSync(jsonFile,"UTF-8");
 		var jsonObj = JSON.parse(data);
-		var jsonAdd = { "name" : currentDate, "titre" : req.titre, "légende" : req.legende, "tags" : req.tags};
+		var jsonAdd = { "name" : currentDate};
 		jsonObj["files"]["videos"].push(jsonAdd);
 		fs.writeFile(jsonFile, JSON.stringify(jsonObj), function(err) {
       if(err) {
@@ -319,8 +335,8 @@ module.exports = function(app, io){
 	function onNewAudioCapture(req){
 		//write video to disk
 		var fileName = currentDate;
-    var fileWithExt = fileName + '.wav';
-    var fileExtension = fileWithExt.split('.').pop(),
+    	var fileWithExt = fileName + '.wav';
+    	var fileExtension = fileWithExt.split('.').pop(),
         fileRootNameWithBase = './sessions/' + req.name +'/'+ fileWithExt,
         filePath = fileRootNameWithBase,
         fileID = 2,
@@ -340,7 +356,7 @@ module.exports = function(app, io){
 		var jsonFile = 'sessions/' + req.name + '/' +req.name+'.json';
 		var data = fs.readFileSync(jsonFile,"UTF-8");
 		var jsonObj = JSON.parse(data);
-		var jsonAdd = { "name" : currentDate, "titre" : req.titre, "légende" : req.legende, "tags" : req.tags};
+		var jsonAdd = { "name" : currentDate};
 		jsonObj["files"]["audio"].push(jsonAdd);
 		fs.writeFile(jsonFile, JSON.stringify(jsonObj), function(err) {
       if(err) {

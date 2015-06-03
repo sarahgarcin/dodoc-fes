@@ -41,3 +41,7 @@ Thumbs.db
 archive
 sessions/*
 node_modules
+
+# https files #
+*.pem
+*.crt
