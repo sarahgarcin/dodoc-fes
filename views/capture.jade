@@ -12,12 +12,13 @@ html
     a(href='/select/#{session}')
       div.btn-bibli
         img(src='/images/icones-01.svg')
+        .count-add-media +1
 
   div.container
 
     div.media-choice
       div.btn-choice
-        button#photo Images
+        button#photo.active Images
         button#video-btn Vidéos
         button#stopmotion Stop motion
         button#audio Sons
@@ -25,6 +26,8 @@ html
     div.left
       div.video-view
         video(id="video" autoplay)
+
+        canvas(id="canvas-audio" width="620" height="256")
 
       div.capture
         div.photo-capture
@@ -42,8 +45,6 @@ html
             img(src="/images/save.svg")
           button#capture-sm
             img(src="/images/save.svg")
-          button#stop-sm
-            img(src="/images/stop.svg")
         div.audio-capture
           button(id='start-recording')
             img(src="/images/save.svg")
@@ -63,6 +64,8 @@ html
       div.screenshot
         canvas#canvas.canvas-view
         video(id="camera-preview" autoplay controls loop)
+        button#stop-sm
+          img(src="/images/stop.svg")
       
       div.son
         audio(id="son" autoplay controls)

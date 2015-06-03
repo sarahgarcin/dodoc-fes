@@ -30,7 +30,7 @@ module.exports = function(app, io){
 		socket.on("imageMotion", onNewImageMotion);
 		socket.on("StopMotion", onStopMotion);
 		socket.on("stopmotionCapture", onStopMotionCapture);
-		socket.on("videoCapture", onNewVideo);
+		//socket.on("videoCapture", onNewVideo);
 		socket.on("audioVideo", onNewAudioVideo);
 		socket.on("audioVideoCapture", onNewAudioVideoCapture);
 		//socket.on("audio", onNewAudio);
@@ -76,6 +76,7 @@ module.exports = function(app, io){
 
 	//ajoute les images au dossier de session
 	function onNewImage(req) {
+		console.log('test');
 		var imageBuffer = decodeBase64Image(req.data);
 		currentDate = Date.now();
 		filename = 'sessions/' + req.name + '/' + currentDate + '.jpg';
@@ -136,39 +137,6 @@ module.exports = function(app, io){
     			files.splice(index, 1);
     			io.sockets.emit('listSessions', files);
  			}
-	}
-
-	function onNewVideo(req){
-
-	}
-
-	//Crée un dossier vidéo + transforme les images en vidéo
-	function SaveVideo(req) {
-		rmDir(videoDirectory, false);
-		var videoDirectory = 'sessions/' + req.name + '/videos';
-		fs.ensureDirSync(videoDirectory);
-		var x = 0;
-		for(image in req.data) {
-			var imageBuffer = decodeBase64Image(req.data[image]);
-			x += 1;
-			filename = 'sessions/' + req.name + '/videos/img' + x + '.png';
-			fs.writeFile(filename , imageBuffer.data, function(err) { 
-				console.log(err);
-			});
-		}
-		//make sure you set the correct path to your video file
-		var proc = new ffmpeg({ source: videoDirectory + '/img%d.png'})
-		  // using 8 fps
-		  .fps(8)
-		  // setup event handlers
-		  .on('end', function() {
-		    console.log('file has been converted succesfully');
-		  })
-		  .on('error', function(err) {
-		    console.log('an error happened: ' + err.message);
-		  })
-		  // save to file
-		  .save('sessions/' + req.name + '/' + Date.now() + '.avi');
 	}
 
 	// Crée un nouveau dossier pour le stop motion
@@ -348,29 +316,6 @@ module.exports = function(app, io){
     });
 	}
 
-	// function onNewAudio(req){
-	// 	var fileName = currentDate;
- //    var fileWithExt = fileName + '.wav';
- //    var fileExtension = fileWithExt.split('.').pop(),
- //        fileRootNameWithBase = './sessions/' + req.name +'/'+ fileWithExt,
- //        filePath = fileRootNameWithBase,
- //        fileID = 2,
- //        fileBuffer;
-
- //    // @todo return the new filename to client
- //    while (fs.existsSync(filePath)) {
- //        filePath = fileRootNameWithBase + '(' + fileID + ').' + fileExtension;
- //        fileID += 1;
- //    }
-
- //    dataURL = req.files.audio.dataURL.split(',').pop();
- //    fileBuffer = new Buffer(dataURL, 'base64');
- //    fs.writeFileSync(filePath, fileBuffer);
-
-
- //    // console.log('filePath', filePath);
-	// }
-
 	function onNewAudioCapture(req){
 		//write video to disk
 		var fileName = currentDate;
@@ -387,7 +332,7 @@ module.exports = function(app, io){
         fileID += 1;
     }
 
-    dataURL = req.files.audio.dataURL.split(',').pop();
+    dataURL = req.data.audio.dataURL.split(',').pop();
     fileBuffer = new Buffer(dataURL, 'base64');
     fs.writeFileSync(filePath, fileBuffer);
 

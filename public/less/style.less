@@ -61,6 +61,20 @@ button{
 		width:45px;
 		display: inline-block;
 		float: right;	
+		.count-add-media{
+			background-color: @bleuvert;
+			padding: 7px 2px 5px 0px;
+			color: #FFF;
+			border-radius: 100px;
+			text-align: center;
+			font-size: 13px;
+			font-weight: bold;
+			width:30px;
+			position: absolute;
+			right:10px;
+			top: 5px;
+			opacity: 0;
+		}
 	}
 	.btn-right{
 		float: right;	
@@ -97,10 +111,13 @@ button{
 
 
 .left {
-	width: 47%;
-	margin-right:5%;
-	display: inline-block;
-	vertical-align: top;
+	width: @cardW;
+	height: @cardH;
+	margin: auto;
+	padding: 10px;
+	position: absolute;
+	top: @cardT;
+	left:@cardL;
 	background-color: #FFF;
 	.capture{
 		width:100%;
@@ -123,34 +140,49 @@ button{
 			}
 		}
 		.stopmotion-capture{
-			width: 160px;
+			width: 80px;
 			button {
 				display: inline-block;
 			}
 			#capture-sm{
 				display:none;
 			}
-			#stop-sm{
+		}
+		.audio-capture{
+			#stop-recording{
 				display: none;
 			}
 		}
 	}
+	#canvas-audio{
+		display: none;
+		background-color: orange;
+	}
 }
 
 .right {
-	width:47%;
-	display: inline-block;
-	vertical-align: top;
+	width: @cardW;
+	height: @cardH;
 	background-color: #FFF;
-	position: relative;
-
+	position: absolute;
+	top: @cardT;
+	left:@cardL;
+	z-index: -1;
+	display: none;
+	margin-bottom: 50px;
 	.son {
 		display: none;
+		padding-left:80px;
+		margin-bottom: 40px;
 	}
 
 	#camera-preview {
 		display: none; 
 		width: 100%;
+	}
+	#stop-sm{
+		display: none;
+		float: right;
 	}
 }
 
@@ -161,11 +193,14 @@ button{
 
 .video-view video, .screenshot canvas{
 	width: 100%;
-	background-color: @grisclair;
+	// background-color: @grisclair;
 }
 
+.photo-capture{
+	display: block;
+}
 
-.photo-capture, .video-capture, .stopmotion-capture, .audio-capture {
+.video-capture, .stopmotion-capture, .audio-capture {
 	display: none;
 }
 

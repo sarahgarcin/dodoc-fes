@@ -1,7 +1,7 @@
 jQuery(document).ready(function($) {
 
 	var serverBaseUrl = document.domain;
-	var socket = io.connect(serverBaseUrl);
+	var socket = io.connect();
 	var sessionId = '';
 	var session = {};
 	var sessionList = [];
