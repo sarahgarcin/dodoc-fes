@@ -10,6 +10,8 @@ jQuery(document).ready(function($) {
   var countPress = 0;
   //compteur de click général
   var countClick = 0;
+  //compteur pour l'equalizer
+  var countEqualizer = 0;
   // var recordAudio;
   // var recordVideo;
 
@@ -292,7 +294,7 @@ jQuery(document).ready(function($) {
         if($("#audio").hasClass('active')){
           if(code == 100) {
             audioCapture();
-            //createEqualizer();
+            createEqualizer(e);
           }
         }
       });
@@ -358,8 +360,10 @@ jQuery(document).ready(function($) {
       var startRecordingBtn = document.getElementById('start-recording');
       var stopRecordingBtn = document.getElementById('stop-recording');
       var cameraPreview = document.getElementById('son');
-      
+
       countPress ++;
+      
+      //countPress ++;
 
       if(countPress == 1){
         startRecordAudio();
@@ -565,8 +569,7 @@ jQuery(document).ready(function($) {
     }
 
     // CREATE A SOUND EQUALIZER
-    function createEqualizer(){
-
+    function createEqualizer(e, count){
       window.requestAnimFrame = (function(){
         return  window.requestAnimationFrame       ||
                 window.webkitRequestAnimationFrame ||
@@ -588,7 +591,9 @@ jQuery(document).ready(function($) {
                               // decreasing this gives a faster sonogram, increasing it slows it down
       var amplitudeArray;     // array to hold frequency data
       var audioStream;
-      countPress ++;
+
+      countEqualizer ++;
+      
 
       // Global Variables for Drawing
       var column = 0;
@@ -603,10 +608,24 @@ jQuery(document).ready(function($) {
       } catch(e) {
           console.log('Web Audio API is not supported in this browser');
       }
-
+      console.log(countEqualizer);
       //Clear Equalizer Canvas
-      if(countPress == 1){
-        clearCanvas();
+      if(countEqualizer == 1){
+        startEqualizer(e);
+        console.log('start recording');
+      }
+
+      //Stop Equalizer
+      if(countEqualizer > 1){
+        console.log("stop equalizer");
+        stopEqualizer(e);
+        countEqualizer = 0;
+        console.log('stop recording');
+      }
+
+      function startEqualizer(e){
+        e.preventDefault();
+        clearCanvas();     
         // Initialise getUserMedia
         navigator.getMedia = ( navigator.getUserMedia || navigator.webkitGetUserMedia || navigator.mozGetUserMedia || navigator.msGetUserMedia); 
         navigator.getMedia(
@@ -614,33 +633,28 @@ jQuery(document).ready(function($) {
             video: false,
             audio: true
           },
-            setupAudioNodes,
+          setupAudioNodes,
           function(err) {
             alert(JSON.stringify(error));
           }
         );
-        $("body").keypress(function(e){
-          var code = e.keyCode || e.which;
-          if(code == 97 || code == 98){
-            clearCanvas();
-            javascriptNode.onaudioprocess = null;
-            if(audioStream) audioStream.stop();
-            if(sourceNode)  sourceNode.disconnect();  
-          }
-        });
+        // $("body").keypress(function(e){
+        //   var code = e.keyCode || e.which;
+        //   if(code == 97 || code == 98){
+        //     clearCanvas();
+        //     javascriptNode.onaudioprocess = null;
+        //     if(audioStream) audioStream.stop();
+        //     if(sourceNode)  sourceNode.disconnect();  
+        //   }
+        // });
       }
 
-      //Stop Equalizer
-      if(countPress > 1){
+      function stopEqualizer(e){
+        e.preventDefault();
         javascriptNode.onaudioprocess = null;
         if(audioStream) audioStream.stop();
         if(sourceNode)  sourceNode.disconnect();
-        //countPress = 0;
       }
-
-      // function stopEqualizer(){
-        
-      // }
 
       function setupAudioNodes(stream) {
         // create the media stream from the audio input source (microphone)
