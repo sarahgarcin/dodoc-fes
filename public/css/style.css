@@ -31,27 +31,81 @@ button {
   display: inline-block;
   vertical-align: top;
 }
-/* CAPTURE PAGE
----------------------------------*/
-.container {
-  width: 90%;
-}
-.header {
-  width: 90%;
-  background-color: #FFF;
-  padding: 15px 30px;
-  margin-bottom: 30px;
-}
-.header h1 {
+/* HEADER NAVBAR */
+/*******************************************************************
+	NAVBAR
+*********************************************************************/
+.navbar-default {
+  background-color: #fff;
+  padding-top: 0px;
+  padding-bottom: 0px;
   margin: 0;
-  display: inline-block;
 }
-.header .btn-bibli {
-  width: 45px;
+.navbar-default .navbar-container {
+  width: 90%;
+  margin: 0 auto;
+}
+.navbar-header {
+  float: left;
+  width: 66.66666667%;
+}
+.navbar-header .navbar-brand {
+  display: inline-block;
+  color: #000;
+  float: none;
+  width: auto;
+  padding-top: 8px;
+  padding-bottom: 10px;
+  font-size: 16px;
+  line-height: 18px;
+}
+.navbar-header .navbar-brand svg,
+.navbar-header .navbar-brand img {
+  width: 140px;
+  min-width: 0;
+  display: inline-block;
+  vertical-align: middle;
+}
+.navbar-header .navbar-brand svg rect,
+.navbar-header .navbar-brand img rect,
+.navbar-header .navbar-brand svg path,
+.navbar-header .navbar-brand img path,
+.navbar-header .navbar-brand svg circle,
+.navbar-header .navbar-brand img circle,
+.navbar-header .navbar-brand svg polyline,
+.navbar-header .navbar-brand img polyline {
+  transform-origin: 50% 50%;
+}
+.navbar-header .lopendocInstance {
+  display: inline-block;
+  vertical-align: middle;
+  max-width: 360px;
+  padding-top: 5px;
+  padding-bottom: 5px;
+  padding-left: 15px;
+  padding-right: 15px;
+  border-left: 1px solid #eee;
+  display: none;
+}
+.navbar-header .lopendocProjet {
+  display: inline-block;
+  font-weight: bold;
+  vertical-align: middle;
+  padding-top: 5px;
+  padding-bottom: 5px;
+  padding-left: 15px;
+  padding-right: 15px;
+  border-left: 1px solid #eee;
+}
+.navbar-default .navbar-collapse {
+  width: 33.33333334%;
+  float: right;
+}
+.navbar-default .navbar-collapse .actionsContainer .actions .btn-bibli {
   display: inline-block;
   float: right;
 }
-.header .btn-bibli .count-add-media {
+.navbar-default .navbar-collapse .actionsContainer .actions .btn-bibli .count-add-media {
   background-color: #48c2b5;
   padding: 7px 2px 5px 0px;
   color: #FFF;
@@ -65,8 +119,31 @@ button {
   top: 5px;
   opacity: 0;
 }
-.header .btn-right {
-  float: right;
+.action-button {
+  list-style: none;
+  padding: 0;
+  margin: 10px 0 5px 0;
+  text-align: right;
+}
+.action-button li {
+  display: inline-block;
+  border-radius: 0.25em;
+  padding: 0 1em;
+  margin: 0;
+  margin-right: 5px;
+  margin-bottom: 5px;
+  height: 35px;
+  line-height: 36px;
+  cursor: pointer;
+  text-align: center;
+  color: #000;
+  -webkit-font-smoothing: antialiased;
+  background-color: #eee;
+}
+/* CAPTURE PAGE
+---------------------------------*/
+.container {
+  width: 90%;
 }
 .media-choice {
   width: 40%;

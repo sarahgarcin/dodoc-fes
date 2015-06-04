@@ -6,10 +6,24 @@ html
     link(rel='stylesheet', href='/css/style.css')
     title #{session} | #{title}
   body.feedback
-    header.header
-      a(href='/')
-        h1 DoDOC | #{session}
-      a(href="/select/#{session}/capture" class="capture-page btn-right") Prendre une photo
+
+    header.banner.navbar.navbar-default
+      .navbar-container
+        .navbar-header
+          a.navbar-brand(href='/')
+            img(src='/images/dodoc-logo-04.svg')
+          .lopendocInstance
+            | DoDOC
+          .lopendocProjet
+            | #{session}
+
+        nav.collapse.navbar-collapse
+          .actionsContainer
+            ul.action-button.actions
+              li.button.capture
+                a(href="/select/#{session}/capture" class="capture-page btn-right")
+                  | CAPTURE
+
 
     div.container-bibli
 

@@ -7,49 +7,23 @@ html
     title #{session} | #{title}
   body.flux
 
-
     header.banner.navbar.navbar-default
       .navbar-container
         .navbar-header
           a.navbar-brand(href='/')
-            |            <svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 820.6 183.9" enable-background="new 0 0 820.6 183.9" xml:space="preserve" class="" style="opacity: 1;">
-            |              <g class="forme-opaque">
-            |                <rect x="417.8" y="48.9" fill="#f16f2d" width="87.3" height="87.3" class="" style="transform: scale(1);"></rect>
-            |                <rect x="567.6" y="7.4" fill="#f16f2d" width="44.5" height="128.6" class="" style="transform: scale(1);"></rect>
-            |                <circle fill="#f16f2d" cx="155.6" cy="92.6" r="44.5" class="" style="transform: scale(1);"></circle>
-            |                <circle fill="#f16f2d" cx="670.4" cy="92.6" r="44.5" class="" style="transform: scale(1);"></circle>
-            |                <rect x="212.5" y="48.5" fill="#f16f2d" width="44.5" height="128.6" class="" style="transform: scale(1);"></rect>
-            |                <rect x="6.2" y="6.9" fill="#f16f2d" width="44.5" height="128.6" class="" style="transform: scale(1);"></rect>
-            |                <polyline fill="#f16f2d" points="400.7,49.3 357,92.9 313.4,49.3 " class="" style="transform: scale(1);"></polyline>
-            |                <polyline fill="#f16f2d" points="313.4,136.6 357,92.9 400.7,136.6 " class="" style="transform: scale(1);"></polyline>
-            |                <polyline fill="#f16f2d" points="814.7,49.3 771,92.9 727.4,49.3 " class="" style="transform: scale(1);"></polyline>
-            |                <polyline fill="#f16f2d" points="727.4,136.6 771,92.9 814.7,136.6 " class="" style="transform: scale(1);"></polyline>
-            |                <polyline fill="#f16f2d" points="727.4,49.3 771,92.9 727.4,136.6 " class="" style="transform: scale(1);"></polyline>
-            |                <polyline fill="#f16f2d" points="313.4,49.3 357,92.9 313.4,136.6 " class="" style="transform: scale(1);"></polyline>
-            |              </g>
-            |              <g class="forme-alpha" fill="transparent">
-            |                <polyline opacity="0.8" fill="#0054DC" points="727.4,49.3 771,92.9 727.4,136.6 " class="" style="transform: scale(1);"></polyline>
-            |                <polygon opacity="0.8" fill="#0054DC" points="63.5,7.6 84.8,50 105.9,7.5 "></polygon>
-            |                <polyline opacity="0.8" fill="#0054DC" points="417.8,48.9 479.5,48.9 479.5,110.6 " class="" style="transform: scale(1);"></polyline>
-            |                <path opacity="0.8" fill="#0054DC" d="M612.1,91.6c0,24.6-19.9,44.5-44.5,44.5c-24.6,0-44.5-19.9-44.5-44.5
-            |              c0-24.5,19.9-44.5,44.5-44.5C592.2,47.2,612.1,67.1,612.1,91.6z" class="" style="transform: scale(1);"></path>
-            |                <path opacity="0.8" fill="#0054DC" d="M301.4,92.4c0,24.6-19.9,44.5-44.5,44.5c-24.6,0-44.5-19.9-44.5-44.5
-            |              c0-24.5,19.9-44.5,44.5-44.5C281.5,47.9,301.4,67.8,301.4,92.4z" class="" style="transform: scale(1);"></path>
-            |                <polyline opacity="0.8" fill="#0054DC" points="67.9,135.6 6.2,135.6 6.2,73.9 " class="" style="transform: scale(1);"></polyline>
-            |                <circle opacity="0.8" fill="#0054DC" cx="670.4" cy="92" r="22.2" class="" style="transform: scale(1);"></circle>
-            |                <circle opacity="0.8" fill="#0054DC" cx="155.6" cy="92" r="22.2" class="" style="transform: scale(1);"></circle>
-            |                <polygon opacity="0.8" fill="#0054DC" points="313.4,136.6 400.7,92.9 313.4,49.3 "></polygon>
-            |              </g>
-            |            </svg>
-            |            <div class="lopendocInstance">
-            |              L'OpenLab        
-            |            </div>
-            |            <div class="lopendocProjet">
-            |              Les projets de l’Openlab        
-            |            </div>
+            img(src='/images/dodoc-logo-04.svg')
+          .lopendocInstance
+            | DoDOC
+          .lopendocProjet
+            | #{session}
 
-          h1 DoDOC | #{session}
-          a(href="/select/#{session}/capture" class="capture-page btn-right") Prendre une photo
+        nav.collapse.navbar-collapse
+          .actionsContainer
+            ul.action-button.actions
+              li.button.capture
+                a(href="/select/#{session}/capture" class="capture-page btn-right")
+                  | CAPTURE
+
 
     div.container-flux
       h2 Flux
