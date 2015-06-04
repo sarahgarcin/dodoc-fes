@@ -63,7 +63,6 @@ jQuery(document).ready(function($) {
 
 	function displayNewVideo(req){
 		if(req.extension == "webm"){
-			// console.log('prepend content');
 			$('.container-flux .content ul').prepend("<li class='video-bibli' id='"+ req.title+"'' ><video src='https://"+host+"/" + app.session + "/" + req.file + "' controls></li>");
 		}
 	}

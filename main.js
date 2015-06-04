@@ -28,7 +28,7 @@ module.exports = function(app, io){
 		socket.on("imageCapture", onNewImage);
 		socket.on("newStopMotion", onNewStopMotion);
 		socket.on("imageMotion", onNewImageMotion);
-		socket.on("StopMotion", onStopMotion);
+		//socket.on("StopMotion", onStopMotion);
 		socket.on("stopmotionCapture", onStopMotionCapture);
 		//socket.on("videoCapture", onNewVideo);
 		socket.on("audioVideo", onNewAudioVideo);
@@ -148,11 +148,11 @@ module.exports = function(app, io){
 		var imageBuffer = decodeBase64Image(req.data);
 		filename = req.dir + '/' + req.count + '.png';
 		fs.writeFile(filename , imageBuffer.data, function(err) { 
-			console.log(err);
+			// console.log(err);
 		});
 	}
 
-	//Transforme les images en vidéos. 
+	//Don't use this function
 	function onStopMotion(req) {
 		//console.log(req.dir);
 		var videoPath = 'sessions/' + req.name + '/01-stopmotion.mp4';
@@ -174,13 +174,13 @@ module.exports = function(app, io){
 		  .save(videoPath);
 	}
 
+	//Transforme les images en vidéos.
 	function onStopMotionCapture(req){
 		currentDate = Date.now();
+		var fileName = currentDate;
+		
 		//SAVE VIDEO
-		var videoPath = 'sessions/' + req.name + '/' + currentDate + '.mp4';
-		if('sessions/' + req.name + '/01-stopmotion.mp4'){
-			fs.remove('sessions/' + req.name + '/01-stopmotion.mp4');
-		}
+		var videoPath = 'sessions/' + req.name + '/' + fileName + '.mp4';
 		//make sure you set the correct path to your video file
 		var proc = new ffmpeg({ source: req.dir + '/%d.png'})
 		  // using 12 fps
@@ -188,13 +188,14 @@ module.exports = function(app, io){
 		  // setup event handlers
 		  .on('end', function() {
 		    console.log('file has been converted succesfully');
+		    io.sockets.emit("newStopMotionCreated", {fileName:fileName + '.mp4', name:req.name, dir:req.dir });
+		  	io.sockets.emit("displayNewStopMotion", {file: fileName + ".mp4", extension:"mp4", name:req.name, title: fileName});
 		  })
 		  .on('error', function(err) {
 		    console.log('an error happened: ' + err.message);
 		  })
 		  // save to file
 		  .save(videoPath);
-
 
 		var jsonFile = 'sessions/' + req.name + '/' +req.name+'.json';
 		var data = fs.readFileSync(jsonFile,"UTF-8");
@@ -208,7 +209,7 @@ module.exports = function(app, io){
           console.log("The file was saved!");
       }
     });
-    io.sockets.emit("displayNewStopMotion", {file: currentDate + ".mp4", extension:"mp4", name:req.name, title: currentDate});
+    
 	}
 
 	function onNewAudioVideo(data){
@@ -218,6 +219,7 @@ module.exports = function(app, io){
     var sessionDirectory = 'sessions/' + data.name;
 
     writeToDisk(data.files.video.dataURL, fileName + '.webm', data.name);
+    io.sockets.emit('merged', fileName + '.webm', data.name);
     
     //Write data to json
     var jsonFile = 'sessions/' + data.name + '/' +data.name+'.json';
@@ -251,8 +253,6 @@ module.exports = function(app, io){
     dataURL = dataURL.split(',').pop();
     fileBuffer = new Buffer(dataURL, 'base64');
     fs.writeFileSync(filePath, fileBuffer);
-    io.sockets.emit('merged', fileName, session);
-
     // console.log('filePath', filePath);
 	}
 
@@ -285,6 +285,7 @@ module.exports = function(app, io){
 	        .saveToFile(mergedFile);
 	}
 
+	//I don't use this function
 	function onNewAudioVideoCapture(req){
 		var VideoDirectory = 'sessions/' + req.name + '/00-audiovideo/';
 		var file = req.file.substring(0, 13);
@@ -347,6 +348,7 @@ module.exports = function(app, io){
     dataURL = req.data.audio.dataURL.split(',').pop();
     fileBuffer = new Buffer(dataURL, 'base64');
     fs.writeFileSync(filePath, fileBuffer);
+    io.sockets.emit('AudioFile', fileWithExt, req.name);
 
 		//add data to json file
 		var jsonFile = 'sessions/' + req.name + '/' +req.name+'.json';
@@ -361,7 +363,7 @@ module.exports = function(app, io){
           console.log("The file was saved!");
       }
     });
-    io.sockets.emit("displayNewAudio", {file: fileName + ".wav", extension:"wav", name:req.name, title: filename});
+    io.sockets.emit("displayNewAudio", {file: fileName + ".wav", extension:"wav", name:req.name, title: fileName});
 	}
 
 
