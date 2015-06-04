@@ -34,13 +34,13 @@ jQuery(document).ready(function($) {
     	var identifiant =  array[i].replace("." + extension, "");
     	console.log(identifiant);
 			if(extension == "jpg"){
-				$('.buffer ul').append("<li class='images-bibli' id='"+ identifiant+"'' ><img src='https://"+domainUrl + "/" +app.session + "/"+ array[i] + "'></li>");
+				$('.buffer ul').append("<li class='images-bibli' id='"+ identifiant+"'><img src='https://"+domainUrl + "/" +app.session + "/"+ array[i] + "'></li>");
 			}
 			if(extension == "webm" || extension == "mp4"){
-				$('.buffer ul').append("<li class='videos-bibli' id='"+ identifiant+"'' ><video src='https://"+domainUrl + "/"+app.session + "/" + array[i] + "' controls></li>");""
+				$('.buffer ul').append("<li class='videos-bibli' id='"+ identifiant+"'><video src='https://"+domainUrl + "/"+app.session + "/" + array[i] + "' controls></li>");""
 			}
 			if(extension == "wav"){
-				$('.buffer ul').append("<li class='sons-bibli' id='"+ identifiant+"'' ><audio src='https://"+domainUrl + "/"+app.session + "/" + array[i] + "' controls></li>");""
+				$('.buffer ul').append("<li class='sons-bibli' id='"+ identifiant+"'><audio src='https://"+domainUrl + "/"+app.session + "/" + array[i] + "' controls></li>");""
 				//console.log(array[i]);
 			}
 		}
