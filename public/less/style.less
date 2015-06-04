@@ -1,5 +1,7 @@
 @import url(https://fonts.googleapis.com/css?family=Share:400,400italic,700,700italic);
+@import 'bootstrap.less';
 @import 'variables.less';
+
 
 html {
 	margin:0;
@@ -52,6 +54,7 @@ button{
 	padding-top: 0px;
 	padding-bottom: 0px;
 	margin: 0;
+	min-height: 60px;
 
 	.navbar-container {
 		width: 90%;
@@ -62,9 +65,7 @@ button{
 }
 
 .navbar-header {
-  float: left;
-  width: 66.66666667%;
-
+ 	
 	.navbar-brand {
 
 		display: inline-block;
@@ -75,7 +76,7 @@ button{
 
 		width: auto;
 
-		padding-top: 	8px;
+		padding-top: 	10px;
 		padding-bottom: 10px;
 
 		font-size: 16px;
@@ -87,6 +88,7 @@ button{
 			min-width: 0;
 			display: inline-block;
 			vertical-align: middle;
+			overflow: visible;
 
 			rect,path, circle, polyline {
 				transform-origin: 50% 50%;

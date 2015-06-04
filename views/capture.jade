@@ -1,104 +1,101 @@
 doctype html
 html
   head
-    link(rel='stylesheet', href='/css/bootstrap.css')
     link(rel='stylesheet', href='/css/style.css')
     title #{session} | #{title}
   body.index
 
+    header.banner.navbar.navbar-default
+      .navbar-container
+        .navbar-header
+          a.navbar-brand(href='/')
+            img(src='/images/dodoc-logo-04.svg')
+          .lopendocInstance
+            | DoDOC
+          .lopendocProjet
+            | #{session}
 
-  header.banner.navbar.navbar-default
-    .navbar-container
-      .navbar-header
-        a.navbar-brand(href='/')
-          img(src='/images/dodoc-logo-04.svg')
-        .lopendocInstance
-          | DoDOC
-        .lopendocProjet
-          | #{session}
+        nav.collapse.navbar-collapse
+          .actionsContainer
+            ul.action-button.actions
+              li.button.btn-bibli
+                a(href="/select/#{session}" class="capture-page btn-right")
+                  img(src='/images/icones-01.svg')
+                  .count-add-media +1
 
-      nav.collapse.navbar-collapse
-        .actionsContainer
-          ul.action-button.actions
-            li.button.btn-bibli
-              a(href="/select/#{session}" class="capture-page btn-right")
-                img(src='/images/icones-01.svg')
-                .count-add-media +1
+    div.container
 
-  div.container
+      div.media-choice
+        div.btn-choice
+          button#photo Images
+          button#video-btn Vidéos
+          button#stopmotion Stop motion
+          button#audio Sons
 
-    div.media-choice
-      div.btn-choice
-        button#photo Images
-        button#video-btn Vidéos
-        button#stopmotion Stop motion
-        button#audio Sons
+      div.left
+        div.video-view
+          video(id="video" autoplay)
 
-    div.left
-      div.video-view
-        video(id="video" autoplay)
+          canvas(id="canvas-audio" width="620" height="256")
 
-        canvas(id="canvas-audio" width="620" height="256")
-
-      div.capture
-        div.photo-capture
-          button#capture-btn
-            img(src="/images/save.svg")
-        div.video-capture
-          div.video-save
-            button(id='record-btn')
+        div.capture
+          div.photo-capture
+            button#capture-btn
               img(src="/images/save.svg")
-            button(id='stop-btn' disabled)
+          div.video-capture
+            div.video-save
+              button(id='record-btn')
+                img(src="/images/save.svg")
+              button(id='stop-btn' disabled)
+                img(src="/images/stop.svg")
+            span#elasped-time
+          div.stopmotion-capture
+            button#start-sm
+              img(src="/images/save.svg")
+            button#capture-sm
+              img(src="/images/save.svg")
+          div.audio-capture
+            button(id='start-recording')
+              img(src="/images/save.svg")
+            button(id='stop-recording' disabled)
               img(src="/images/stop.svg")
-          span#elasped-time
-        div.stopmotion-capture
-          button#start-sm
-            img(src="/images/save.svg")
-          button#capture-sm
-            img(src="/images/save.svg")
-        div.audio-capture
-          button(id='start-recording')
-            img(src="/images/save.svg")
-          button(id='stop-recording' disabled)
+
+      div.right
+
+        div.title.form-meta
+          //- input(class="titre" placeholder="Titre")
+          //- div.valid
+          //-   button#valider
+          //-     img(src="/images/enregistre.svg")
+          div.clear
+            button#clear
+              img(src='/images/clear.svg')
+        div.screenshot
+          canvas#canvas.canvas-view
+          video(id="camera-preview" autoplay controls loop)
+          button#stop-sm
             img(src="/images/stop.svg")
+        
+        div.son
+          audio(id="son" autoplay controls)
 
-    div.right
-
-      div.title.form-meta
-        //- input(class="titre" placeholder="Titre")
-        //- div.valid
-        //-   button#valider
-        //-     img(src="/images/enregistre.svg")
-        div.clear
-          button#clear
-            img(src='/images/clear.svg')
-      div.screenshot
-        canvas#canvas.canvas-view
-        video(id="camera-preview" autoplay controls loop)
-        button#stop-sm
-          img(src="/images/stop.svg")
-      
-      div.son
-        audio(id="son" autoplay controls)
-
-      div.form-meta
-        //- div.meta
-        //-   textarea(class="legende" placeholder="Légende")
-        //-   input(class="tags" placeholder="Tags")
+        div.form-meta
+          //- div.meta
+          //-   textarea(class="legende" placeholder="Légende")
+          //-   input(class="tags" placeholder="Tags")
 
 
-  //- scripts
-  script(src='/socket.io/socket.io.js')
-  script var app = {}; app.session = "#{session}";
-  script(src='/js/jquery-1.11.1.js')
-  
-  //- some packages for getting and attaching user media
-  script(src="/js/lib/getusermedia.bundle.js")
-  script(src="/js/lib/attachmediastream.bundle.js")
-  //- a package for playing back the recording 
-  script(src="/js/lib/fauxplay.bundle.js")
-  script(src="/js/lib/video-recorder.bundle.js")
-  script(src="/js/lib/RecordRTC.js")
-  //- A real time javascript webm encoder based on a canvas hack
-  script(src="/js/lib/whammy.min.js")
-  script(src='/js/capture.js')
+    //- scripts
+    include templates/footer.jade
+
+    //- some packages for getting and attaching user media
+    script(src="/js/lib/getusermedia.bundle.js")
+    script(src="/js/lib/attachmediastream.bundle.js")
+    //- a package for playing back the recording 
+    script(src="/js/lib/fauxplay.bundle.js")
+    script(src="/js/lib/video-recorder.bundle.js")
+    script(src="/js/lib/RecordRTC.js")
+    //- A real time javascript webm encoder based on a canvas hack
+    script(src="/js/lib/whammy.min.js")
+    script(src='/js/capture.js')
+

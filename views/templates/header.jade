@@ -1,0 +1,16 @@
+header.banner.navbar.navbar-default
+  .navbar-container
+    .navbar-header
+      a.navbar-brand(href='/')
+        include images/dodoc-logo-04.svg      
+      .lopendocInstance
+        | DoDOC
+      .lopendocProjet
+        | #{session}
+
+    nav.collapse.navbar-collapse
+      .actionsContainer
+        ul.action-button.actions
+          li.button.capture
+            a(href="/select/#{session}/capture" class="capture-page btn-right")
+              | CAPTURE

@@ -1,29 +1,11 @@
 doctype html
 html
   head
-    link(href='https://fonts.googleapis.com/css?family=Karla:400,400italic,700,700italic' rel='stylesheet' type='text/css')
-    link(rel='stylesheet', href='/css/bootstrap.css')
     link(rel='stylesheet', href='/css/style.css')
     title #{session} | #{title}
   body.feedback
 
-    header.banner.navbar.navbar-default
-      .navbar-container
-        .navbar-header
-          a.navbar-brand(href='/')
-            img(src='/images/dodoc-logo-04.svg')
-          .lopendocInstance
-            | DoDOC
-          .lopendocProjet
-            | #{session}
-
-        nav.collapse.navbar-collapse
-          .actionsContainer
-            ul.action-button.actions
-              li.button.capture
-                a(href="/select/#{session}/capture" class="capture-page btn-right")
-                  | CAPTURE
-
+    include templates/header.jade
 
     div.container-bibli
 
@@ -40,9 +22,6 @@ html
           div.block-content
 
     //- scripts
-    script(src='/socket.io/socket.io.js')
-    script var app = {}; app.session = "#{session}";
-    script(src='/js/jquery-1.11.1.js')
-    script(type="text/javascript" src="/js/modernizr-2.0.6.custom.js")
-
+    include templates/footer.jade
+    
     script(src='/js/select.js')

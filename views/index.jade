@@ -2,14 +2,20 @@ doctype html
 html
   head
     link(rel='stylesheet', href='/css/style.css')
-    link(rel='stylesheet', href='/css/bootstrap.css')
     title #{title}
   body.index
 
-  header.header
-      a(href='/')
-        h1 DoDOC | #{session}
-  
+
+  header.banner.navbar.navbar-default
+    .navbar-container
+      .navbar-header
+        a.navbar-brand(href='/')
+          img(src='/images/dodoc-logo-04.svg')
+        .lopendocInstance
+          | DoDOC
+        .lopendocProjet
+          | #{session}
+
   div.session
     button#add-session Ajouter un compte
     div.list-session
@@ -18,8 +24,6 @@ html
 
 
     //- scripts
-    script(src='/socket.io/socket.io.js')
-    script var app = {}; app.session = "#{session}";
-    script(src='/js/jquery-1.11.1.js')
+    include templates/footer.jade
 
     script(src='/js/index.js')
