@@ -32,7 +32,7 @@ module.exports = function(app, io){
 		socket.on("stopmotionCapture", onStopMotionCapture);
 		//socket.on("videoCapture", onNewVideo);
 		socket.on("audioVideo", onNewAudioVideo);
-		socket.on("audioVideoCapture", onNewAudioVideoCapture);
+		// socket.on("audioVideoCapture", onNewAudioVideoCapture);
 		//socket.on("audio", onNewAudio);
 		socket.on("audioCapture", onNewAudioCapture);
 		socket.on("deleteFile", deleteFile);
@@ -97,7 +97,7 @@ module.exports = function(app, io){
 		currentDate = Date.now();
 		filename = 'sessions/' + req.name + '/' + currentDate + '.jpg';
 		fs.writeFile(filename , imageBuffer.data, function(err) { 
-			console.log(err);
+			//console.log(err);
 		});
 		
 		var jsonFile = 'sessions/' + req.name + '/' +req.name+'.json';
@@ -216,26 +216,28 @@ module.exports = function(app, io){
     var fileName = currentDate;
     var VideoDirectory = 'sessions/' + data.name + '/00-audiovideo';
     var sessionDirectory = 'sessions/' + data.name;
-		if(VideoDirectory){
-			fs.removeSync(VideoDirectory);
-		}
-		fs.ensureDirSync(VideoDirectory);
-    io.sockets.emit('ffmpeg-output', 0);
-    writeToDisk(data.files.audio.dataURL, fileName + '.wav', data.name);
 
-    // if it is chrome
-    if (data.files.video) {
-        writeToDisk(data.files.video.dataURL, fileName + '.webm', data.name);
-        merge(fileName, data.name);
-    }
-
-    // if it is firefox or if user is recording only audio
-    else io.sockets.emit('merged', fileName + '.wav', data.name);
+    writeToDisk(data.files.video.dataURL, fileName + '.webm', data.name);
+    
+    //Write data to json
+    var jsonFile = 'sessions/' + data.name + '/' +data.name+'.json';
+		var jsonData = fs.readFileSync(jsonFile,"UTF-8");
+		var jsonObj = JSON.parse(jsonData);
+		var jsonAdd = { "name" : fileName};
+		jsonObj["files"]["videos"].push(jsonAdd);
+		fs.writeFile(jsonFile, JSON.stringify(jsonObj), function(err) {
+      if(err) {
+          console.log(err);
+      } else {
+          console.log("The file was saved!");
+      }
+    });
+    io.sockets.emit("displayNewVideo", {file: fileName + ".webm", extension:"webm", name:data.name, title: fileName});
 	}
 
 	function writeToDisk(dataURL, fileName, session) {
     var fileExtension = fileName.split('.').pop(),
-        fileRootNameWithBase = './sessions/' + session + '/00-audiovideo/' + fileName,
+        fileRootNameWithBase = './sessions/' + session + '/' + fileName,
         filePath = fileRootNameWithBase,
         fileID = 2,
         fileBuffer;
@@ -249,10 +251,12 @@ module.exports = function(app, io){
     dataURL = dataURL.split(',').pop();
     fileBuffer = new Buffer(dataURL, 'base64');
     fs.writeFileSync(filePath, fileBuffer);
+    io.sockets.emit('merged', fileName, session);
 
     // console.log('filePath', filePath);
 	}
 
+	//I don't use it because I only save video without audio
 	function merge(fileName, session) {
 	    var FFmpeg = require('fluent-ffmpeg');
 
@@ -286,7 +290,7 @@ module.exports = function(app, io){
 		var file = req.file.substring(0, 13);
 		var filename = parseInt(file);
 		//move wav file
-  //   var wav = fs.createReadStream(VideoDirectory + file +".wav");
+  	//   var wav = fs.createReadStream(VideoDirectory + file +".wav");
 		// var newWave = fs.createWriteStream('sessions/' + req.name + '/' + file + ".wav" );
 		// wav.pipe(newWave);
 		//move video file
@@ -294,7 +298,7 @@ module.exports = function(app, io){
 		var newVideo = fs.createWriteStream('sessions/' + req.name + '/' + file + ".webm" );
 		video.pipe(newVideo);
 		//move merge file
-  //   var merge = fs.createReadStream(VideoDirectory + req.file);
+  	//   var merge = fs.createReadStream(VideoDirectory + req.file);
 		// var newMerge = fs.createWriteStream('sessions/' + req.name + '/' + req.file );
 		// merge.pipe(newMerge);
 
@@ -357,7 +361,7 @@ module.exports = function(app, io){
           console.log("The file was saved!");
       }
     });
-    io.sockets.emit("displayNewAudio", {file: currentDate + ".wav", extension:"wav", name:req.name, title: currentDate});
+    io.sockets.emit("displayNewAudio", {file: fileName + ".wav", extension:"wav", name:req.name, title: filename});
 	}
 
 

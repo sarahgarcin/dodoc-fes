@@ -9,6 +9,7 @@ jQuery(document).ready(function($) {
   var countPress = 0;
   //compteur de click général
   var countClick = 0;
+  var recordAudio, recordVideo;
 
 
 	/**
@@ -183,8 +184,6 @@ jQuery(document).ready(function($) {
         width = 620,
         height = 0;
 
-    //FIN variables Equalizer
-
     // Initialise getUserMedia
       navigator.getMedia = ( navigator.getUserMedia ||
                              navigator.webkitGetUserMedia ||
@@ -219,6 +218,9 @@ jQuery(document).ready(function($) {
           streaming = true;
         }
       }, false);
+
+      //init events
+      initEvents();
 
     // fonction qui prend des photos et qui les envoie au serveur
     function takepicture() {
@@ -263,7 +265,6 @@ jQuery(document).ready(function($) {
         if($("#video-btn").hasClass('active')){
           if(code == 32) {
             audioVideo();
-            console.log("recording video");
           }
         }
         if($("#stopmotion").hasClass('active')){
@@ -431,7 +432,7 @@ jQuery(document).ready(function($) {
     }
   
     //Capture le flux audio et video
-    function audioVideo(click){
+    function audioVideo(){
       //Variables
       // you can set it equal to "false" to record only audio
       var recordVideoSeparately = !!navigator.webkitGetUserMedia;
@@ -439,17 +440,23 @@ jQuery(document).ready(function($) {
           var cameraPreview = document.getElementById('camera-preview');
           cameraPreview.parentNode.innerHTML = '<audio id="camera-preview" controls style="border: 1px solid rgb(15, 158, 238); width: 94%;"></audio> ';
       }
+
+      var mediaStream = null;
+
       var startVideoRecording = document.getElementById('record-btn');
       var stopVideoRecording = document.getElementById('stop-btn');
       var cameraPreview = document.getElementById('camera-preview');
+      
       countPress ++;
 
       //Powermate events
       if(countPress == 1){
         startVideo();
+        console.log("recording video");
       }
       if(countPress > 1){
         stopVideo();
+        console.log("stop recording video");
       }
 
       //click events
@@ -467,28 +474,21 @@ jQuery(document).ready(function($) {
         navigator.getMedia(
           {
             video: true,
-            audio: true
+            audio: false
           },
           function (stream) {
             // get user media pour le son
             mediaStream = stream;
-            recordAudio = RecordRTC(stream, {
-                type: 'audio',
-                onAudioProcessStarted: function() {
-                  //Useful to recover audio/video sync issues inside the browser
-                  recordVideoSeparately && recordVideo.startRecording();
-                  cameraPreview.src = window.URL.createObjectURL(stream);
-                  cameraPreview.play();
-                  cameraPreview.muted = true;
-                  cameraPreview.controls = true;
-                }
-            });
             recordVideo = RecordRTC(stream, {
               type: 'video'
             });
-            recordAudio.startRecording();
+            recordVideo.startRecording();
+            cameraPreview.src = window.URL.createObjectURL(stream);
+            cameraPreview.play();
+            cameraPreview.muted = true;
+            cameraPreview.controls = true;
           },
-          function(err) {
+          function(error) {
             alert(JSON.stringify(error));
           }
         );
@@ -505,72 +505,41 @@ jQuery(document).ready(function($) {
         startVideoRecording.style.display = "block";
         stopVideoRecording.style.display = "none";
         cameraPreview.style.display = "block";
-        // stop audio recorder
-        recordVideoSeparately && recordAudio.stopRecording(function() {
-          // stop video recorder
-          recordVideo.stopRecording(function() {
-            // get audio data-URL
-            recordAudio.getDataURL(function(audioDataURL) {
-              // get video data-URL
-              recordVideo.getDataURL(function(videoDataURL) {
-                var files = {
-                    audio: {
-                        type: recordAudio.getBlob().type || 'audio/wav',
-                        dataURL: audioDataURL
-                    },
-                    video: {
-                        type: recordVideo.getBlob().type || 'video/webm',
-                        dataURL: videoDataURL
-                    }
-                };
-                socket.emit('audioVideo', {files: files, id: sessionId, name: app.session});
-                $('.screenshot .canvas-view').hide();
-                $(".right").css('display', 'block').addClass('active');
-                $('.left').animate({'left':'7%'}, 'slow');
-                $('.right').animate({'left':'52%'}, 'slow', function(){
-                  $('.right').css('height', "auto");
-                  $(".form-meta").slideDown( "slow" ); 
-                  $(".form-meta").addClass('active');
-                });
-                if (mediaStream) mediaStream.stop();
-              });
-            });
-            cameraPreview.src = '';
-            cameraPreview.poster = 'https://localhost:8080/loading.gif';
-          });
-        });
-        // if firefox or if you want to record only audio
-        // stop audio recorder
-        !recordVideoSeparately && recordAudio.stopVideoRecording(function() {
-          // get audio data-URL
-          recordAudio.getDataURL(function(audioDataURL) {
+        // stop video recorder
+        recordVideo.stopRecording(function() {
+          // get video data-URL
+          recordVideo.getDataURL(function(videoDataURL) {
             var files = {
-                audio: {
-                    type: recordAudio.getBlob().type || 'audio/wav',
-                    dataURL: audioDataURL
+                video: {
+                    type: recordVideo.getBlob().type || 'video/webm',
+                    dataURL: videoDataURL
                 }
             };
             socket.emit('audioVideo', {files: files, id: sessionId, name: app.session});
+            $('.screenshot .canvas-view').hide();
+            $(".right").css('display', 'block').addClass('active');
+            $('.left').animate({'left':'7%'}, 'slow');
+            $('.right').animate({'left':'52%'}, 'slow', function(){
+              $('.right').css('height', "auto");
+              $(".form-meta").slideDown( "slow" ); 
+              $(".form-meta").addClass('active');
+            });
             if (mediaStream) mediaStream.stop();
           });
+          // });
           cameraPreview.src = '';
           cameraPreview.poster = 'https://localhost:8080/loading.gif';
         });
-        socket.on('merged', function(fileName, sessionName) {
-          href = 'https://localhost:8080/static/' + sessionName + '/00-audiovideo/' + fileName;
-          console.log('got file ' + href);
-          cameraPreview.src = href
-          cameraPreview.play();
-          cameraPreview.muted = false;
-          cameraPreview.controls = true;
-          socket.emit('audioVideoCapture', {file:fileName, id: sessionId, name: sessionName});
-        });
-        socket.on('ffmpeg-output', function(result) {
-        });
-        socket.on('ffmpeg-error', function(error) {
-          alert(error);
-        });
       } 
+      socket.on('merged', function(fileName, sessionName) {
+        console.log("CLIENT RECEIVED VIDEO");
+        href = 'https://localhost:8080/static/' + sessionName + '/' + fileName;
+        console.log('got file ' + href);
+        cameraPreview.src = href
+        cameraPreview.play();
+        cameraPreview.muted = false;
+        cameraPreview.controls = true;
+      });
     }
 
     // CREATE A SOUND EQUALIZER
@@ -723,10 +692,6 @@ jQuery(document).ready(function($) {
 
     }
 
-    initEvents();
-    //createEqualizer();
-    // audioCapture();
-    // audioVideo();
   }  
 
   //fenêtre de preview retourne au center
