@@ -125,6 +125,8 @@ jQuery(document).ready(function($) {
       $(".son").css("display", "none");
       $('#video').show();
       $('#canvas-audio').hide();
+      var canvas = document.querySelector('#canvas');
+      canvas.getContext("2d").clearRect(0, 0, canvas.width, canvas.height)
     }
     function audioDisplay(){
       $('.screenshot #camera-preview').hide();
@@ -276,18 +278,18 @@ jQuery(document).ready(function($) {
         $(".right").css('display', 'block').addClass('active');
         $('.left').animate({'left':'7%'}, 'slow');
         $('.right').animate({'left':'52%'}, 'slow');
-        $('.screenshot').append('<p>Nouveau Stop Motion! Cliquez sur le bouton enregistrer pour commencer à prendre des photos</p>')
+        //$('.screenshot').append('<p>Nouveau Stop Motion! Cliquez sur le bouton enregistrer pour commencer à prendre des photos</p>')
         socket.emit('newStopMotion', {id: sessionId, name: app.session});
         //socket.on('newStopMotionDirectory', onStopMotionDirectory);
       }
              
       function onStopMotionDirectory(){
-          console.log("start taking picture");
-          var dir = "sessions/" + app.session + "/stopmotion";
+          //console.log("start taking picture");
+          var dir = "sessions/" + app.session + "/01-stopmotion";
           $("#stop-sm").show();
           $('.screenshot p').remove();
           countImage ++;
-          console.log(countImage);
+          //console.log(countImage);
           $(".screenshot").append("<p class='count-image'></p>");
           $(".screenshot .count-image").text("Image n°" + countImage);
           takepictureMotion(dir, countImage);
@@ -295,7 +297,7 @@ jQuery(document).ready(function($) {
       }
 
       function stopStopMotion(){
-        var dir = "sessions/" + app.session + "/stopmotion";
+        var dir = "sessions/" + app.session + "/01-stopmotion";
         $("#stop-sm").hide();
         $("#start-sm").show();
         $("#capture-sm").hide();
@@ -305,24 +307,12 @@ jQuery(document).ready(function($) {
         $('.screenshot .canvas-view').hide();
         setTimeout(function() {
           $('.right').css('height', "auto");
-          $('#camera-preview').attr('src', 'https://localhost:8080/' + app.session + '/stopmotion.mp4')
+          $('#camera-preview').attr('src', 'https://localhost:8080/' + app.session + '/01-stopmotion.mp4')
           $('#camera-preview').show();
           $(".form-meta").slideDown( "slow" ).addClass('active'); 
-          socket.emit('stopmotionCapture', {id: sessionId, name: app.session, dir: dir});
-          //   $(".form-meta.active").slideUp( "slow", function(){ 
-          //     $(".form-meta").removeClass('active');
-          //     $('.left').animate({'left':'30%'}, 'slow');
-          //     $('.right').css("z-index", 3).removeClass('active').animate({'width':"200px", 'top':'60px', 'left':'87%', 'opacity': 0}, 500, function(){
-          //       $(this).css({"z-index": -1, "width":"800px", 'top':"200px", 'left':'30%', 'opacity':1});
-          //       $(".count-add-media").animate({'opacity': 1}, 700, function(){$(this).fadeOut(700);});
-          //     });
-          //   });
-          //   $("#start-sm").show();
-          //   $("#capture-sm").hide();
-          //   $("#stop-sm").hide();
-          //   canvas.getContext('2d').clearRect(0, 0, canvas.width, canvas.height);
-          // });
         }, 1000);
+        canvas.getContext('2d').clearRect(0, 0, canvas.width, canvas.height);
+        socket.emit('stopmotionCapture', {id: sessionId, name: app.session, dir: dir});
         //$('.screenshot #camera-preview').hide();
       }
     }
@@ -415,6 +405,8 @@ jQuery(document).ready(function($) {
       countPress ++;
 
       if(countPress == 1){
+        $('#camera-preview').hide();
+        backAnimation();
         // Initialise getUserMedia
         navigator.getMedia = ( navigator.getUserMedia ||
                                navigator.webkitGetUserMedia ||
@@ -513,29 +505,13 @@ jQuery(document).ready(function($) {
         });
       }
       socket.on('merged', function(fileName, sessionName) {
-        href = 'https://localhost:8080/static/' + sessionName + '/audiovideo/' + fileName;
+        href = 'https://localhost:8080/static/' + sessionName + '/00-audiovideo/' + fileName;
         console.log('got file ' + href);
         cameraPreview.src = href
         cameraPreview.play();
         cameraPreview.muted = false;
         cameraPreview.controls = true;
-        // $("#valider").on('click', function(e){
-        //   var titreVideo = $('input.titre').val();
-        //   var legendeVideo = $('textarea.legende').val();
-        //   var tagsVideo = $('input.tags').val();
-          //Confirme l'enregistrement de la vidéo et envoie les meta données. 
-          socket.emit('audioVideoCapture', {file:fileName, id: sessionId, name: app.session});
-          // $(".form-meta input").val("");
-          // $(".form-meta textarea").val("");
-          // $(".form-meta.active").slideUp( "slow", function(){ 
-          //   $(".form-meta").removeClass('active');
-          //   $('.left').animate({'left':'30%'}, 'slow');
-          //   $('.right').css("z-index", 3).removeClass('active').animate({'width':"200px", 'top':'60px', 'left':'87%', 'opacity': 0}, 500, function(){
-          //     $(this).css({"z-index": -1, "width":"800px", 'top':"200px", 'left':'30%', 'opacity':1});
-          //     $(".count-add-media").animate({'opacity': 1}, 700, function(){$(this).fadeOut(700);});
-          //   });
-          // });
-        // });
+        socket.emit('audioVideoCapture', {file:fileName, id: sessionId, name: sessionName});
       });
       socket.on('ffmpeg-output', function(result) {
       });

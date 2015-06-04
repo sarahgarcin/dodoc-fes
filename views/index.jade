@@ -6,10 +6,14 @@ html
     title #{title}
   body.index
 
-  h1 Page projet + liens vers les sessions 
+  header.header
+      a(href='/')
+        h1 DoDOC | #{session}
   
   div.session
     button#add-session Ajouter un compte
+    div.list-session
+      ul
 
 
 

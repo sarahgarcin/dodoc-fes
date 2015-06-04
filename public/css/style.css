@@ -218,6 +218,26 @@ button {
   position: absolute;
   right: 20px;
 }
+.container-flux ul {
+  padding: 40px 30px 30px 20px;
+}
+.container-flux ul li {
+  list-style: none;
+  width: 32%;
+  display: inline-block;
+  vertical-align: top;
+  margin: 0px 10px 10px 0px;
+}
+.container-flux ul li.images-bibli img {
+  border: 5px solid blue;
+}
+.container-flux ul li.videos-bibli video {
+  width: 100%;
+  border: 5px solid green;
+}
+.container-flux ul li.audios-bibli {
+  border: 5px solid red;
+}
 .container-bibli {
   width: 100%;
   margin: auto;
