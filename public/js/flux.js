@@ -1,6 +1,7 @@
 jQuery(document).ready(function($) {
 
 	var serverBaseUrl = document.domain;
+	var domainUrl = window.location.href;
 	var socket = io.connect();
 	var sessionId = '';
 

@@ -1,6 +1,7 @@
 jQuery(document).ready(function($) {
 
 	var serverBaseUrl = document.domain;
+	var domainUrl = window.location.host;
 	var socket = io.connect();
 	var sessionId = '';
 
@@ -33,13 +34,13 @@ jQuery(document).ready(function($) {
     	var identifiant =  array[i].replace("." + extension, "");
     	console.log(identifiant);
 			if(extension == "jpg"){
-				$('.buffer ul').append("<li class='images-bibli' id='"+ identifiant+"'' ><img src='http://localhost:8080/" + app.session + "/" + array[i] + "'></li>");
+				$('.buffer ul').append("<li class='images-bibli' id='"+ identifiant+"'' ><img src='https://"+domainUrl + "/" +app.session + "/"+ array[i] + "'></li>");
 			}
 			if(extension == "webm" || extension == "mp4"){
-				$('.buffer ul').append("<li class='videos-bibli' id='"+ identifiant+"'' ><video src='http://localhost:8080/" + app.session + "/" + array[i] + "' controls></li>");""
+				$('.buffer ul').append("<li class='videos-bibli' id='"+ identifiant+"'' ><video src='https://"+domainUrl + "/"+app.session + "/" + array[i] + "' controls></li>");""
 			}
 			if(extension == "wav"){
-				$('.buffer ul').append("<li class='sons-bibli' id='"+ identifiant+"'' ><audio src='http://localhost:8080/" + app.session + "/" + array[i] + "' controls></li>");""
+				$('.buffer ul').append("<li class='sons-bibli' id='"+ identifiant+"'' ><audio src='https://"+domainUrl + "/"+app.session + "/" + array[i] + "' controls></li>");""
 				//console.log(array[i]);
 			}
 		}
@@ -81,11 +82,11 @@ jQuery(document).ready(function($) {
 	}
 
 	function ondisplayVideos(videos){
-    $('.buffer ul').append("<li class='video-bibli'><video controls src='http://localhost:8080/" + app.session + "/" + videos + "'></li>");    	
+    $('.buffer ul').append("<li class='video-bibli'><video controls src='https://"+domainUrl + "/"+app.session + "/" + videos + "'></li>");    	
 	}
 
 	function ondisplayAudio(audio){
-    $('.buffer ul').append("<li class='audio-bibli'><audio controls src='http://localhost:8080/" + app.session + "/" + audio + "'></li>");    	
+    $('.buffer ul').append("<li class='audio-bibli'><audio controls src='https://"+domainUrl + "/"+app.session + "/" + audio + "'></li>");    	
 	}
 
 });

@@ -286,17 +286,17 @@ module.exports = function(app, io){
 		var file = req.file.substring(0, 13);
 		var filename = parseInt(file);
 		//move wav file
-    var wav = fs.createReadStream(VideoDirectory + file +".wav");
-		var newWave = fs.createWriteStream('sessions/' + req.name + '/' + file + ".wav" );
-		wav.pipe(newWave);
+  //   var wav = fs.createReadStream(VideoDirectory + file +".wav");
+		// var newWave = fs.createWriteStream('sessions/' + req.name + '/' + file + ".wav" );
+		// wav.pipe(newWave);
 		//move video file
     var video = fs.createReadStream(VideoDirectory + file +".webm");
 		var newVideo = fs.createWriteStream('sessions/' + req.name + '/' + file + ".webm" );
 		video.pipe(newVideo);
 		//move merge file
-    var merge = fs.createReadStream(VideoDirectory + req.file);
-		var newMerge = fs.createWriteStream('sessions/' + req.name + '/' + req.file );
-		merge.pipe(newMerge);
+  //   var merge = fs.createReadStream(VideoDirectory + req.file);
+		// var newMerge = fs.createWriteStream('sessions/' + req.name + '/' + req.file );
+		// merge.pipe(newMerge);
 
 		//add data to json file
 		var jsonObj = null;

@@ -246,7 +246,9 @@ jQuery(document).ready(function($) {
       $("#start-sm").on('click', startStopMotion);
       $("#capture-sm").on('click', onStopMotionDirectory);
       $("#stop-sm").on('click', stopStopMotion);
-      //$("#record-btn").on('click', audioVideo);
+      // $("#record-btn").on('click', function(){
+      //   audioVideo("click");
+      // });
 
       //Powermate function
       $("body").keypress(function(e){
@@ -429,8 +431,7 @@ jQuery(document).ready(function($) {
     }
   
     //Capture le flux audio et video
-    function audioVideo(){
-
+    function audioVideo(click){
       //Variables
       // you can set it equal to "false" to record only audio
       var recordVideoSeparately = !!navigator.webkitGetUserMedia;
@@ -443,14 +444,26 @@ jQuery(document).ready(function($) {
       var cameraPreview = document.getElementById('camera-preview');
       countPress ++;
 
+      //Powermate events
       if(countPress == 1){
+        startVideo();
+      }
+      if(countPress > 1){
+        stopVideo();
+      }
+
+      //click events
+      // if(click == "click"){
+      //   console.log('test');
+      //   startVideo();
+      // }
+      // $("#stop-btn").on('click', stopVideo);
+
+      function startVideo(){
         $('#camera-preview').hide();
         backAnimation();
         // Initialise getUserMedia
-        navigator.getMedia = ( navigator.getUserMedia ||
-                               navigator.webkitGetUserMedia ||
-                               navigator.mozGetUserMedia ||
-                               navigator.msGetUserMedia);
+        navigator.getMedia = ( navigator.getUserMedia || navigator.webkitGetUserMedia || navigator.mozGetUserMedia || navigator.msGetUserMedia);
         navigator.getMedia(
           {
             video: true,
@@ -484,7 +497,8 @@ jQuery(document).ready(function($) {
         startVideoRecording.style.display = "none";
         stopVideoRecording.style.display = "block";
       }
-      if(countPress > 1){
+
+      function stopVideo(){
         countPress = 0;
         startVideoRecording.disabled = false;
         stopVideoRecording.disabled = true;
@@ -542,22 +556,22 @@ jQuery(document).ready(function($) {
           cameraPreview.src = '';
           cameraPreview.poster = 'https://localhost:8080/loading.gif';
         });
-      }
-      socket.on('merged', function(fileName, sessionName) {
-        href = 'https://localhost:8080/static/' + sessionName + '/00-audiovideo/' + fileName;
-        console.log('got file ' + href);
-        cameraPreview.src = href
-        cameraPreview.play();
-        cameraPreview.muted = false;
-        cameraPreview.controls = true;
-        socket.emit('audioVideoCapture', {file:fileName, id: sessionId, name: sessionName});
-      });
-      socket.on('ffmpeg-output', function(result) {
-      });
-      socket.on('ffmpeg-error', function(error) {
-        alert(error);
-      });
-    } 
+        socket.on('merged', function(fileName, sessionName) {
+          href = 'https://localhost:8080/static/' + sessionName + '/00-audiovideo/' + fileName;
+          console.log('got file ' + href);
+          cameraPreview.src = href
+          cameraPreview.play();
+          cameraPreview.muted = false;
+          cameraPreview.controls = true;
+          socket.emit('audioVideoCapture', {file:fileName, id: sessionId, name: sessionName});
+        });
+        socket.on('ffmpeg-output', function(result) {
+        });
+        socket.on('ffmpeg-error', function(error) {
+          alert(error);
+        });
+      } 
+    }
 
     // CREATE A SOUND EQUALIZER
     function createEqualizer(){
