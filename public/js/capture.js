@@ -14,6 +14,8 @@ jQuery(document).ready(function($) {
   var countEqualizer = 0;
   // var recordAudio;
   // var recordVideo;
+  var eventExecutedAlready = false;
+  var isEventExecutedEqualizer = false;
 
 
 	/**
@@ -258,6 +260,7 @@ jQuery(document).ready(function($) {
 
       //Powermate function
       $("body").keypress(function(e){
+        // variable to check if event is already executed
         // Taking pictures
         var code = e.keyCode || e.which;
         if($("#photo").hasClass('active')){
@@ -293,7 +296,7 @@ jQuery(document).ready(function($) {
         }
         if($("#audio").hasClass('active')){
           if(code == 100) {
-            audioCapture();
+            audioCapture(code);
             createEqualizer(e);
           }
         }
@@ -351,9 +354,9 @@ jQuery(document).ready(function($) {
     }
 
     //Capture le flux audio
-    function audioCapture(){
-      //Variables
+    function audioCapture(code){
       
+      //Variables     
       var mediaStream = null;
       //var recordAudio;
 
@@ -362,12 +365,23 @@ jQuery(document).ready(function($) {
       var cameraPreview = document.getElementById('son');
 
       countPress ++;
-      
       //countPress ++;
-
       if(countPress == 1){
         startRecordAudio();
         console.log("recording audio");
+        $("body").keypress(function(e){
+          if(eventExecutedAlready == false){
+            var code = e.keyCode || e.which;
+            if(code == 97 || code == 98){
+              eventExecutedAlready = true;
+              console.log("File was not saved");
+              recordAudio.stopRecording();
+              startRecordingBtn.style.display = "block";
+              stopRecordingBtn.style.display = "none";
+              countPress = 0;
+            }
+          }
+        });
       }
 
       if(countPress > 1){
@@ -413,19 +427,6 @@ jQuery(document).ready(function($) {
         startRecordingBtn.disabled = true;
         startRecordingBtn.style.display = "none";
         stopRecordingBtn.style.display = "block";
-        // if(countPress == 1){
-        //   $("body").keypress(function(e){
-        //     countPress ++;
-        //     var code = e.keyCode || e.which;
-        //     if(code == 97 || code == 98){
-        //       recordAudio.stopRecording();
-        //       e.preventDefault();
-        //       startRecording.style.display = "block";
-        //       stopRecording.style.display = "none";
-        //       countPress = 0; 
-        //     }
-        //   });
-        // }
       }
 
       function stopRecordAudio(){
@@ -447,11 +448,6 @@ jQuery(document).ready(function($) {
             };
             socket.emit('audio', {files: files, id: sessionId, name: app.session});
             console.log("Audio is recording url " + url);
-            // cameraPreview.src = url;
-            // cameraPreview.muted = false;
-            // cameraPreview.play();
-            // $("#son").attr('src', url);
-            //document.getElementById('audio-url-preview').innerHTML = '<a href="' + url + '" target="_blank"></a>';
             animateWindows(files, "audioCapture");
             if (mediaStream) mediaStream.stop();
           });
@@ -481,7 +477,22 @@ jQuery(document).ready(function($) {
       if(countPress == 1){
         startVideo();
         console.log("recording video");
+        $("body").keypress(function(e){
+          if(eventExecutedAlready == false){
+            var code = e.keyCode || e.which;
+            if(code == 97 || code == 98){
+                eventExecutedAlready = true;
+                console.log('your video was not saved');
+                recordVideo.stopRecording();
+                e.preventDefault();
+                startVideoRecording.style.display = "block";
+                stopVideoRecording.style.display = "none";
+                countPress = 0;
+              }
+            }
+        });
       }
+
       if(countPress > 1){
         stopVideo();
         socket.on('merged', function(fileName, sessionName) {
@@ -613,6 +624,17 @@ jQuery(document).ready(function($) {
       if(countEqualizer == 1){
         startEqualizer(e);
         console.log('start recording');
+        $("body").keypress(function(e){
+          if(isEventExecutedEqualizer == false){
+            var code = e.keyCode || e.which;
+            if(code == 97 || code == 98){
+              console.log("equalizer stoped");
+              isEventExecutedEqualizer = true;
+              stopEqualizer(e);
+              countEqualizer = 0;
+            }
+          }
+        });
       }
 
       //Stop Equalizer
@@ -638,15 +660,6 @@ jQuery(document).ready(function($) {
             alert(JSON.stringify(error));
           }
         );
-        // $("body").keypress(function(e){
-        //   var code = e.keyCode || e.which;
-        //   if(code == 97 || code == 98){
-        //     clearCanvas();
-        //     javascriptNode.onaudioprocess = null;
-        //     if(audioStream) audioStream.stop();
-        //     if(sourceNode)  sourceNode.disconnect();  
-        //   }
-        // });
       }
 
       function stopEqualizer(e){
