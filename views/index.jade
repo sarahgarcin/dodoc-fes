@@ -5,16 +5,7 @@ html
     title #{title}
   body.index
 
-
-  header.banner.navbar.navbar-default
-    .navbar-container
-      .navbar-header
-        a.navbar-brand(href='/')
-          img(src='/images/dodoc-logo-04.svg')
-        .lopendocInstance
-          | DoDOC
-        .lopendocProjet
-          | #{session}
+  include templates/header.jade
 
   div.session
     button#add-session Ajouter un compte
