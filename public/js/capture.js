@@ -42,6 +42,27 @@ jQuery(document).ready(function($) {
     changeMedia();
     //Keypress for powermate
     function changeMedia(){
+      $(".btn-choice #photo").on("click", function(){ 
+        photoDisplay();       
+        $(".btn-choice button").removeClass('active');
+        $(this).addClass("active"); 
+      });
+      $(".btn-choice #video-btn").on("click", function(){
+        videoDisplay();
+        $(".btn-choice button").removeClass('active');
+        $(this).addClass("active"); 
+      });
+      $(".btn-choice #stopmotion").on("click", function(){
+        stopMotionDisplay();
+        $(".btn-choice button").removeClass('active');
+        $(this).addClass("active");
+      });
+      $(".btn-choice #audio").on("click", function(){
+        audioDisplay();
+        $(".btn-choice button").removeClass('active');
+        $(this).addClass("active");
+      });
+      $(".btn-choice").on('click', backAnimation);
       $("body").keypress(function(e){
         countClick ++;
         var code = e.keyCode || e.which;
@@ -220,6 +241,14 @@ jQuery(document).ready(function($) {
     }
 
     function initEvents() {
+      //Mouse function
+      $(".photo-capture #capture-btn").on('click', takepicture);
+      $("#start-sm").on('click', startStopMotion);
+      $("#capture-sm").on('click', onStopMotionDirectory);
+      $("#stop-sm").on('click', stopStopMotion);
+      //$("#record-btn").on('click', audioVideo);
+
+      //Powermate function
       $("body").keypress(function(e){
         // Taking pictures
         var code = e.keyCode || e.which;
@@ -319,7 +348,6 @@ jQuery(document).ready(function($) {
 
     //Capture le flux audio
     function audioCapture(){
-
       //Variables
       //var mediaStream = null;
       var startRecording = document.getElementById('start-recording');
@@ -352,12 +380,23 @@ jQuery(document).ready(function($) {
         startRecording.disabled = true;
         startRecording.style.display = "none";
         stopRecording.style.display = "block";
-        console.log(countPress);
+        if(countPress == 1){
+          $("body").keypress(function(e){
+            countPress ++;
+            var code = e.keyCode || e.which;
+            if(code == 97 || code == 98){
+              recordAudio.stopRecording();
+              e.preventDefault();
+              startRecording.style.display = "block";
+              stopRecording.style.display = "none";
+              countPress = 0; 
+            }
+          });
+        }
+        
       }
 
       if(countPress > 1){
-        console.log(countPress);
-        
         startRecording.disabled = false;
         stopRecording.disabled = true;
         startRecording.style.display = "block";
@@ -557,16 +596,14 @@ jQuery(document).ready(function($) {
       try {
           audioContext = new AudioContext();
       } catch(e) {
-          alert('Web Audio API is not supported in this browser');
+          console.log('Web Audio API is not supported in this browser');
       }
 
       //Clear Equalizer Canvas
       if(countPress == 1){
         clearCanvas();
-
         // Initialise getUserMedia
-        navigator.getMedia = ( navigator.getUserMedia || navigator.webkitGetUserMedia || navigator.mozGetUserMedia || navigator.msGetUserMedia);
-        
+        navigator.getMedia = ( navigator.getUserMedia || navigator.webkitGetUserMedia || navigator.mozGetUserMedia || navigator.msGetUserMedia); 
         navigator.getMedia(
           {
             video: false,
@@ -577,6 +614,15 @@ jQuery(document).ready(function($) {
             alert(JSON.stringify(error));
           }
         );
+        $("body").keypress(function(e){
+          var code = e.keyCode || e.which;
+          if(code == 97 || code == 98){
+            clearCanvas();
+            javascriptNode.onaudioprocess = null;
+            if(audioStream) audioStream.stop();
+            if(sourceNode)  sourceNode.disconnect();  
+          }
+        });
       }
 
       //Stop Equalizer
