@@ -37,7 +37,7 @@ button {
   width: 90%;
 }
 .header {
-  width: 100%;
+  width: 90%;
   background-color: #FFF;
   padding: 15px 30px;
   margin-bottom: 30px;
@@ -289,4 +289,41 @@ button {
   width: 100%;
   height: 300px;
   border-bottom: 4px dashed #CECECE;
+}
+.container-flux {
+  width: 100%;
+  max-width: 800px;
+  margin: auto;
+}
+.container-flux .bloctitre {
+  padding: 15px 30px;
+}
+.container-flux .bloctitre h2 {
+  margin: 0;
+}
+.container-flux .content {
+  padding-top: 10px;
+  padding-bottom: 25px;
+  margin-bottom: 45px;
+  text-align: center;
+  position: relative;
+}
+.container-flux .content .metaData {
+  position: relative;
+  text-align: right;
+  margin-right: 15px;
+}
+.container-flux .content img {
+  max-width: 800px;
+  min-width: 0;
+  margin-bottom: 15px;
+}
+.container-flux .timelineContainer {
+  width: 30px;
+  height: 100%;
+  position: fixed;
+  display: block;
+  top: 0;
+  left: 0;
+  display: none;
 }

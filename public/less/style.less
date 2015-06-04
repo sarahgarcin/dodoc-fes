@@ -48,10 +48,13 @@ button{
 }
 
 .header{
-	width: 100%;
+
+	width: 90%;
 	background-color: #FFF;
 	padding: 15px 30px;
 	margin-bottom: 30px;
+
+
 	h1{
 		margin:0;
 		display: inline-block;
@@ -338,6 +341,69 @@ button{
 		}
 	}
 }
+
+
+.container-flux {
+	width: 100%;
+	max-width: 800px;
+	margin:auto;
+	
+	.bloctitre {
+		padding: 15px 30px;
+
+		h2 {
+			margin: 0;
+		}
+	}
+
+	.content {
+
+		//background-color: white;
+
+		@whiteMargins : 40px;
+
+		// padding-left: @whiteMargins;
+		// padding-right: @whiteMargins;
+		// margin-left: -@whiteMargins;
+		// margin-right: -@whiteMargins;
+
+		padding-top: 10px;
+		padding-bottom: 25px;
+		margin-bottom: 45px;
+
+		text-align: center;
+		position: relative;
+
+		.metaData {
+			position: relative;
+			text-align: right;
+			margin-right: 15px;
+
+		}
+
+		img {
+			max-width: 800px;
+			min-width: 0;
+			margin-bottom: 15px;
+		}
+
+	}
+
+
+	.timelineContainer {
+		width: 30px;
+		height: 100%;
+		position: fixed;
+
+		display: block;
+		top:0;
+		left:0;
+	
+		display: none;
+
+	}
+}
+
 
 
 
