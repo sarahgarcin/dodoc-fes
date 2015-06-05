@@ -86,9 +86,10 @@ module.exports = function(app, io){
 		var dir = 'sessions/' + req.name ;
 		console.log('delete file');
 		fs.readdir(dir,function(err,files){
-		    if(err) throw err;
-		    fs.unlink(dir + '/' + files[files.length - 2]);
-		 });
+	    if(err) throw err;
+	    fs.unlink(dir + '/' + files[files.length - 2]);
+	    listMedias(req);
+		});
 	}
 
 	//ajoute les images au dossier de session

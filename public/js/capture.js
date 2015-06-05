@@ -14,7 +14,8 @@ jQuery(document).ready(function($) {
   var countEqualizer = 0;
   // var recordAudio;
   // var recordVideo;
-  var eventExecutedAlready = false;
+  var isEventExecutedVideo = false;
+  var isEventExecutedAudio = false;
   var isEventExecutedEqualizer = false;
 
 
@@ -369,11 +370,12 @@ jQuery(document).ready(function($) {
       if(countPress == 1){
         startRecordAudio();
         console.log("recording audio");
+        isEventExecutedAudio = false;
         $("body").keypress(function(e){
-          if(eventExecutedAlready == false){
+          if(isEventExecutedAudio == false){
             var code = e.keyCode || e.which;
             if(code == 97 || code == 98){
-              eventExecutedAlready = true;
+              isEventExecutedAudio = true;
               console.log("File was not saved");
               recordAudio.stopRecording();
               startRecordingBtn.style.display = "block";
@@ -477,11 +479,12 @@ jQuery(document).ready(function($) {
       if(countPress == 1){
         startVideo();
         console.log("recording video");
+        isEventExecutedVideo = false;
         $("body").keypress(function(e){
-          if(eventExecutedAlready == false){
+          if(isEventExecutedVideo == false){
             var code = e.keyCode || e.which;
             if(code == 97 || code == 98){
-                eventExecutedAlready = true;
+                isEventExecutedVideo = true;
                 console.log('your video was not saved');
                 recordVideo.stopRecording();
                 e.preventDefault();
@@ -623,6 +626,7 @@ jQuery(document).ready(function($) {
       //Clear Equalizer Canvas
       if(countEqualizer == 1){
         startEqualizer(e);
+        isEventExecutedEqualizer == false;
         console.log('start recording');
         $("body").keypress(function(e){
           if(isEventExecutedEqualizer == false){
