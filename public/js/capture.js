@@ -188,7 +188,7 @@ jQuery(document).ready(function($) {
         startsm  = document.querySelector('#start-sm'),
         capturesm  = document.querySelector('#capture-sm'),
         stopsm  = document.querySelector('#stop-sm'),
-        width = 620,
+        width = 640,
         height = 0;
 
     // Initialise getUserMedia
@@ -228,26 +228,6 @@ jQuery(document).ready(function($) {
 
       //init events
       initEvents();
-
-    // fonction qui prend des photos et qui les envoie au serveur
-    function takepicture() {
-      canvas.width = width;
-      canvas.height = height;
-      canvas.getContext('2d').drawImage(video, 0, 0, width, height);
-      var data = canvas.toDataURL('image/png');
-      photo.setAttribute('src', data);
-      animateWindows(data, "imageCapture");      
-    }
-
-    // fonction qui prend des photos pour le stop motion et qui les envoie au serveur
-    function takepictureMotion(dir, count) {
-      canvas.width = width;
-      canvas.height = height;
-      canvas.getContext('2d').drawImage(video, 0, 0, width, height);
-      var data = canvas.toDataURL('image/png');
-      photo.setAttribute('src', data);
-      socket.emit('imageMotion', {data: data, id: sessionId, name: app.session, dir: dir, count: count});
-    }
 
     function initEvents() {
       //Mouse function
@@ -309,36 +289,73 @@ jQuery(document).ready(function($) {
           }
         }
       });
+      
+      // fonction qui prend des photos et qui les envoie au serveur
+      function takepicture() {
+        canvas.width = width;
+        canvas.height = height;
+        canvas.getContext('2d').drawImage(video, 0, 0, width, height);
+        var data = canvas.toDataURL('image/png');
+        photo.setAttribute('src', data);
+        animateWindows(data, "imageCapture");      
+      }
+
+      // fonction qui prend des photos pour le stop motion et qui les envoie au serveur
+      function takepictureMotion(dir) {
+        countImage ++;
+        canvas.width = width;
+        canvas.height = height;
+        canvas.getContext('2d').drawImage(video, 0, 0, width, height);
+        var data = canvas.toDataURL('image/png');
+        photo.setAttribute('src', data);
+        $(".meta-stopmotion .delete-image").off();
+        $(".meta-stopmotion .delete-image").on('click', function(){
+          if(countImage > 1){
+            socket.emit("deleteImageMotion", {data: data, id: sessionId, name: app.session, dir: dir, count: countImage});
+            countImage = countImage - 1;
+            var context = canvas.getContext('2d');
+            var imageObj = new Image();
+            imageObj.onload = function() {
+              context.drawImage(imageObj, 0, 0);
+            };
+            imageObj.src = "https://" + host + "/" + app.session + "/01-stopmotion/" + countImage + ".png";
+            $(".screenshot .count-image").text("Image n°" + countImage);
+          }
+          else{
+            startStopMotion();
+          }
+        });
+        socket.emit('imageMotion', {data: data, id: sessionId, name: app.session, dir: dir, count: countImage});
+        $(".screenshot .count-image").text("Image n°" + countImage);
+      }
 
       // Crée un nouveau stop motion + ajoute des images dedans + transforme le stop motion en vidéo
       function startStopMotion(){
         countImage = 0;
         $("#start-sm").hide(); $("#capture-sm").show(); $("#stop-sm").hide();
-        $('.screenshot .canvas-view').show(); $('#camera-preview').hide();
+
+        $('.screenshot .canvas-view').hide(); $('#camera-preview').hide();
         if($(".form-meta").hasClass('active')){
-          $(".form-meta.active").slideUp( "slow", function(){ 
-            $(".form-meta").removeClass('active');
-          });
+          $(".form-meta.active").hide().removeClass('active');
         }
         $(".right").css('display', 'block').addClass('active');
         $('.left').animate({'left':'7%'}, 'slow');
         $('.right').animate({'left':'52%'}, 'slow');
-        //$('.screenshot').append('<p>Nouveau Stop Motion! Cliquez sur le bouton enregistrer pour commencer à prendre des photos</p>')
+        $('.screenshot').append('<div class="instructions-stopmotion"><div class="icone-stopmotion"><img src="/images/stopmotion.svg"></div><h4>Vous venez de créer un nouveau stop-motion.</br>Appuyez sur <b>enregistrer</b> pour prendre des photos</h4></div>')
         socket.emit('newStopMotion', {id: sessionId, name: app.session});
         //socket.on('newStopMotionDirectory', onStopMotionDirectory);
+        $(".screenshot").append("<div class='meta-stopmotion'><p class='count-image'></p></div>");
+        $(".screenshot .meta-stopmotion").prepend("<div class='delete-image'><img src='/images/clear.svg'></div>").hide();
       }
              
       function onStopMotionDirectory(){
           //console.log("start taking picture");
           var dir = "sessions/" + app.session + "/01-stopmotion";
           $("#stop-sm").show();
-          $('.screenshot p').remove();
-          countImage ++;
-          //console.log(countImage);
-          $(".screenshot").append("<p class='count-image'></p>");
-          $(".screenshot .count-image").text("Image n°" + countImage);
-          takepictureMotion(dir, countImage);
-          //ev.preventDefault();
+          $('.screenshot .canvas-view').show();
+          $('.screenshot .instructions-stopmotion').remove(); 
+          $(".screenshot .meta-stopmotion").show();   
+          takepictureMotion(dir);
       }
 
       function stopStopMotion(){
@@ -347,7 +364,7 @@ jQuery(document).ready(function($) {
         $("#start-sm").show();
         $("#capture-sm").hide();
         countImage = 0;
-        $('.screenshot .count-image').remove();
+        $('.screenshot .meta-stopmotion').remove();
         //socket.emit('StopMotion', {id: sessionId, name: app.session, dir: dir});
         socket.emit('stopmotionCapture', {id: sessionId, name: app.session, dir: dir});
         socket.on('newStopMotionCreated', function(req){
@@ -588,7 +605,17 @@ jQuery(document).ready(function($) {
 
       function startVideo(){
         $('#camera-preview').hide();
-        backAnimation();
+        $('.screenshot .canvas-view').hide();
+        if($(".form-meta").hasClass('active')){
+          $(".form-meta.active").hide(function(){ 
+            $(".form-meta").removeClass('active');
+          });
+        }
+        $(".right").css('display', 'block').addClass('active');
+        $('.left').animate({'left':'7%'}, 'slow');
+        $('.right').animate({'left':'52%'}, 'slow');
+        $('.right').append('<div class="record-button-animated"><div class="outter"></div><div class="inner"></div>')
+
         // Initialise getUserMedia
         navigator.getMedia = ( navigator.getUserMedia || navigator.webkitGetUserMedia || navigator.mozGetUserMedia || navigator.msGetUserMedia);
         navigator.getMedia(
@@ -625,6 +652,7 @@ jQuery(document).ready(function($) {
         startVideoRecording.style.display = "block";
         stopVideoRecording.style.display = "none";
         cameraPreview.style.display = "block";
+        $('.right .record-button-animated').remove();
         // stop video recorder
         recordVideo.stopRecording(function() {
           // get video data-URL
@@ -636,18 +664,12 @@ jQuery(document).ready(function($) {
                 }
             };
             socket.emit('audioVideo', {files: files, id: sessionId, name: app.session});
-            $('.screenshot .canvas-view').hide();
-            $(".right").css('display', 'block').addClass('active');
-            $('.left').animate({'left':'7%'}, 'slow');
-            $('.right').animate({'left':'52%'}, 'slow', function(){
-              $('.right').css('height', "auto");
-              $(".form-meta").slideDown( "slow" ); 
-              $(".form-meta").addClass('active');
-            });
             if (mediaStream) mediaStream.stop();
           });
           cameraPreview.src = '';
           cameraPreview.poster = 'https://localhost:8080/loading.gif';
+          $(".form-meta").show(); 
+          $(".form-meta").addClass('active');
         });
       }
     }
@@ -842,8 +864,8 @@ jQuery(document).ready(function($) {
   //fenêtre de preview retourne au center
   function backAnimation(){
     if($(".right").hasClass('active')){
-      $('.left').animate({'left':'30%'}, 'slow');
-      $('.right').removeClass('active').animate({'top':'200px', 'left':'30%'}, 500,function(){$(this).css("display", "none")});
+      $('.left').animate({'left':'28%'}, 'slow');
+      $('.right').removeClass('active').animate({'left':'28%'}, 500,function(){$(this).css("display", "none")});
     }
   }
 
@@ -852,10 +874,10 @@ jQuery(document).ready(function($) {
     if(!$('.right').hasClass('active')){
       //console.log('right class active')
       $(".right").css('display', 'block').addClass('active');
+      $(".form-meta").show().addClass('active');
       $('.left').animate({'left':'7%'}, 'slow');
       $('.right').animate({'left':'52%'}, 'slow', function(){
-        $('.right').css('height', "auto");
-        $(".form-meta").slideDown( "slow" ).addClass('active');
+        //$('.right').css('height', "auto");
         socket.emit(capture, {data: data, id: sessionId, name: app.session});
       });
     }

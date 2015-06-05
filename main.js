@@ -36,6 +36,7 @@ module.exports = function(app, io){
 		//socket.on("audio", onNewAudio);
 		socket.on("audioCapture", onNewAudioCapture);
 		socket.on("deleteFile", deleteFile);
+		socket.on("deleteImageMotion", deleteImageMotion);
 
 	});
 
@@ -150,6 +151,15 @@ module.exports = function(app, io){
 		filename = req.dir + '/' + req.count + '.png';
 		fs.writeFile(filename , imageBuffer.data, function(err) { 
 			// console.log(err);
+		});
+	}
+
+
+	function deleteImageMotion(req){
+		filename = req.dir + '/' + req.count + '.png';
+		fs.unlinkSync(filename, function (err) {
+	  if (err) throw err;
+	  	console.log('successfully deleted ' + filename);
 		});
 	}
 
