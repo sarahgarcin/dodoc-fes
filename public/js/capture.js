@@ -255,9 +255,13 @@ jQuery(document).ready(function($) {
       $("#start-sm").on('click', startStopMotion);
       $("#capture-sm").on('click', onStopMotionDirectory);
       $("#stop-sm").on('click', stopStopMotion);
-      // $("#record-btn").on('click', function(){
-      //   audioVideo("click");
-      // });
+      $("#video-btn").on('click', function(){
+        audioVideo("click");
+      });
+      $("#audio").on('click', function(e){
+        audioCapture("click");
+        createEqualizer(e, "click");
+      });
 
       //Powermate function
       $("body").keypress(function(e){
@@ -272,6 +276,7 @@ jQuery(document).ready(function($) {
         }
         if($("#video-btn").hasClass('active')){
           if(code == 100) {
+            countPress ++;
             audioVideo();
           }
         }
@@ -297,6 +302,8 @@ jQuery(document).ready(function($) {
         }
         if($("#audio").hasClass('active')){
           if(code == 100) {
+            countPress ++;
+            countEqualizer ++;
             audioCapture(code);
             createEqualizer(e);
           }
@@ -365,8 +372,42 @@ jQuery(document).ready(function($) {
       var stopRecordingBtn = document.getElementById('stop-recording');
       var cameraPreview = document.getElementById('son');
 
-      countPress ++;
-      //countPress ++;
+      //click events
+      if(code == "click"){
+        $("#start-recording").off();
+        $("#start-recording").on('click', function(){
+          console.log("you are using the mouse for recording audio");
+          startRecordAudio();
+          isEventExecutedVideo = false;
+          $(".btn-choice").click(function(e){
+            if(isEventExecutedVideo == false){
+              isEventExecutedVideo = true;
+              console.log("Audio File was not saved");
+              recordAudio.stopRecording();
+              startRecordingBtn.style.display = "block";
+              stopRecordingBtn.style.display = "none";
+              startRecordingBtn.disabled = false;
+              stopRecordingBtn.disabled = true;
+            }
+          });
+        });
+
+        $("#stop-recording").off();
+        $("#stop-recording").on('click', function(){
+          stopRecordAudio();
+          socket.on('AudioFile', function(fileName, sessionName) {
+            href = 'https://localhost:8080/static/' + sessionName + '/' + fileName;
+            console.log('got file ' + href);
+            cameraPreview.src = href;
+            cameraPreview.play();
+            cameraPreview.muted = false;
+            cameraPreview.controls = true;
+          });
+          console.log("stop recording audio");
+        });
+      }
+
+      //powermate events
       if(countPress == 1){
         startRecordAudio();
         console.log("recording audio");
@@ -427,6 +468,7 @@ jQuery(document).ready(function($) {
           }
         );
         startRecordingBtn.disabled = true;
+        stopRecordingBtn.disabled = false;
         startRecordingBtn.style.display = "none";
         stopRecordingBtn.style.display = "block";
       }
@@ -458,7 +500,7 @@ jQuery(document).ready(function($) {
     }
   
     //Capture le flux audio et video
-    function audioVideo(){
+    function audioVideo(click){
       //Variables
       // you can set it equal to "false" to record only audio
       var recordVideoSeparately = !!navigator.webkitGetUserMedia;
@@ -472,8 +514,42 @@ jQuery(document).ready(function($) {
       var startVideoRecording = document.getElementById('record-btn');
       var stopVideoRecording = document.getElementById('stop-btn');
       var cameraPreview = document.getElementById('camera-preview');
-      
-      countPress ++;
+
+      //click events
+      if(click == "click"){
+        $("#record-btn").off();
+        $("#record-btn").on('click', function(){
+          console.log("you are using the mouse for recording");
+          startVideo();
+          isEventExecutedVideo = false;
+          $(".btn-choice").click(function(e){
+            if(isEventExecutedVideo == false){
+              isEventExecutedVideo = true;
+              console.log('your video was not saved');
+              recordVideo.stopRecording();
+              e.preventDefault();
+              startVideoRecording.style.display = "block";
+              stopVideoRecording.style.display = "none";
+              startVideoRecording.disabled = false;
+              stopVideoRecording.disabled = true;
+            }
+          });
+        });
+
+        $("#stop-btn").off();
+        $("#stop-btn").on('click', function(){
+          stopVideo();
+          socket.on('merged', function(fileName, sessionName) {
+            href = 'https://localhost:8080/static/' + sessionName + '/' + fileName;
+            console.log('got file ' + href);
+            cameraPreview.src = href;
+            cameraPreview.play();
+            cameraPreview.muted = false;
+            cameraPreview.controls = true;
+          });
+        });
+      }
+
 
       //Powermate events
       if(countPress == 1){
@@ -510,13 +586,6 @@ jQuery(document).ready(function($) {
         console.log("stop recording video");
       }
 
-      //click events
-      // if(click == "click"){
-      //   console.log('test');
-      //   startVideo();
-      // }
-      // $("#stop-btn").on('click', stopVideo);
-
       function startVideo(){
         $('#camera-preview').hide();
         backAnimation();
@@ -545,6 +614,7 @@ jQuery(document).ready(function($) {
         );
 
         startVideoRecording.disabled = true;
+        stopVideoRecording.disabled = false;
         startVideoRecording.style.display = "none";
         stopVideoRecording.style.display = "block";
       }
@@ -583,7 +653,7 @@ jQuery(document).ready(function($) {
     }
 
     // CREATE A SOUND EQUALIZER
-    function createEqualizer(e, count){
+    function createEqualizer(e, click){
       window.requestAnimFrame = (function(){
         return  window.requestAnimationFrame       ||
                 window.webkitRequestAnimationFrame ||
@@ -605,8 +675,6 @@ jQuery(document).ready(function($) {
                               // decreasing this gives a faster sonogram, increasing it slows it down
       var amplitudeArray;     // array to hold frequency data
       var audioStream;
-
-      countEqualizer ++;
       
 
       // Global Variables for Drawing
@@ -622,7 +690,31 @@ jQuery(document).ready(function($) {
       } catch(e) {
           console.log('Web Audio API is not supported in this browser');
       }
-      console.log(countEqualizer);
+      console.log(click);
+      //click events
+      if(click == "click"){
+        //$("#start-recording").off();
+        $("#start-recording").on('click', function(e){
+          startEqualizer(e);
+          isEventExecutedVideo = false;
+          $(".btn-choice").click(function(e){
+            if(isEventExecutedVideo == false){
+              isEventExecutedVideo = true;
+              stopEqualizer(e);
+              console.log("equalizer stoped");
+            }
+          });
+        });
+
+        //$("#stop-recording").off();
+        $("#stop-recording").on('click', function(e){
+          console.log("stop equalizer");
+          stopEqualizer(e);
+        });
+      }
+
+
+      //Powermate events
       //Clear Equalizer Canvas
       if(countEqualizer == 1){
         startEqualizer(e);
