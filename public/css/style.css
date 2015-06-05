@@ -6465,7 +6465,8 @@ button {
   padding: 10px;
   position: absolute;
   top: 150px;
-  left: 28%;
+  left: 50%;
+  margin-left: -275px;
   background-color: #FFF;
 }
 .left .capture {
@@ -6506,7 +6507,7 @@ button {
   background-color: #FFF;
   position: absolute;
   top: 150px;
-  left: 28%;
+  left: 50%;
   z-index: -1;
   display: none;
   margin-bottom: 50px;
