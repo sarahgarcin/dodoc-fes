@@ -5,14 +5,13 @@ html
     title #{title}
   body.index
 
-  include templates/header.jade
+    include templates/header.jade
 
-  div.session
-    button#add-session Ajouter un compte
-    div.list-session
-      ul
-
-
+    div.session
+      div.list-session
+        ul
+        button#add-session 
+          a Ajouter un compte
 
     //- scripts
     include templates/footer.jade

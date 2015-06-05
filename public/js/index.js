@@ -32,14 +32,23 @@ jQuery(document).ready(function($) {
 
 	// Affiche la liste des sessions
 	function onlistSessions(session) {
-		$(".session .list-session ul").prepend('<li class="session-project"><a href="'+domainUrl+'select/'+session+'">'+session+'</a></li>')
+		$(".session .list-session ul").append('<li class="session-project"><a href="'+domainUrl+'select/'+session+'">'+session+'</a></li>')
 	}
 
 	//Ajouter une session
 	function addSession(){
 		$("#add-session").on('click', function(){
-			$(this).off();
-			$(".session").append("<div class='add-project'><input class='new-session'></input><input type='submit' class='submit-session'></input></div>");
+
+			console.log("CLICK");
+
+			var newContentToAdd = "<h3 class='popoverTitle'>Ajouter un projet</h3><p>Entrez un nom</p><div class='add-project'><input class='new-session' placeholder='Nom du projet'></input><input type='submit' class='submit-session'></input></div>";
+			
+			var closeAddProjectFunction = function() {
+			};
+
+
+			fillPopOver( newContentToAdd, $(this), 300, 300, closeAddProjectFunction);
+
 			$('input.submit-session').on('click', function(){
 				var newSession = $('input.new-session').val();
 				session = {
@@ -47,8 +56,9 @@ jQuery(document).ready(function($) {
     			}
     			sessionList.push(session);
 				socket.emit('newSession', {name: newSession});
-				$(".add-project").remove();
-				$("#add-session").on();
+				
+				closePopover(closeAddProjectFunction);
+
 			})
 		})
 	}
