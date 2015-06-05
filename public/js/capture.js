@@ -48,6 +48,13 @@ jQuery(document).ready(function($) {
   function events(){
     $("#photo").addClass('active');
     changeMedia();
+    $('audio').mediaelementplayer({
+        alwaysShowControls: true,
+        features: ['playpause', 'progress', 'volume'],
+        audioVolume: 'vertical',
+        audioWidth: 495,
+        audioHeight: 0
+    });
     //Keypress for powermate
     function changeMedia(){
       $(".btn-choice #photo").on("click", function(){ 
@@ -133,7 +140,7 @@ jQuery(document).ready(function($) {
       $('.audio-capture').css('display','none');
       $(".son").css("display", "none");
       $('#video').show();
-      $('#canvas-audio').hide();
+      $('#canvas-audio').hide();$("#canvas-equalizer").hide();
     }
     function videoDisplay(){
       $('.photo-capture').css('display', 'none');
@@ -142,7 +149,7 @@ jQuery(document).ready(function($) {
       $('.audio-capture').css('display','none');
       $(".son").css("display", "none");
       $('#video').show();
-      $('#canvas-audio').hide();
+      $('#canvas-audio').hide();$("#canvas-equalizer").hide();
     }
     function stopMotionDisplay(){
       $('.screenshot .canvas-view').show();
@@ -153,7 +160,7 @@ jQuery(document).ready(function($) {
       $('.audio-capture').css('display','none');
       $(".son").css("display", "none");
       $('#video').show();
-      $('#canvas-audio').hide();
+      $('#canvas-audio').hide(); $("#canvas-equalizer").hide();
       var canvas = document.querySelector('#canvas');
       canvas.getContext("2d").clearRect(0, 0, canvas.width, canvas.height)
     }
@@ -166,7 +173,7 @@ jQuery(document).ready(function($) {
       $('.screenshot #canvas').css('display', 'none');
       $('.right .son').css('display', 'block');
       $('#video').hide();
-      $('#canvas-audio').show();
+      $('#canvas-audio').show();$("#canvas-equalizer").show();
     }
     $(".clear").off();
     $(".clear").on("click", function(e){
@@ -339,8 +346,8 @@ jQuery(document).ready(function($) {
           $(".form-meta.active").hide().removeClass('active');
         }
         $(".right").css('display', 'block').addClass('active');
-        $('.left').animate({'left':'7%'}, 'slow');
-        $('.right').animate({'left':'52%'}, 'slow');
+        $('.left').velocity({'left':'26%'}, 'slow');
+        $('.right').velocity({'left':'52%'}, 'slow');
         $('.screenshot').append('<div class="instructions-stopmotion"><div class="icone-stopmotion"><img src="/images/stopmotion.svg"></div><h4>Vous venez de créer un nouveau stop-motion.</br>Appuyez sur <b>enregistrer</b> pour prendre des photos</h4></div>')
         socket.emit('newStopMotion', {id: sessionId, name: app.session});
         //socket.on('newStopMotionDirectory', onStopMotionDirectory);
@@ -497,6 +504,15 @@ jQuery(document).ready(function($) {
         stopRecordingBtn.style.display = "none";
         cameraPreview.style.display = "block";
 
+        //display equalizer image
+        var canvas = document.querySelector('#canvas-equalizer');
+        var canvasAudio = document.querySelector('#canvas-audio');
+        var widthAudio = canvas.width; 
+        var heightAudio = canvas.height; 
+        canvas.getContext('2d').drawImage(canvasAudio, 0, 0, widthAudio, heightAudio);
+        var data = canvas.toDataURL('image/png');
+        photo.setAttribute('src', data);
+
         // stop audio recorder
         recordAudio.stopRecording(function(url) {
           // get audio data-URL
@@ -612,8 +628,8 @@ jQuery(document).ready(function($) {
           });
         }
         $(".right").css('display', 'block').addClass('active');
-        $('.left').animate({'left':'7%'}, 'slow');
-        $('.right').animate({'left':'52%'}, 'slow');
+        $('.left').velocity({'left':'26%'}, 'slow');
+        $('.right').velocity({'left':'52%'}, 'slow');
         $('.right').append('<div class="record-button-animated"><div class="outter"></div><div class="inner"></div>')
 
         // Initialise getUserMedia
@@ -864,8 +880,8 @@ jQuery(document).ready(function($) {
   //fenêtre de preview retourne au center
   function backAnimation(){
     if($(".right").hasClass('active')){
-      $('.left').animate({'left':'28%'}, 'slow');
-      $('.right').removeClass('active').animate({'left':'28%'}, 500,function(){$(this).css("display", "none")});
+      $('.left').velocity({'left':'50%'}, 'slow');
+      $('.right').removeClass('active').velocity({'left':'50%'}, 500,function(){$(this).css("display", "none")});
     }
   }
 
@@ -875,8 +891,8 @@ jQuery(document).ready(function($) {
       //console.log('right class active')
       $(".right").css('display', 'block').addClass('active');
       $(".form-meta").show().addClass('active');
-      $('.left').animate({'left':'7%'}, 'slow');
-      $('.right').animate({'left':'52%'}, 'slow', function(){
+      $('.left').velocity({'left':'26%'}, 'slow');
+      $('.right').velocity({'left':'52%'}, 'slow', function(){
         //$('.right').css('height', "auto");
         socket.emit(capture, {data: data, id: sessionId, name: app.session});
       });

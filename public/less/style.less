@@ -339,16 +339,17 @@ button{
 }
 
 .media-choice {
-	width:60%;
-	margin:20px auto 40px auto;
+	width:62%;
+	margin: 20px auto 40px auto;
 	.btn-choice{
 		width: 100%;
 		text-align: center;
+		margin-left: 12px;
 		button{
 			color:@grisfonce;
 			background-color: @grisclair;
 			border:none;
-			margin: 0px 25px;
+			margin: 0px 45px 0px 25px;
 			outline: none;
 			font-size: 1em;
 			padding: 5px 15px;
@@ -444,12 +445,17 @@ button{
 				display: inline-block;
 				vertical-align: top;
 				margin-right: 10px;
+				cursor: pointer;
 			}
+		}
+		#canvas-equalizer{
+			background-color: orange;
 		}
 	}
 	.son {
 		display: none;
-		padding-left:80px;
+		padding-left:27px;
+		margin-top: 60px;
 		margin-bottom: 40px;
 	}
 
@@ -467,6 +473,9 @@ button{
 .video-view{
 	width: 90%;
 	margin:-40px auto 0px auto;
+	#canvas-audio{
+		margin-top: 60px;
+	}
 }
 
 .video-view video, .screenshot canvas{
@@ -488,8 +497,8 @@ button{
 
 .form-meta{
 	display: none;
-	padding:10px 80px 0px 80px;
-	margin-bottom: 50px;
+	// padding:10px 80px 0px 80px;
+	// margin-bottom: 50px;
 	input{
 		display: block;
 		width: 80%;
@@ -508,7 +517,7 @@ button{
 		outline: none;
 	}
 	&.title{
-		margin-top:10px; 
+		//margin-top:10px; 
 		input{
 			display: inline-block;
 		}
@@ -579,6 +588,52 @@ button{
 		text-align: center;
 	}
 }
+
+//CUSTOM AUDIO PLAYER
+
+	audio {
+	   opacity: 0;
+	}
+
+	.mejs-controls .mejs-button button{
+		transform: scale(1.6);
+		margin-top: 10px;
+	}
+
+	.mejs-container .mejs-controls{
+		background: #FFF;
+		height: 70px;
+		margin-top: 30px;
+	}
+	.mejs-controls .mejs-time-rail .mejs-time-total{
+		height: 20px;
+		background: @bleuvert;
+	}
+
+	.mejs-controls .mejs-time-rail .mejs-time-current{
+		background: @bleuvert;
+		height: 20px;
+	}
+
+	.mejs-controls .mejs-time-rail .mejs-time-loaded{
+		background: @bleumarine;
+		height: 20px;
+	}
+
+	.mejs-controls .mejs-time-rail .mejs-time-float, .mejs-controls .mejs-time-rail .mejs-time-handle{
+		height: 20px;
+		background: @bleuvert;
+	}
+
+	.mejs-controls .mejs-horizontal-volume-slider .mejs-horizontal-volume-total{
+		background: @grisfonce;
+	}
+
+	.mejs-controls .mejs-horizontal-volume-slider .mejs-horizontal-volume-current{
+		background: @bleuvert;
+	}
+
+//END CUSTOM AUDIO PLAYER
 
 //FLUX PAGE
 .container-flux{

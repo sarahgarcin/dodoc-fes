@@ -1,6 +1,7 @@
 doctype html
 html
   head
+    link(rel='stylesheet', href='/css/mediaelement/mediaelementplayer.css')
     link(rel='stylesheet', href='/css/style.css')
     title #{session} | #{title}
   body.capture
@@ -20,7 +21,7 @@ html
         div.video-view
           video(id="video" autoplay)
 
-          canvas(id="canvas-audio" width="620" height="256")
+          canvas(id="canvas-audio" width="480" height="256")
 
         div.capture
           div.photo-capture
@@ -52,12 +53,13 @@ html
               img(src='/images/clear.svg')
         div.screenshot
           canvas#canvas.canvas-view
+          canvas(id="canvas-equalizer" width=480 height=256)
           video(id="camera-preview" autoplay controls loop)
           button#stop-sm
             img(src="/images/enregistre.svg")
         
         div.son
-          audio(id="son" autoplay controls)
+          audio(id="son" src="/star-wars-theme.mp3" autoplay controls)
 
 
     //- scripts
@@ -72,5 +74,7 @@ html
     script(src="/js/lib/RecordRTC.js")
     //- A real time javascript webm encoder based on a canvas hack
     script(src="/js/lib/whammy.min.js")
+    //- custom audio and video player
+    script(src="/js/lib/mediaelement-and-player.min.js")
     script(src='/js/capture.js')
 
