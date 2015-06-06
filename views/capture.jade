@@ -8,12 +8,16 @@ html
 
     include templates/header.jade
 
+
     nav.titleAndActions
       div.buttons.alignRight
-        div.button
+        .button.sidebyside
           a(href="/select/#{session}" class="btn icon bibli")
             include templates/images/icones-01.svg
-            .count-add-media +1
+
+        .button.sidebyside.count-add-media +1
+
+        .title.centered Interface de capture
 
     div.container
 
