@@ -6,7 +6,14 @@ html
     title #{session} | #{title}
   body.capture
 
-    include templates/header-capture.jade
+    include templates/header.jade
+
+    nav.titleAndActions
+      div.buttons.alignRight
+        div.button
+          a(href="/select/#{session}" class="btn icon bibli")
+            include templates/images/icones-01.svg
+            .count-add-media +1
 
     div.container
 

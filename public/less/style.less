@@ -66,9 +66,12 @@ button{
 	background: none;
 }
 
+.multiCol {
+	display: flex;
+}
+
 .demi {
-	width:49%;
-	display: inline-block;
+	flex:1;
 	vertical-align: top;
 }
 
@@ -84,7 +87,7 @@ button{
 	padding-top: 0px;
 	padding-bottom: 0px;
 	margin: 0;
-	min-height: 60px;
+	min-height: 50px;
 
 	.navbar-container {
 		width: 90%;
@@ -106,8 +109,8 @@ button{
 
 		width: auto;
 
-		padding-top: 	6px;
-		padding-bottom: 10px;
+		padding-top: 	4px;
+		padding-bottom: 12px;
 
 		font-size: 16px;
 		line-height: 18px;
@@ -145,89 +148,76 @@ button{
 	.lopendocProjet {
 		display: inline-block;
 		font-weight: bold;
-		vertical-align: middle;
+		vertical-align: bottom;
 		padding-top: 5px;
 		padding-bottom: 5px;
 
-  padding-left: 15px;
-  padding-right: 15px;
-  border-left: 1px solid #eee;
+		padding-left: 15px;
+		padding-right: 15px;
+		border-left: 1px solid #eee;
 	}
 }
 
-.navbar-default .navbar-collapse {
-  width: 33.33333334%;
-
-  float: right;
-
-  .actionsContainer {
-//		.make-row;
-
-		.actions {
-			.btn-bibli{
-				// margin:0px auto 20px auto;
-				display: inline-block;
-				float: right;	
-
-				.count-add-media{
-					background-color: @bleuvert;
-					padding: 7px 2px 5px 0px;
-					color: #FFF;
-					border-radius: 100px;
-					text-align: center;
-					font-size: 13px;
-					font-weight: bold;
-					width:30px;
-					position: absolute;
-					right:10px;
-					top: 5px;
-					opacity: 0;
-				}
-			}
-
-		}
-	}
+.buttons:before,
+.buttons:after {
+  content: " ";
+  display: table;
+}
+.buttons:after {
+  clear: both;
+}
+.buttons {
+	background-color: #f9f9f9;
+	height: 72px;
 
 }
 
 
 
-.action-button {
+.buttons {
 	list-style: none;
+	margin: 0;
 	padding: 0;
+	position: relative;
 
-	margin: 10px 0 5px 0;
+	&.alignRight {
+		text-align: right;
+	}
 
-	text-align: right;
+	.sidebyside {
+		display: inline-block;	
+		position: relative;
+	}
 
-	li {
+	.centered {
+		position: absolute;
+		top:0;
+		left: 0;
+		width: 100%;
+		height: 100%;
+		text-align: center;
 
-		display: inline-block;
+		font-size: 24px;
+		line-height: 72px;
+
+		z-index: 0;
+	}
+
+	.button {
+
 		border-radius: 0.25em;
-		margin: 0;
-		margin-right: 5px;
-		margin-bottom: 5px;
+		padding: 6px;
+		margin: 6px;
 
 		cursor: pointer;
-
-		text-align: center;
 		color: #000;
 
 		-webkit-font-smoothing: antialiased;
+		z-index: 2;
 
 	}
 
-	li.withTexte {
-		padding: 0 1em;
-		background-color: #eee;
-		height: 35px;
-		line-height: 36px;
-
-
-
-	}	
-
-	// icones dans les boutons d'action
+	// icones dans les boutons
 	img {
 		width: 	40px;
 		height: 40px;
@@ -235,8 +225,55 @@ button{
 
 }
 
+.btn.icon {
+  width: 48px;
+  height: 48px;
+  padding:0;
+border-radius: 50%;
 
+  transition: all .2s ease-out;
 
+	&:hover, &:hover{
+		border-radius: 20%;
+	    box-shadow:  0 1px 4px rgba(0, 0, 0, 0.4);
+
+	}
+
+  svg {
+  	width: 100%;
+  	height:100%;
+  }
+}
+
+.btn.capture {
+		background-color: #FE414D;
+}
+.btn.bibli {
+		background-color: #FFB520;
+	&:hover {
+	}
+}
+
+.btn-bibli{
+	// margin:0px auto 20px auto;
+	display: inline-block;
+	float: right;	
+
+	.count-add-media{
+		background-color: @bleuvert;
+		padding: 7px 2px 5px 0px;
+		color: #FFF;
+		border-radius: 100px;
+		text-align: center;
+		font-size: 13px;
+		font-weight: bold;
+		width:30px;
+		position: absolute;
+		right:10px;
+		top: 5px;
+		opacity: 0;
+	}
+}
 
 // DISPARITION / APPARITION DES BOUTONS DE LA NAVBAR
 // page select :
@@ -664,19 +701,16 @@ button{
 }
 // BIBLI PAGE ------
 .container-bibli {
+
 	width:100%;
 	margin: auto;
+
 	//font-family: 'share', sans-serif ; 
+
+
 	.buffer {
 		background-color:#e5e5e5;
-		.buffer-header{
-			background-color: #cecece;
-			h2{
-				margin: 0px;
-				padding: 20px 30px;
-				text-align: center;
-			}
-		}
+
 		ul{
 			height: 750px;
 			overflow-y: scroll;
@@ -705,19 +739,27 @@ button{
 			}
 		}
 	}
+
 	.montage {
-		height: 860px;
+		height: 100vh;
 		overflow-y: scroll;
+
+
 		input{
 			width: 100%;
 			border: none;
 			text-align: center;
 			font-size: 30px;
 		}
+
+	  -webkit-box-shadow: 0 1px 4px rgba(0, 0, 0, 0.1);
+	  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.1);
+
 		.block-content{
 			width: 100%;
 			height: 300px;
 			border-bottom: 4px dashed #CECECE;
+
 		}
 	}
 }
