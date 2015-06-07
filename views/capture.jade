@@ -12,7 +12,7 @@ html
     nav.titleAndActions
       div.buttons.alignRight
         .button.sidebyside
-          a(href="/select/#{session}" class="btn icon bibli")
+          a(href="/select/#{session}" class="btn icon bibli" data-toggle="tooltip" data-placement="left" title="Bibliothèque de médias")
             include templates/images/icones-01.svg
 
         .button.sidebyside.count-add-media +1
@@ -28,7 +28,7 @@ html
           button#stopmotion Stop motion
           button#audio Son
 
-      div.left
+      .captureLeft
         div.video-view
           video(id="video" autoplay)
 
@@ -56,7 +56,7 @@ html
             button(id='stop-recording' disabled)
               img(src="/images/stop.svg")
 
-      div.right
+      div.captureRight
 
         div.title.form-meta
           div.clear

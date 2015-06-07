@@ -132,6 +132,10 @@ button{
 	background: none;
 }
 
+.fade {
+	transition: opacity .25s ease-out;
+}
+
 .multiCol {
 	display: flex;
 }
@@ -284,6 +288,20 @@ button{
 
 	}
 
+	.title {
+		font-weight: 700;
+		letter-spacing: .4px;
+	}
+
+	body.select & .title {
+		color: #FE414D;
+		border-top: 2px solid #FFB520;
+	}
+	body.capture & .title {
+		color: #FFB520;
+		border-top: 2px solid #FE414D;
+	}
+
 	// icones dans les boutons
 	img {
 		width: 	40px;
@@ -306,44 +324,46 @@ border-radius: 50%;
 
 	}
 
-	  svg {
-	  	width: 100%;
-	  	height:100%;
-	  	vertical-align: middle;
-	  }
-
-	&:after {
-	    font-size: 14px;
-	    width: 70px;
-	    text-align: left;
-	    margin:0 5px;
-	    font-size: 18px;
-	    line-height: 1;
-	    height: auto;
-	    vertical-align: middle;
-	    display: inline-block;
-	    white-space: pre;
-		pointer-events: none;
-
-	    opacity: 0;
+	svg {
+		width: 100%;
+		height:100%;
+		vertical-align: middle;
 	}
-	&:hover:after {
-	    opacity: 1;
+
+	+ .tooltip {
+	    width: 110px;
+	    font-size: 16px;
+		.tooltip-inner {
+
+		}
+
 	}
 }
+
+
 
 .btn.capture {
 	background-color: #FE414D;
-	&:after {
-	    content: "interface de \A capture";
-	    color: 	#FE414D;
+	// tooltip
+	+ .tooltip {
+		.tooltip-arrow {
+	 	   border-right-color: #FE414D;
+		}
+		.tooltip-inner {
+		    background-color: #FE414D;
+		}
 	}
 }
 .btn.bibli {
-		background-color: #FFB520;
-	&:after {
-	    content: "bibliothèque \A de médias";
-	    color: 	#FFB520;
+	background-color: #FFB520;
+	// tooltip
+	+ .tooltip {
+		.tooltip-arrow {
+	 	   border-left-color: #FFB520;
+		}
+		.tooltip-inner {
+		    background-color: #FFB520;
+		}
 	}
 }
 
@@ -499,7 +519,7 @@ border-radius: 50%;
 }
 
 
-.left {
+.captureLeft {
 	width: @cardW;
 	height: @cardH;
 	margin: auto;
@@ -552,7 +572,7 @@ border-radius: 50%;
 	}
 }
 
-.right {
+.captureRight {
 	width: @cardW;
 	height: @cardH;
 	background-color: #FFF;

@@ -91,4 +91,8 @@ jQuery(document).ready(function($) {
     	easing: "spring"
 		});
 	});
+
+	$('[data-toggle="tooltip"]').tooltip()
+
+
 });
