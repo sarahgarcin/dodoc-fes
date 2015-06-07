@@ -6514,7 +6514,8 @@ body.capture .buttons .title {
   padding-right: 14px;
   display: block;
 }
-.index .session .list-session .vignetteProjet:hover {
+.index .session .list-session .vignetteProjet a:hover {
+  color: #fff;
   background-color: #333;
   transition: background-color 0s ease-out;
 }
@@ -6537,7 +6538,8 @@ body.capture .buttons .title {
   padding-right: 14px;
   display: block;
 }
-.index .session .list-session ul .session-project:hover {
+.index .session .list-session ul .session-project a:hover {
+  color: #fff;
   background-color: #333;
   transition: background-color 0s ease-out;
 }
@@ -6557,7 +6559,8 @@ body.capture .buttons .title {
   padding-right: 14px;
   display: block;
 }
-.index .session .list-session #add-session:hover {
+.index .session .list-session #add-session a:hover {
+  color: #fff;
   background-color: #333;
   transition: background-color 0s ease-out;
 }
