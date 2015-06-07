@@ -6877,26 +6877,26 @@ audio {
 .container-bibli .buffer {
   background-color: #e5e5e5;
 }
-.container-bibli .buffer ul {
+.container-bibli .buffer .mediaContainer {
   height: auto;
   overflow-y: scroll;
-  padding: 40px 30px 30px 20px;
+  padding: 30px;
 }
-.container-bibli .buffer ul li {
+.container-bibli .buffer .mediaContainer .media {
   list-style: none;
   width: 32%;
   display: inline-block;
   vertical-align: top;
   margin: 0px 10px 10px 0px;
 }
-.container-bibli .buffer ul li.images-bibli img {
+.container-bibli .buffer .mediaContainer .media.images-bibli img {
   border: 5px solid blue;
 }
-.container-bibli .buffer ul li.videos-bibli video {
+.container-bibli .buffer .mediaContainer .media.videos-bibli video {
   width: 100%;
   border: 5px solid green;
 }
-.container-bibli .buffer ul li.audios-bibli {
+.container-bibli .buffer .mediaContainer .media.audios-bibli {
   border: 5px solid red;
 }
 .container-bibli .montage {
