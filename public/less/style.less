@@ -1,4 +1,70 @@
-@import url(https://fonts.googleapis.com/css?family=Share:400,400italic,700,700italic);
+//@import url(https://fonts.googleapis.com/css?family=Share:400,400italic,700,700italic);
+
+/* latin-ext */
+@font-face {
+  font-family: 'Share';
+  font-style: normal;
+  font-weight: 400;
+  src: local('Share'), local('Share-Regular'), url(/fonts/HjJ444rrjSO3C8ttwyu9soDGDUGfDkXyfkzVDelzfFk.woff2) format('woff2');
+  unicode-range: U+0100-024F, U+1E00-1EFF, U+20A0-20AB, U+20AD-20CF, U+2C60-2C7F, U+A720-A7FF;
+}
+/* latin */
+@font-face {
+  font-family: 'Share';
+  font-style: normal;
+  font-weight: 400;
+  src: local('Share'), local('Share-Regular'), url(/fonts/3CDT6oqvfaWTC_L6tleVqKCWcynf_cDxXwCLxiixG1c.woff2) format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2212, U+2215, U+E0FF, U+EFFD, U+F000;
+}
+/* latin-ext */
+@font-face {
+  font-family: 'Share';
+  font-style: normal;
+  font-weight: 700;
+  src: local('Share Bold'), local('Share-Bold'), url(/fonts/pxM_11DJKIMO3Kf7WE5mnhkAz4rYn47Zy2rvigWQf6w.woff2) format('woff2');
+  unicode-range: U+0100-024F, U+1E00-1EFF, U+20A0-20AB, U+20AD-20CF, U+2C60-2C7F, U+A720-A7FF;
+}
+/* latin */
+@font-face {
+  font-family: 'Share';
+  font-style: normal;
+  font-weight: 700;
+  src: local('Share Bold'), local('Share-Bold'), url(/fonts/kSMEL7ByENjCWyAa0oUPq3YhjbSpvc47ee6xR_80Hnw.woff2) format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2212, U+2215, U+E0FF, U+EFFD, U+F000;
+}
+/* latin-ext */
+@font-face {
+  font-family: 'Share';
+  font-style: italic;
+  font-weight: 400;
+  src: local('Share Italic'), local('Share-Italic'), url(/fonts/oGzKWZQvAED-dxiUkrKJCVKPGs1ZzpMvnHX-7fPOuAc.woff2) format('woff2');
+  unicode-range: U+0100-024F, U+1E00-1EFF, U+20A0-20AB, U+20AD-20CF, U+2C60-2C7F, U+A720-A7FF;
+}
+/* latin */
+@font-face {
+  font-family: 'Share';
+  font-style: italic;
+  font-weight: 400;
+  src: local('Share Italic'), local('Share-Italic'), url(/fonts/6K93XVSFejgqMzBniWPGkQLUuEpTyoUstqEm5AMlJo4.woff2) format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2212, U+2215, U+E0FF, U+EFFD, U+F000;
+}
+/* latin-ext */
+@font-face {
+  font-family: 'Share';
+  font-style: italic;
+  font-weight: 700;
+  src: local('Share Bold Italic'), local('Share-BoldItalic'), url(/fonts/hYMpaGgEXA9nu8fByHCNdQsYbbCjybiHxArTLjt7FRU.woff2) format('woff2');
+  unicode-range: U+0100-024F, U+1E00-1EFF, U+20A0-20AB, U+20AD-20CF, U+2C60-2C7F, U+A720-A7FF;
+}
+/* latin */
+@font-face {
+  font-family: 'Share';
+  font-style: italic;
+  font-weight: 700;
+  src: local('Share Bold Italic'), local('Share-BoldItalic'), url(/fonts/EFGhLE7fLwZtSFxykTxa5wzyDMXhdD8sAj6OAJTFsBI.woff2) format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2212, U+2215, U+E0FF, U+EFFD, U+F000;
+}
+
 @import 'bootstrap.less';
 @import 'variables.less';
 
@@ -8,7 +74,7 @@ html {
 }
 
 body {
-  margin: 0px 0px 20px 0px;
+  margin: 0;
   color: #000;
   background-color: #EFEFEF;
   font-family: 'share', monospace;
@@ -72,6 +138,7 @@ button{
 
 .demi {
 	flex:1;
+	overflow-y: scroll;
 	vertical-align: top;
 }
 
@@ -148,7 +215,7 @@ button{
 	.lopendocProjet {
 		display: inline-block;
 		font-weight: bold;
-		vertical-align: bottom;
+		vertical-align: text-top;
 		padding-top: 5px;
 		padding-bottom: 5px;
 
@@ -239,18 +306,44 @@ border-radius: 50%;
 
 	}
 
-  svg {
-  	width: 100%;
-  	height:100%;
-  }
+	  svg {
+	  	width: 100%;
+	  	height:100%;
+	  	vertical-align: middle;
+	  }
+
+	&:after {
+	    font-size: 14px;
+	    width: 70px;
+	    text-align: left;
+	    margin:0 5px;
+	    font-size: 18px;
+	    line-height: 1;
+	    height: auto;
+	    vertical-align: middle;
+	    display: inline-block;
+	    white-space: pre;
+		pointer-events: none;
+
+	    opacity: 0;
+	}
+	&:hover:after {
+	    opacity: 1;
+	}
 }
 
 .btn.capture {
-		background-color: #FE414D;
+	background-color: #FE414D;
+	&:after {
+	    content: "interface de \A capture";
+	    color: 	#FE414D;
+	}
 }
 .btn.bibli {
 		background-color: #FFB520;
-	&:hover {
+	&:after {
+	    content: "bibliothèque \A de médias";
+	    color: 	#FFB520;
 	}
 }
 
@@ -287,6 +380,7 @@ border-radius: 50%;
 		display: none !important;
 	}
 }
+
 
 
 
@@ -333,7 +427,7 @@ border-radius: 50%;
 
 			  	}
 		  		&:hover {
-		  			background-color: transparent;
+		  			background-color: #333;
 				  	transition: background-color 0s ease-out;
 		  		}
 			  }
@@ -703,7 +797,9 @@ border-radius: 50%;
 .container-bibli {
 
 	width:100%;
+	height: 100vh;
 	margin: auto;
+
 
 	//font-family: 'share', sans-serif ; 
 
