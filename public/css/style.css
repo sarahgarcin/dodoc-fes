@@ -6627,6 +6627,14 @@ body.capture .buttons .title {
 .captureLeft #canvas-audio {
   display: none;
 }
+.icone-feedback {
+  position: absolute;
+  width: 50px;
+  top: 50%;
+  left: 70%;
+  z-index: 104;
+  display: none;
+}
 .captureRight {
   width: 550px;
   height: 480px;
@@ -6637,6 +6645,12 @@ body.capture .buttons .title {
   z-index: -1;
   display: none;
   margin-bottom: 50px;
+}
+.captureRight .flash {
+  width: 550px;
+  height: 480px;
+  background-color: #FFF;
+  display: none;
 }
 .captureRight .screenshot {
   width: 90%;

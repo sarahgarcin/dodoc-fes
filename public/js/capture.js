@@ -18,6 +18,14 @@ jQuery(document).ready(function($) {
   var isEventExecutedAudio = false;
   var isEventExecutedEqualizer = false;
 
+  var sarahCouleur = "gray";
+
+
+$("body").keypress(function(e){
+  var code = e.keyCode || e.which;
+  console.log(code);
+});
+
 
 	/**
 	* Events
@@ -47,11 +55,12 @@ jQuery(document).ready(function($) {
 
   function events(){
     $("#photo").addClass('active');
+    $("#canvas-equalizer").hide()
     setTimeout(function(){
       $(".choice .image-choice").fadeIn(1000, function(){
         $(this).fadeOut(1000);
       });
-    }, 2000);
+    }, 1000);
     changeMedia();
     $('audio').mediaelementplayer({
         alwaysShowControls: true,
@@ -84,12 +93,12 @@ jQuery(document).ready(function($) {
       });
       $(".btn-choice").on('click', backAnimation);
       $("body").keypress(function(e){
-        countClick ++;
+        // countClick ++;
         var code = e.keyCode || e.which;
         var $activeButton = $(".btn-choice").find('.active');
-        if(countClick > 10){
-          countClick = 0;
-          if(code == 97) { //When A is pressed - Powermate Rotate to Right
+        //if(countClick > 10){
+        //   countClick = 0;
+          if(code == 115) { //remplacer 155 par 115 
             var $nextButton = $activeButton.next();
             $activeButton.removeClass('active');
             if ($nextButton.length){
@@ -100,7 +109,7 @@ jQuery(document).ready(function($) {
             }
             //console.log("Powermate Rotate to Right");
           }
-          if(code == 98) { //When B is pressed - Powermate Rotate to Left
+          if(code == 122) { //remplacer 98 par 122 
             var $prevButton = $activeButton.prev();
             $activeButton.removeClass('active');
             if ($prevButton.length){
@@ -111,7 +120,7 @@ jQuery(document).ready(function($) {
             }
             //console.log("Powermate Rotate to Left");
           }
-          if(code == 97 || code == 98){
+          if(code == 115 || code == 122){
             $(".form-meta.active").slideUp( "slow" ); 
             $(".form-meta").removeClass('active');
             if($('.screenshot .count-image')){
@@ -133,7 +142,7 @@ jQuery(document).ready(function($) {
               audioDisplay();
             }
           }
-        }
+        // }
       });
     }
     function photoDisplay(){
@@ -265,9 +274,10 @@ jQuery(document).ready(function($) {
       $("#video-btn").on('click', function(){
         audioVideo("click");
       });
+      createEqualizer("click")
       $("#audio").on('click', function(e){
         audioCapture("click");
-        createEqualizer(e, "click");
+        //createEqualizer(e, "click");
       });
 
       //Powermate function
@@ -276,20 +286,20 @@ jQuery(document).ready(function($) {
         // Taking pictures
         var code = e.keyCode || e.which;
         if($("#photo").hasClass('active')){
-          if(code == 100) { //When Space is pressed
+          if(code == 113) { //When Space is pressed
             takepicture();
             console.log("taking a picture");
           }
         }
         if($("#video-btn").hasClass('active')){
-          if(code == 100) {
+          if(code == 113) {
             countPress ++;
             audioVideo();
           }
         }
         if($("#stopmotion").hasClass('active')){
           // Taking StopMotion
-          if(code == 100) { //When Space is pressed
+          if(code == 113) { //When Space is pressed
             countPress ++;
             //console.log(countPress);
             if(countPress == 1){
@@ -308,7 +318,7 @@ jQuery(document).ready(function($) {
           }
         }
         if($("#audio").hasClass('active')){
-          if(code == 100) {
+          if(code == 113) {
             countPress ++;
             countEqualizer ++;
             audioCapture(code);
@@ -324,7 +334,11 @@ jQuery(document).ready(function($) {
         canvas.getContext('2d').drawImage(video, 0, 0, width, height);
         var data = canvas.toDataURL('image/png');
         photo.setAttribute('src', data);
-        animateWindows(data, "imageCapture");      
+        animateWindows(data, "imageCapture");
+        $(".captureRight .flash").fadeIn(50, function(){
+          $(this).fadeOut(50);
+        });
+        saveFeedback("/images/icone-dodoc_image.png");
       }
 
       // fonction qui prend des photos pour le stop motion et qui les envoie au serveur
@@ -392,6 +406,7 @@ jQuery(document).ready(function($) {
         $("#capture-sm").hide();
         countImage = 0;
         $('.screenshot .meta-stopmotion').remove();
+        saveFeedback("/images/icone-dodoc_anim.png");
         //socket.emit('StopMotion', {id: sessionId, name: app.session, dir: dir});
         socket.emit('stopmotionCapture', {id: sessionId, name: app.session, dir: dir});
         socket.on('newStopMotionCreated', function(req){
@@ -459,7 +474,7 @@ jQuery(document).ready(function($) {
         $("body").keypress(function(e){
           if(isEventExecutedAudio == false){
             var code = e.keyCode || e.which;
-            if(code == 97 || code == 98){
+            if(code == 115 || code == 122){
               isEventExecutedAudio = true;
               console.log("File was not saved");
               recordAudio.stopRecording();
@@ -486,7 +501,7 @@ jQuery(document).ready(function($) {
       }
       
       function startRecordAudio(){
-        backAnimation();
+        //backAnimation();
         
         // Initialise getUserMedia
         navigator.getMedia = ( navigator.getUserMedia || navigator.webkitGetUserMedia || navigator.mozGetUserMedia || navigator.msGetUserMedia);
@@ -515,6 +530,8 @@ jQuery(document).ready(function($) {
         stopRecordingBtn.disabled = false;
         startRecordingBtn.style.display = "none";
         stopRecordingBtn.style.display = "block";
+
+        sarahCouleur = "red";
       }
 
       function stopRecordAudio(){
@@ -523,6 +540,7 @@ jQuery(document).ready(function($) {
         startRecordingBtn.style.display = "block";
         stopRecordingBtn.style.display = "none";
         cameraPreview.style.display = "block";
+        sarahCouleur = "gray";
 
         //display equalizer image
         var canvas = document.querySelector('#canvas-equalizer');
@@ -549,6 +567,7 @@ jQuery(document).ready(function($) {
             socket.emit('audio', {files: files, id: sessionId, name: app.session});
             console.log("Audio is recording url " + url);
             animateWindows(files, "audioCapture");
+            saveFeedback("/images/icone-dodoc_son.png");
             if (mediaStream) mediaStream.stop();
           });
         });
@@ -615,7 +634,7 @@ jQuery(document).ready(function($) {
         $("body").keypress(function(e){
           if(isEventExecutedVideo == false){
             var code = e.keyCode || e.which;
-            if(code == 97 || code == 98){
+            if(code == 115 || code == 122){
                 isEventExecutedVideo = true;
                 console.log('your video was not saved');
                 recordVideo.stopRecording();
@@ -709,12 +728,13 @@ jQuery(document).ready(function($) {
           cameraPreview.poster = 'https://localhost:8080/loading.gif';
           $(".form-meta").show(); 
           $(".form-meta").addClass('active');
+          saveFeedback("/images/icone-dodoc_video.png");
         });
       }
     }
 
     // CREATE A SOUND EQUALIZER
-    function createEqualizer(e, click){
+    function createEqualizer(click){
       window.requestAnimFrame = (function(){
         return  window.requestAnimationFrame       ||
                 window.webkitRequestAnimationFrame ||
@@ -736,7 +756,6 @@ jQuery(document).ready(function($) {
                               // decreasing this gives a faster sonogram, increasing it slows it down
       var amplitudeArray;     // array to hold frequency data
       var audioStream;
-      
 
       // Global Variables for Drawing
       var column = 0;
@@ -751,21 +770,26 @@ jQuery(document).ready(function($) {
       } catch(e) {
           console.log('Web Audio API is not supported in this browser');
       }
-      console.log(click);
       //click events
       if(click == "click"){
         //$("#start-recording").off();
-        $("#start-recording").on('click', function(e){
-          startEqualizer(e);
-          isEventExecutedVideo = false;
-          $(".btn-choice").click(function(e){
-            if(isEventExecutedVideo == false){
-              isEventExecutedVideo = true;
-              stopEqualizer(e);
-              console.log("equalizer stoped");
-            }
-          });
-        });
+        //$("#start-recording").on('click', function(e){
+          startEqualizer();
+          // isEventExecutedVideo = false;
+          // $(".btn-choice").click(function(e){
+          //   if(isEventExecutedVideo == false){
+          //     isEventExecutedVideo = true;
+          //     stopEqualizer(e);
+          //     console.log("equalizer stoped");
+          //   }
+          // });
+        //});
+        // $("#start-recording").on('click', function(){
+        //   var offscreenCanvas = document.createElement('canvas');
+        //   offscreenCanvas.width = "480px";
+        //   offscreenCanvas.height = "256px";
+        //   var context = offscreenCanvas.getContext('2d');
+        // }
 
         //$("#stop-recording").off();
         $("#stop-recording").on('click', function(e){
@@ -784,7 +808,7 @@ jQuery(document).ready(function($) {
         $("body").keypress(function(e){
           if(isEventExecutedEqualizer == false){
             var code = e.keyCode || e.which;
-            if(code == 97 || code == 98){
+            if(code == 115 || code == 122){
               console.log("equalizer stoped");
               isEventExecutedEqualizer = true;
               stopEqualizer(e);
@@ -802,8 +826,8 @@ jQuery(document).ready(function($) {
         console.log('stop recording');
       }
 
-      function startEqualizer(e){
-        e.preventDefault();
+      function startEqualizer(){
+        // e.preventDefault();
         clearCanvas();     
         // Initialise getUserMedia
         navigator.getMedia = ( navigator.getUserMedia || navigator.webkitGetUserMedia || navigator.mozGetUserMedia || navigator.msGetUserMedia); 
@@ -862,7 +886,6 @@ jQuery(document).ready(function($) {
       function drawTimeDomain() {
           var minValue = 9999999;
           var maxValue = 0;
-
           for (var i = 0; i < amplitudeArray.length; i++) {
               var value = amplitudeArray[i] / 256;
               if(value > maxValue) {
@@ -875,7 +898,7 @@ jQuery(document).ready(function($) {
           var y_lo = canvasHeight - (canvasHeight * minValue) - 1;
           var y_hi = canvasHeight - (canvasHeight * maxValue) - 1;
 
-          ctx.fillStyle = 'red';
+          ctx.fillStyle = sarahCouleur;
           ctx.fillRect(column,y_lo, 1, y_hi - y_lo);
 
           // loop around the canvas when we reach the end
@@ -918,17 +941,10 @@ jQuery(document).ready(function($) {
       $(".captureRight").css('display', 'block').addClass('active');
       $(".form-meta").show().addClass('active');
       $('.left').velocity({'left':'26%'}, 'slow');
-      $('.right').velocity({'left':'52%'}, 'slow', function(){
-        $('.right').clone().appendTo('.clone');
-        $(".clone").velocity({'width':"200px", 'top':'60px', 'left':'87%'}, 'slow', function(){
-          $(this).fadeOut('slow', function() {
-            $(this).remove();
-          });
-        });
-      });
+      $('.right').velocity({'left':'52%'}, 'slow');
       $('.captureLeft').velocity({'left':'26%'}, 'slow');
       $('.captureRight').velocity({'left':'52%'}, 'slow', function(){
-        socket.emit(capture, {data: data, id: sessionId, name: app.session});
+        socket.emit(capture, {data: data, id: sessionId, name: app.session});  
       });
     }
     else{
@@ -936,6 +952,18 @@ jQuery(document).ready(function($) {
       socket.emit(capture, {data: data, id: sessionId, name: app.session});
     }
   }
+
+  function saveFeedback(icone){
+    //setTimeout(function(){
+      $("body").append("<div class='icone-feedback'><img src='"+icone+"'></div>");
+      $(".icone-feedback").fadeIn('slow').velocity({"top":"10px", "left":"92%"},function(){
+        $(this).fadeOut('fast', function(){
+          $(this).remove();
+        });
+      });
+    //},400);
+  }
+
   function timestampToDate(timestamp){
     date = new Date(timestamp * 1000),
     datevalues = [
