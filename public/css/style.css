@@ -6799,8 +6799,7 @@ body.capture .buttons .title {
   width: 48px;
 }
 .video-view {
-  width: 90%;
-  margin: -40px auto 0px auto;
+  margin: auto;
   pointer-events: none;
 }
 .video-view #canvas-audio {
@@ -6809,6 +6808,8 @@ body.capture .buttons .title {
 .video-view video,
 .screenshot canvas {
   width: 100%;
+  height: 100%;
+  padding: 20px;
 }
 .photo-capture {
   display: block;
