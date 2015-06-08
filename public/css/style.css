@@ -6272,7 +6272,7 @@ button {
   color: #000;
   float: none;
   width: auto;
-  padding-top: 4px;
+  padding-top: 6px;
   padding-bottom: 12px;
   font-size: 16px;
   line-height: 18px;
@@ -6309,8 +6309,9 @@ button {
 .navbar-header .lopendocProjet {
   display: inline-block;
   font-weight: bold;
-  vertical-align: text-top;
-  padding-top: 5px;
+  vertical-align: top;
+  height: 50px;
+  padding-top: 13px;
   padding-bottom: 5px;
   padding-left: 15px;
   padding-right: 15px;
@@ -6367,11 +6368,9 @@ button {
 }
 body.select .buttons .title {
   color: #FE414D;
-  border-top: 2px solid #FFB520;
 }
 body.capture .buttons .title {
   color: #FFB520;
-  border-top: 2px solid #FE414D;
 }
 .buttons img {
   width: 40px;
@@ -6387,7 +6386,6 @@ body.capture .buttons .title {
 .btn.icon:hover,
 .btn.icon:hover {
   border-radius: 20%;
-  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.4);
 }
 .btn.icon svg {
   width: 100%;
