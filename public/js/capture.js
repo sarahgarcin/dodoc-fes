@@ -918,6 +918,7 @@ jQuery(document).ready(function($) {
             $(this).remove();
           });
         });
+      });
       $('.captureLeft').velocity({'left':'26%'}, 'slow');
       $('.captureRight').velocity({'left':'52%'}, 'slow', function(){
         //$('.captureRight').css('height', "auto");
