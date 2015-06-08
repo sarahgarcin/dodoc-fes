@@ -81,7 +81,7 @@ a:hover {
 	text-decoration: none;
 }
 
-img, video, audio {
+img, video, audio, svg {
 	min-width: 100%;
 	width:100%;	
 	display: block;
@@ -268,7 +268,7 @@ button{
 
 	.title {
 		font-weight: 700;
-		letter-spacing: .4px;
+		letter-spacing: .2px;
 	}
 
 	body.select & .title {
@@ -509,7 +509,25 @@ button{
 			top: 50%;
 			z-index: 102;
 			display: none;
+
+			&.image-choice {
+				background-color: @cimages;
+			}
+			&.video-choice {
+				background-color: @cvideos;
+			}
+			&.stopmotion-choice {
+				background-color: @canim;
+			}
+			&.audio-choice {
+				background-color: @csons;
+			}
+
+
 		}
+
+		
+
 	}
 }
 
@@ -524,8 +542,12 @@ button{
 	left:@cardL;
 	margin-left: -@cardW/2;
 	  	background-color: #FFF;
+
+
+
 	.capture{
 		width:100%;
+		width: ~"calc(100% - 20px)";
 		position: absolute;
 		top:410px;
 		&>div{
@@ -538,11 +560,47 @@ button{
 			background: none;
 			width:60px;
 			margin: auto;
+
+			svg {
+				#FOND {
+					transform-origin: center center;
+				}
+			}
+
+			&:active {
+				svg {
+					#FOND {
+						transform: scale( 1.01);
+					}
+				}
+			}
 		}
+
+		svg {
+			width: 100%;
+			height: 100%;
+		}
+
+		.photo-capture {
+			svg {
+				#FOND {
+					fill: @cimages;
+				}
+			}
+		}
+		
 		.video-capture{
 			.video-save{
 				#stop-btn{
 					display: none;
+				}
+			}
+			svg {
+				#FOND {
+					fill: @cvideos;
+				}
+				#CENTRE {
+					fill: @cimages;
 				}
 			}
 		}
@@ -554,10 +612,20 @@ button{
 			#capture-sm{
 				display:none;
 			}
+			svg {
+				#FOND {
+					fill: @canim;
+				}
+			}
 		}
 		.audio-capture{
 			#stop-recording{
 				display: none;
+			}
+			svg {
+				#FOND {
+					fill: @csons;
+				}
 			}
 		}
 	}
@@ -619,6 +687,9 @@ button{
 .video-view{
 	width: 90%;
 	margin:-40px auto 0px auto;
+
+	pointer-events: none;
+
 	#canvas-audio{
 		margin-top: 60px;
 	}
@@ -783,8 +854,6 @@ button{
 
 //END CUSTOM AUDIO PLAYER
 
-//FLUX PAGE
-// GROS CACA
 .container-flux{
 	ul{
 			padding: 40px 30px 30px 20px;
@@ -829,7 +898,9 @@ button{
 		.mediaContainer {
 			height: auto;
 			overflow-y: scroll;
-			padding: 30px;
+			padding: 0px;
+			padding-top: 20px;
+			padding-bottom: 80px;
 
 			.media{
 				list-style: none;
@@ -840,7 +911,7 @@ button{
 				display: inline-block;
 				vertical-align: top;
 				padding: 15px;
-				margin:5px;
+				margin:0px;
 
 				.mediaTitre {
 					margin: 0;
@@ -871,7 +942,8 @@ button{
 					    background-image: url("/images/icone-dodoc_image.png");
 					}
 					.mediaTitre {
-						border-left-color: #ffb520;
+						border-left-color: @cimages;
+
 					}
 
 				}
@@ -882,7 +954,7 @@ button{
 					    background-image: url("/images/icone-dodoc_video.png");
 					}
 					.mediaTitre {
-						border-left-color: #fe414d;
+						border-left-color: @cvideos;
 					}
 				}
 				&.sons-bibli{
@@ -891,7 +963,7 @@ button{
 						height: 0;
 						padding-bottom: 33%;
 
-						background-color: #09227c;
+						background-color: @csons;
 					}
 
 					audio {

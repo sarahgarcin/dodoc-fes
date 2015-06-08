@@ -6231,7 +6231,8 @@ a:hover {
 }
 img,
 video,
-audio {
+audio,
+svg {
   min-width: 100%;
   width: 100%;
   display: block;
@@ -6372,7 +6373,7 @@ button {
 }
 .buttons .title {
   font-weight: 700;
-  letter-spacing: .4px;
+  letter-spacing: .2px;
 }
 body.select .buttons .title {
   color: #FE414D;
@@ -6585,6 +6586,18 @@ body.capture .buttons .title {
   z-index: 102;
   display: none;
 }
+.media-choice .choice div.image-choice {
+  background-color: #ffb520;
+}
+.media-choice .choice div.video-choice {
+  background-color: #fe414d;
+}
+.media-choice .choice div.stopmotion-choice {
+  background-color: #48c2b5;
+}
+.media-choice .choice div.audio-choice {
+  background-color: #09227c;
+}
 .captureLeft {
   width: 550px;
   height: 480px;
@@ -6598,6 +6611,7 @@ body.capture .buttons .title {
 }
 .captureLeft .capture {
   width: 100%;
+  width: calc(100% - 20px);
   position: absolute;
   top: 410px;
 }
@@ -6612,8 +6626,27 @@ body.capture .buttons .title {
   width: 60px;
   margin: auto;
 }
+.captureLeft .capture button svg #FOND {
+  transform-origin: center center;
+}
+.captureLeft .capture button:active svg #FOND {
+  transform: scale(1.01);
+}
+.captureLeft .capture svg {
+  width: 100%;
+  height: 100%;
+}
+.captureLeft .capture .photo-capture svg #FOND {
+  fill: #ffb520;
+}
 .captureLeft .capture .video-capture .video-save #stop-btn {
   display: none;
+}
+.captureLeft .capture .video-capture svg #FOND {
+  fill: #fe414d;
+}
+.captureLeft .capture .video-capture svg #CENTRE {
+  fill: #ffb520;
 }
 .captureLeft .capture .stopmotion-capture button {
   display: inline-block;
@@ -6621,8 +6654,14 @@ body.capture .buttons .title {
 .captureLeft .capture .stopmotion-capture #capture-sm {
   display: none;
 }
+.captureLeft .capture .stopmotion-capture svg #FOND {
+  fill: #48c2b5;
+}
 .captureLeft .capture .audio-capture #stop-recording {
   display: none;
+}
+.captureLeft .capture .audio-capture svg #FOND {
+  fill: #09227c;
 }
 .captureLeft #canvas-audio {
   display: none;
@@ -6678,6 +6717,7 @@ body.capture .buttons .title {
 .video-view {
   width: 90%;
   margin: -40px auto 0px auto;
+  pointer-events: none;
 }
 .video-view #canvas-audio {
   margin-top: 60px;
@@ -6868,7 +6908,9 @@ audio {
 .container-bibli .buffer .mediaContainer {
   height: auto;
   overflow-y: scroll;
-  padding: 30px;
+  padding: 0px;
+  padding-top: 20px;
+  padding-bottom: 80px;
 }
 .container-bibli .buffer .mediaContainer .media {
   list-style: none;
@@ -6877,7 +6919,7 @@ audio {
   display: inline-block;
   vertical-align: top;
   padding: 15px;
-  margin: 5px;
+  margin: 0px;
 }
 .container-bibli .buffer .mediaContainer .media .mediaTitre {
   margin: 0;
