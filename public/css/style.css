@@ -6626,6 +6626,7 @@ body.capture .buttons .title {
   outline: none;
   font-size: 1em;
   padding: 5px 15px;
+  margin: 5px;
 }
 .media-choice .btn-choice button.active,
 .media-choice .btn-choice button:hover {
