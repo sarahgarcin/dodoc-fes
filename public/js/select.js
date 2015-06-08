@@ -34,13 +34,13 @@ jQuery(document).ready(function($) {
     	var identifiant =  array[i].replace("." + extension, "");
     	console.log(identifiant);
 			if(extension == "jpg"){
-				$('.mediaContainer').append("<li class='media images-bibli' id='"+ identifiant+"'><div class='mediaContent'><img src='https://"+domainUrl + "/" +app.session + "/"+ array[i] + "'></div></li>");
+				$('.mediaContainer').append("<li class='media images-bibli' id='"+ identifiant+"'><div class='mediaContent'><img src='https://"+domainUrl + "/" +app.session + "/"+ array[i] + "' preload='none'></div></li>");
 			}
 			if(extension == "webm" || extension == "mp4"){
-				$('.mediaContainer').append("<li class='media videos-bibli' id='"+ identifiant+"'><div class='mediaContent'><video src='https://"+domainUrl + "/"+app.session + "/" + array[i] + "' controls></div></li>");""
+				$('.mediaContainer').append("<li class='media videos-bibli' id='"+ identifiant+"'><div class='mediaContent'><video src='https://"+domainUrl + "/"+app.session + "/" + array[i] + "' preload='none' controls></div></li>");""
 			}
 			if(extension == "wav"){
-				$('.mediaContainer').append("<li class='media sons-bibli' id='"+ identifiant+"'><div class='mediaContent'><audio src='https://"+domainUrl + "/"+app.session + "/" + array[i] + "' controls></div></li>");""
+				$('.mediaContainer').append("<li class='media sons-bibli' id='"+ identifiant+"'><div class='mediaContent'><audio src='https://"+domainUrl + "/"+app.session + "/" + array[i] + "' preload='none' controls></div></li>");""
 				//console.log(array[i]);
 			}
 		}
