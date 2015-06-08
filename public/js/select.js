@@ -12,6 +12,7 @@ jQuery(document).ready(function($) {
 	socket.on('connect', onSocketConnect);
 	socket.on('error', onSocketError);
 	socket.on('listMedias', ondisplayMedias);
+	socket.emit('newUserSelect', {id: socket.io.engine.id, name: app.session});
 
 	/**
 	* handlers
@@ -22,7 +23,6 @@ jQuery(document).ready(function($) {
 	function onSocketConnect() {
 		sessionId = socket.io.engine.id;
 		console.log('Connected ' + sessionId);
-		socket.emit('newUserSelect', {id: sessionId, name: app.session});
 	};
 	function onSocketError(reason) {
 		console.log('Unable to connect to server', reason);

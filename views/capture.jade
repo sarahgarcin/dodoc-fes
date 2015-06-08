@@ -11,7 +11,8 @@ html
           a(href="/select/#{session}" class="btn icon bibli" data-toggle="tooltip" data-placement="left" title="Bibliothèque de médias")
             include templates/images/icones-01.svg
 
-        .button.sidebyside.count-add-media +1
+        .sidebyside.count-add-media.plus-media +1
+        .sidebyside.count-add-media.moins-media -1
 
         .title.centered Interface de capture
 
@@ -65,6 +66,7 @@ html
 
       div.captureRight
 
+        div.flash
         div.title.form-meta
           div.clear
             button#clear
