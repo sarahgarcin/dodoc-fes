@@ -512,7 +512,7 @@ $("body").keypress(function(e){
       }
       
       function startRecordAudio(){
-        //backAnimation();
+        backAnimation();
         
         // Initialise getUserMedia
         navigator.getMedia = ( navigator.getUserMedia || navigator.webkitGetUserMedia || navigator.mozGetUserMedia || navigator.msGetUserMedia);
