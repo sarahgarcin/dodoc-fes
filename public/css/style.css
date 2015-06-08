@@ -6818,6 +6818,24 @@ body.capture .buttons .title {
 .video-view #canvas-audio {
   margin-top: 60px;
 }
+.video-view .recording-feedback {
+  position: absolute;
+  z-index: 100;
+  bottom: 90px;
+  left: 40px;
+}
+.video-view .recording-feedback .record-feedback {
+  width: 20px;
+  height: 20px;
+  background-color: red;
+  border-radius: 30px;
+  display: inline-block;
+}
+.video-view .recording-feedback .time-feedback {
+  display: inline-block;
+  vertical-align: top;
+  margin-left: 10px;
+}
 .video-view video,
 .screenshot canvas {
   width: 100%;
