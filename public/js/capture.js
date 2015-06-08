@@ -185,7 +185,7 @@ jQuery(document).ready(function($) {
       $('.stopmotion-capture').css('display','none');
       $('.audio-capture').css('display','block');
       $('.screenshot #canvas').css('display', 'none');
-      $('.right .son').css('display', 'block');
+      $('.captureRight .son').css('display', 'block');
       $('#video').hide();
       $('#canvas-audio').show();$("#canvas-equalizer").show();
       $(".choice .audio-choice").fadeIn(1000, function(){
@@ -362,9 +362,9 @@ jQuery(document).ready(function($) {
         if($(".form-meta").hasClass('active')){
           $(".form-meta.active").hide().removeClass('active');
         }
-        $(".right").css('display', 'block').addClass('active');
-        $('.left').velocity({'left':'26%'}, 'slow');
-        $('.right').velocity({'left':'52%'}, 'slow');
+        $(".captureRight").css('display', 'block').addClass('active');
+        $('.captureLeft').velocity({'left':'26%'}, 'slow');
+        $('.captureRight').velocity({'left':'52%'}, 'slow');
         $('.screenshot').append('<div class="instructions-stopmotion"><div class="icone-stopmotion"><img src="/images/stopmotion.svg"></div><h4>Vous venez de créer un nouveau stop-motion.</br>Appuyez sur <b>enregistrer</b> pour prendre des photos</h4></div>')
         socket.emit('newStopMotion', {id: sessionId, name: app.session});
         //socket.on('newStopMotionDirectory', onStopMotionDirectory);
@@ -393,7 +393,7 @@ jQuery(document).ready(function($) {
         socket.emit('stopmotionCapture', {id: sessionId, name: app.session, dir: dir});
         socket.on('newStopMotionCreated', function(req){
           $('.screenshot .canvas-view').hide();
-          $('.right').css('height', "auto");
+          $('.captureRight').css('height', "auto");
           $('#camera-preview').attr('src', 'https://'+host+'/' + app.session + '/'+req.fileName+'')
           $('#camera-preview').show();
           $(".form-meta").slideDown( "slow" ).addClass('active'); 
@@ -644,10 +644,10 @@ jQuery(document).ready(function($) {
             $(".form-meta").removeClass('active');
           });
         }
-        $(".right").css('display', 'block').addClass('active');
-        $('.left').velocity({'left':'26%'}, 'slow');
-        $('.right').velocity({'left':'52%'}, 'slow');
-        $('.right').append('<div class="record-button-animated"><div class="outter"></div><div class="inner"></div>')
+        $(".captureRight").css('display', 'block').addClass('active');
+        $('.captureLeft').velocity({'left':'26%'}, 'slow');
+        $('.captureRight').velocity({'left':'52%'}, 'slow');
+        $('.captureRight').append('<div class="record-button-animated"><div class="outter"></div><div class="inner"></div>')
 
         // Initialise getUserMedia
         navigator.getMedia = ( navigator.getUserMedia || navigator.webkitGetUserMedia || navigator.mozGetUserMedia || navigator.msGetUserMedia);
@@ -685,7 +685,7 @@ jQuery(document).ready(function($) {
         startVideoRecording.style.display = "block";
         stopVideoRecording.style.display = "none";
         cameraPreview.style.display = "block";
-        $('.right .record-button-animated').remove();
+        $('.captureRight .record-button-animated').remove();
         // stop video recorder
         recordVideo.stopRecording(function() {
           // get video data-URL
@@ -896,18 +896,19 @@ jQuery(document).ready(function($) {
 
   //fenêtre de preview retourne au center
   function backAnimation(){
-    if($(".right").hasClass('active')){
-      $('.left').velocity({'left':'50%'}, 'slow');
-      $('.right').removeClass('active').velocity({'left':'50%'}, 500,function(){$(this).css("display", "none")});
+    if($(".captureRight").hasClass('active')){
+      $('.captureLeft').velocity({'left':'50%'}, 'slow');
+      $('.captureRight').removeClass('active').velocity({'left':'50%'}, 500,function(){$(this).css("display", "none")});
     }
   }
 
   //animation des fenêtres à la capture
   function animateWindows(data, capture){
-    if(!$('.right').hasClass('active')){
+    if(!$('.captureRight').hasClass('active')){
       //console.log('right class active')
-      $(".right").css('display', 'block').addClass('active');
+      $(".captureRight").css('display', 'block').addClass('active');
       $(".form-meta").show().addClass('active');
+<<<<<<< HEAD
       $("#canvas-equalizer").hide();
       $('.left').velocity({'left':'26%'}, 'slow');
       $('.right').velocity({'left':'52%'}, 'slow', function(){
@@ -918,6 +919,11 @@ jQuery(document).ready(function($) {
             $(this).remove();
           });
         });
+=======
+      $('.captureLeft').velocity({'left':'26%'}, 'slow');
+      $('.captureRight').velocity({'left':'52%'}, 'slow', function(){
+        //$('.captureRight').css('height', "auto");
+>>>>>>> 2722acba74f6122aee8dc46c7caab80d6d86a819
         socket.emit(capture, {data: data, id: sessionId, name: app.session});
       });
     }

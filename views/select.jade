@@ -5,16 +5,22 @@ html
     title #{session} | #{title}
   body.select
 
-    include templates/header-capture.jade
+    include templates/header.jade
 
 
-    div.container-bibli
+    div.container-bibli.multiCol
 
       div.buffer.demi
+
         div.buffer-header 
-          h2 Bibliothèque de médias
-        ul
-        //- img(src="http://localhost:8080/coucou/1421235653853.jpg")
+          nav.titleAndActions
+            div.buttons
+              .button.sidebyside
+                a(href="/select/#{session}/capture" class="btn icon capture"  data-toggle="tooltip" data-placement="right" title="Interface de capture")
+                  include templates/images/icones-07.svg
+              .title.centered Bibliothèque de médias
+
+        .mediaContainer
 
       div.montage.demi 
         div.montage-content

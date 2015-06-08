@@ -6,7 +6,18 @@ html
     title #{session} | #{title}
   body.capture
 
-    include templates/header-capture.jade
+    include templates/header.jade
+
+
+    nav.titleAndActions
+      div.buttons.alignRight
+        .button.sidebyside
+          a(href="/select/#{session}" class="btn icon bibli" data-toggle="tooltip" data-placement="left" title="Bibliothèque de médias")
+            include templates/images/icones-01.svg
+
+        .button.sidebyside.count-add-media +1
+
+        .title.centered Interface de capture
 
     div.container
 
@@ -17,6 +28,7 @@ html
           button#stopmotion Stop motion
           button#audio Son
 
+<<<<<<< HEAD
         div.choice
           div.image-choice Mode image
           div.video-choice Mode vidéo
@@ -24,6 +36,9 @@ html
           div.audio-choice Mode audio
 
       div.left
+=======
+      .captureLeft
+>>>>>>> 2722acba74f6122aee8dc46c7caab80d6d86a819
         div.video-view
           video(id="video" autoplay)
 
@@ -51,7 +66,7 @@ html
             button(id='stop-recording' disabled)
               img(src="/images/stop.svg")
 
-      div.right
+      div.captureRight
 
         div.title.form-meta
           div.clear

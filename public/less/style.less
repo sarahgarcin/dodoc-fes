@@ -1,4 +1,70 @@
-@import url(https://fonts.googleapis.com/css?family=Share:400,400italic,700,700italic);
+//@import url(https://fonts.googleapis.com/css?family=Share:400,400italic,700,700italic);
+
+/* latin-ext */
+@font-face {
+  font-family: 'Share';
+  font-style: normal;
+  font-weight: 400;
+  src: local('Share'), local('Share-Regular'), url(/fonts/HjJ444rrjSO3C8ttwyu9soDGDUGfDkXyfkzVDelzfFk.woff2) format('woff2');
+  unicode-range: U+0100-024F, U+1E00-1EFF, U+20A0-20AB, U+20AD-20CF, U+2C60-2C7F, U+A720-A7FF;
+}
+/* latin */
+@font-face {
+  font-family: 'Share';
+  font-style: normal;
+  font-weight: 400;
+  src: local('Share'), local('Share-Regular'), url(/fonts/3CDT6oqvfaWTC_L6tleVqKCWcynf_cDxXwCLxiixG1c.woff2) format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2212, U+2215, U+E0FF, U+EFFD, U+F000;
+}
+/* latin-ext */
+@font-face {
+  font-family: 'Share';
+  font-style: normal;
+  font-weight: 700;
+  src: local('Share Bold'), local('Share-Bold'), url(/fonts/pxM_11DJKIMO3Kf7WE5mnhkAz4rYn47Zy2rvigWQf6w.woff2) format('woff2');
+  unicode-range: U+0100-024F, U+1E00-1EFF, U+20A0-20AB, U+20AD-20CF, U+2C60-2C7F, U+A720-A7FF;
+}
+/* latin */
+@font-face {
+  font-family: 'Share';
+  font-style: normal;
+  font-weight: 700;
+  src: local('Share Bold'), local('Share-Bold'), url(/fonts/kSMEL7ByENjCWyAa0oUPq3YhjbSpvc47ee6xR_80Hnw.woff2) format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2212, U+2215, U+E0FF, U+EFFD, U+F000;
+}
+/* latin-ext */
+@font-face {
+  font-family: 'Share';
+  font-style: italic;
+  font-weight: 400;
+  src: local('Share Italic'), local('Share-Italic'), url(/fonts/oGzKWZQvAED-dxiUkrKJCVKPGs1ZzpMvnHX-7fPOuAc.woff2) format('woff2');
+  unicode-range: U+0100-024F, U+1E00-1EFF, U+20A0-20AB, U+20AD-20CF, U+2C60-2C7F, U+A720-A7FF;
+}
+/* latin */
+@font-face {
+  font-family: 'Share';
+  font-style: italic;
+  font-weight: 400;
+  src: local('Share Italic'), local('Share-Italic'), url(/fonts/6K93XVSFejgqMzBniWPGkQLUuEpTyoUstqEm5AMlJo4.woff2) format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2212, U+2215, U+E0FF, U+EFFD, U+F000;
+}
+/* latin-ext */
+@font-face {
+  font-family: 'Share';
+  font-style: italic;
+  font-weight: 700;
+  src: local('Share Bold Italic'), local('Share-BoldItalic'), url(/fonts/hYMpaGgEXA9nu8fByHCNdQsYbbCjybiHxArTLjt7FRU.woff2) format('woff2');
+  unicode-range: U+0100-024F, U+1E00-1EFF, U+20A0-20AB, U+20AD-20CF, U+2C60-2C7F, U+A720-A7FF;
+}
+/* latin */
+@font-face {
+  font-family: 'Share';
+  font-style: italic;
+  font-weight: 700;
+  src: local('Share Bold Italic'), local('Share-BoldItalic'), url(/fonts/EFGhLE7fLwZtSFxykTxa5wzyDMXhdD8sAj6OAJTFsBI.woff2) format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2212, U+2215, U+E0FF, U+EFFD, U+F000;
+}
+
 @import 'bootstrap.less';
 @import 'variables.less';
 
@@ -8,7 +74,7 @@ html {
 }
 
 body {
-  margin: 0px 0px 20px 0px;
+  margin: 0;
   color: #000;
   background-color: #EFEFEF;
   font-family: 'share', monospace;
@@ -66,9 +132,17 @@ button{
 	background: none;
 }
 
+.fade {
+	transition: opacity .25s ease-out;
+}
+
+.multiCol {
+	display: flex;
+}
+
 .demi {
-	width:49%;
-	display: inline-block;
+	flex:1;
+	overflow-y: scroll;
 	vertical-align: top;
 }
 
@@ -84,7 +158,7 @@ button{
 	padding-top: 0px;
 	padding-bottom: 0px;
 	margin: 0;
-	min-height: 60px;
+	min-height: 50px;
 
 	.navbar-container {
 		width: 90%;
@@ -106,8 +180,8 @@ button{
 
 		width: auto;
 
-		padding-top: 	6px;
-		padding-bottom: 10px;
+		padding-top: 	4px;
+		padding-bottom: 12px;
 
 		font-size: 16px;
 		line-height: 18px;
@@ -145,89 +219,90 @@ button{
 	.lopendocProjet {
 		display: inline-block;
 		font-weight: bold;
-		vertical-align: middle;
+		vertical-align: text-top;
 		padding-top: 5px;
 		padding-bottom: 5px;
 
-  padding-left: 15px;
-  padding-right: 15px;
-  border-left: 1px solid #eee;
+		padding-left: 15px;
+		padding-right: 15px;
+		border-left: 1px solid #eee;
 	}
 }
 
-.navbar-default .navbar-collapse {
-  width: 33.33333334%;
-
-  float: right;
-
-  .actionsContainer {
-//		.make-row;
-
-		.actions {
-			.btn-bibli{
-				// margin:0px auto 20px auto;
-				display: inline-block;
-				float: right;	
-
-				.count-add-media{
-					background-color: @bleuvert;
-					padding: 7px 2px 5px 0px;
-					color: #FFF;
-					border-radius: 100px;
-					text-align: center;
-					font-size: 13px;
-					font-weight: bold;
-					width:30px;
-					position: absolute;
-					right:10px;
-					top: 5px;
-					opacity: 0;
-				}
-			}
-
-		}
-	}
+.buttons:before,
+.buttons:after {
+  content: " ";
+  display: table;
+}
+.buttons:after {
+  clear: both;
+}
+.buttons {
+	background-color: #f9f9f9;
+	height: 72px;
 
 }
 
 
 
-.action-button {
+.buttons {
 	list-style: none;
+	margin: 0;
 	padding: 0;
+	position: relative;
 
-	margin: 10px 0 5px 0;
+	&.alignRight {
+		text-align: right;
+	}
 
-	text-align: right;
+	.sidebyside {
+		display: inline-block;	
+		position: relative;
+	}
 
-	li {
+	.centered {
+		position: absolute;
+		top:0;
+		left: 0;
+		width: 100%;
+		height: 100%;
+		text-align: center;
 
-		display: inline-block;
+		font-size: 24px;
+		line-height: 72px;
+
+		z-index: 0;
+	}
+
+	.button {
+
 		border-radius: 0.25em;
-		margin: 0;
-		margin-right: 5px;
-		margin-bottom: 5px;
+		padding: 6px;
+		margin: 6px;
 
 		cursor: pointer;
-
-		text-align: center;
 		color: #000;
 
 		-webkit-font-smoothing: antialiased;
+		z-index: 2;
 
 	}
 
-	li.withTexte {
-		padding: 0 1em;
-		background-color: #eee;
-		height: 35px;
-		line-height: 36px;
+	.title {
+		font-weight: 700;
+		letter-spacing: .4px;
+	}
 
+	body.select & .title {
+		color: #FE414D;
+		border-top: 2px solid #FFB520;
+	}
+	body.capture & .title {
+		color: #FFB520;
+		border-top: 2px solid #FE414D;
+	}
 
-
-	}	
-
-	// icones dans les boutons d'action
+	// icones dans les boutons
 	img {
 		width: 	40px;
 		height: 40px;
@@ -235,8 +310,83 @@ button{
 
 }
 
+.btn.icon {
+  width: 48px;
+  height: 48px;
+  padding:0;
+border-radius: 50%;
+
+  transition: all .2s ease-out;
+
+	&:hover, &:hover{
+		border-radius: 20%;
+	    box-shadow:  0 1px 4px rgba(0, 0, 0, 0.4);
+
+	}
+
+	svg {
+		width: 100%;
+		height:100%;
+		vertical-align: middle;
+	}
+
+	+ .tooltip {
+	    width: 110px;
+	    font-size: 16px;
+		.tooltip-inner {
+
+		}
+
+	}
+}
 
 
+
+.btn.capture {
+	background-color: #FE414D;
+	// tooltip
+	+ .tooltip {
+		.tooltip-arrow {
+	 	   border-right-color: #FE414D;
+		}
+		.tooltip-inner {
+		    background-color: #FE414D;
+		}
+	}
+}
+.btn.bibli {
+	background-color: #FFB520;
+	// tooltip
+	+ .tooltip {
+		.tooltip-arrow {
+	 	   border-left-color: #FFB520;
+		}
+		.tooltip-inner {
+		    background-color: #FFB520;
+		}
+	}
+}
+
+.btn-bibli{
+	// margin:0px auto 20px auto;
+	display: inline-block;
+	float: right;	
+
+	.count-add-media{
+		background-color: @bleuvert;
+		padding: 7px 2px 5px 0px;
+		color: #FFF;
+		border-radius: 100px;
+		text-align: center;
+		font-size: 13px;
+		font-weight: bold;
+		width:30px;
+		position: absolute;
+		right:10px;
+		top: 5px;
+		opacity: 0;
+	}
+}
 
 // DISPARITION / APPARITION DES BOUTONS DE LA NAVBAR
 // page select :
@@ -250,6 +400,7 @@ button{
 		display: none !important;
 	}
 }
+
 
 
 
@@ -294,12 +445,13 @@ button{
 			  		padding-right: 14px;
 			  		display: block;
 
+			  		&:hover {
+			  			color: #fff;
+			  			background-color: #333;
+					  	transition: background-color 0s ease-out;
+			  		}
 			  	}
-		  		&:hover {
-		  			background-color: transparent;
-				  	transition: background-color 0s ease-out;
-		  		}
-			  }
+			}
 
 			  ul {
 			  	display: inline;
@@ -387,7 +539,7 @@ button{
 }
 
 
-.left {
+.captureLeft {
 	width: @cardW;
 	height: @cardH;
 	margin: auto;
@@ -440,7 +592,7 @@ button{
 	}
 }
 
-.right {
+.captureRight {
 	width: @cardW;
 	height: @cardH;
 	background-color: #FFF;
@@ -667,6 +819,7 @@ button{
 				&.images-bibli{
 					img{
 						border: 5px solid blue;
+
 					}
 				}
 				&.videos-bibli{
@@ -683,24 +836,24 @@ button{
 }
 // BIBLI PAGE ------
 .container-bibli {
+
 	width:100%;
+	height: 100vh;
 	margin: auto;
+
+
 	//font-family: 'share', sans-serif ; 
+
+
 	.buffer {
 		background-color:#e5e5e5;
-		.buffer-header{
-			background-color: #cecece;
-			h2{
-				margin: 0px;
-				padding: 20px 30px;
-				text-align: center;
-			}
-		}
-		ul{
-			height: 750px;
+
+		.mediaContainer {
+			height: auto;
 			overflow-y: scroll;
-			padding: 40px 30px 30px 20px;
-			li{
+			padding: 30px;
+
+			.media{
 				list-style: none;
 				width: 32%;
 				// height: 215px;
@@ -724,19 +877,26 @@ button{
 			}
 		}
 	}
+
 	.montage {
-		height: 860px;
 		overflow-y: scroll;
+
+
 		input{
 			width: 100%;
 			border: none;
 			text-align: center;
 			font-size: 30px;
 		}
+
+	  -webkit-box-shadow: 0 1px 4px rgba(0, 0, 0, 0.1);
+	  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.1);
+
 		.block-content{
 			width: 100%;
 			height: 300px;
 			border-bottom: 4px dashed #CECECE;
+
 		}
 	}
 }
