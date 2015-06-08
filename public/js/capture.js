@@ -527,9 +527,11 @@ jQuery(document).ready(function($) {
         //display equalizer image
         var canvas = document.querySelector('#canvas-equalizer');
         var canvasAudio = document.querySelector('#canvas-audio');
+        var context = canvas.getContext('2d');
         var widthAudio = canvas.width; 
-        var heightAudio = canvas.height; 
-        canvas.getContext('2d').drawImage(canvasAudio, 0, 0, widthAudio, heightAudio);
+        var heightAudio = canvas.height;
+        context.clearRect(0, 0, widthAudio, heightAudio);
+        context.drawImage(canvasAudio, 0, 0, widthAudio, heightAudio);
         var data = canvas.toDataURL('image/png');
         photo.setAttribute('src', data);
         $('#canvas-equalizer').show();
