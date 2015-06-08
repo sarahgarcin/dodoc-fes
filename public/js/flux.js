@@ -18,6 +18,9 @@ jQuery(document).ready(function($) {
 	socket.on('displayNewVideo', displayNewVideo);
 	socket.on('displayNewAudio', displayNewAudio);
 
+
+	socket.emit('newUserSelect', {id: socket.io.engine.id, name: app.session});
+
 	/**
 	* handlers
 	*/
@@ -27,7 +30,7 @@ jQuery(document).ready(function($) {
 	function onSocketConnect() {
 		sessionId = socket.io.engine.id;
 		console.log('Connected ' + sessionId);
-		socket.emit('newUserSelect', {id: sessionId, name: app.session});
+		// socket.emit('newUserSelect', {id: sessionId, name: app.session});
 	};
 	function onSocketError(reason) {
 		console.log('Unable to connect to server', reason);
@@ -41,10 +44,10 @@ jQuery(document).ready(function($) {
 				$('.container-flux .content ul').prepend("<li class='images-bibli' id='"+ identifiant+"'' ><img src='https://"+host+"/" + app.session + "/" + array[i] + "'></li>");
 			}
 			if(extension == "webm" || extension == "mp4"){
-				$('.container-flux .content ul').prepend("<li class='videos-bibli' id='"+ identifiant+"'' ><video src='https://"+host+"/" + app.session + "/" + array[i] + "' controls></li>");""
+				$('.container-flux .content ul').prepend("<li class='videos-bibli' id='"+ identifiant+"'' ><video src='https://"+host+"/" + app.session + "/" + array[i] + "' controls preload='none'></li>");
 			}
 			if(extension == "wav"){
-				$('.container-flux .content ul').prepend("<li class='sons-bibli' id='"+ identifiant+"'' ><audio src='https://"+host+"/" + app.session + "/" + array[i] + "' controls></li>");""
+				$('.container-flux .content ul').prepend("<li class='sons-bibli' id='"+ identifiant+"'' ><audio src='https://"+host+"/" + app.session + "/" + array[i] + "' controls preload='none'></li>");
 			}
 		}
 	}
@@ -57,19 +60,19 @@ jQuery(document).ready(function($) {
 
 	function displayNewStopMotion(req){
 		if(req.extension == "mp4"){
-			$('.container-flux .content ul').prepend("<li class='motion-bibli' id='"+ req.title+"'' ><video src='https://"+host+"/" + app.session + "/" + req.file + "' controls></li>");
+			$('.container-flux .content ul').prepend("<li class='motion-bibli' id='"+ req.title+"'' ><video src='https://"+host+"/" + app.session + "/" + req.file + "' controls preload='none'></li>");
 		}
 	}
 
 	function displayNewVideo(req){
 		if(req.extension == "webm"){
-			$('.container-flux .content ul').prepend("<li class='video-bibli' id='"+ req.title+"'' ><video src='https://"+host+"/" + app.session + "/" + req.file + "' controls></li>");
+			$('.container-flux .content ul').prepend("<li class='video-bibli' id='"+ req.title+"'' ><video src='https://"+host+"/" + app.session + "/" + req.file + "' controls preload='none'></li>");
 		}
 	}
 
 	function displayNewAudio(req){
 		if(req.extension == "wav"){
-			$('.container-flux .content ul').prepend("<li class='audio-bibli' id='"+ req.title+"'' ><audio src='https://"+host+"/" + app.session + "/" + req.file + "' controls></li>");
+			$('.container-flux .content ul').prepend("<li class='audio-bibli' id='"+ req.title+"'' ><audio src='https://"+host+"/" + app.session + "/" + req.file + "' controls preload='none'></li>");
 		}
 	}
 });
