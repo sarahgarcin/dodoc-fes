@@ -6368,11 +6368,9 @@ button {
 }
 body.select .buttons .title {
   color: #FE414D;
-  border-top: 2px solid #FFB520;
 }
 body.capture .buttons .title {
   color: #FFB520;
-  border-top: 2px solid #FE414D;
 }
 .buttons img {
   width: 40px;
