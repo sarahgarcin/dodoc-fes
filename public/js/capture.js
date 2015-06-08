@@ -512,7 +512,7 @@ $("body").keypress(function(e){
       }
       
       function startRecordAudio(){
-        //backAnimation();
+        backAnimation();
         
         // Initialise getUserMedia
         navigator.getMedia = ( navigator.getUserMedia || navigator.webkitGetUserMedia || navigator.mozGetUserMedia || navigator.msGetUserMedia);
@@ -673,6 +673,7 @@ $("body").keypress(function(e){
       }
 
       function startVideo(){
+        backAnimation();
         if($(".form-meta").hasClass('active')){
           $(".form-meta.active").hide(function(){ 
             $(".form-meta").removeClass('active');
@@ -680,10 +681,11 @@ $("body").keypress(function(e){
         }
         $('#camera-preview').hide();
         $('.screenshot .canvas-view').hide();
-        $(".captureRight").css('display', 'block').addClass('active');
-        $('.captureLeft').velocity({'left':'26%'}, 'slow');
-        $('.captureRight').velocity({'left':'52%'}, 'slow');
-        $('.captureRight').append('<div class="record-button-animated"><div class="outter"></div><div class="inner"></div>')
+        recordingFeedback();
+        // $(".captureRight").css('display', 'block').addClass('active');
+        // $('.captureLeft').velocity({'left':'26%'}, 'slow');
+        // $('.captureRight').velocity({'left':'52%'}, 'slow');
+        // $('.captureRight').append('<div class="record-button-animated"><div class="outter"></div><div class="inner"></div>')
 
         // Initialise getUserMedia
         navigator.getMedia = ( navigator.getUserMedia || navigator.webkitGetUserMedia || navigator.mozGetUserMedia || navigator.msGetUserMedia);
@@ -715,13 +717,44 @@ $("body").keypress(function(e){
         stopVideoRecording.style.display = "block";
       }
 
+      function recordingFeedback(){
+        $(".video-view").append("<div class='recording-feedback'><div class='record-feedback'></div><div class='time-feedback'>[REC] <time>00:00:00</time></div></div>");
+        var counter_text = $(".time-feedback time")[0];
+        var seconds = 0, minutes = 0, hours = 0,
+        t;
+        timer();
+
+        function add() {
+          seconds++;
+          if (seconds >= 60) {
+            seconds = 0;
+            minutes++;
+            if (minutes >= 60) {
+              minutes = 0;
+              hours++;
+            }
+          }
+          counter_text.textContent = (hours ? (hours > 9 ? hours : "0" + hours) : "00") + ":" + (minutes ? (minutes > 9 ? minutes : "0" + minutes) : "00") + ":" + (seconds > 9 ? seconds : "0" + seconds);
+
+          timer();
+        }
+
+        function timer() {
+          t = setTimeout(add, 1000);
+        }
+      }
+
       function stopVideo(){
         startVideoRecording.disabled = false;
         stopVideoRecording.disabled = true;
         startVideoRecording.style.display = "block";
         stopVideoRecording.style.display = "none";
         cameraPreview.style.display = "block";
-        $('.captureRight .record-button-animated').remove();
+        $(".recording-feedback").remove();
+        $(".captureRight").css('display', 'block').addClass('active');
+        $('.captureLeft').velocity({'left':'26%'}, 'slow');
+        $('.captureRight').velocity({'left':'52%'}, 'slow');
+        //$('.captureRight .record-button-animated').remove();
         // stop video recorder
         recordVideo.stopRecording(function() {
           // get video data-URL

@@ -750,11 +750,28 @@ button{
 
 .video-view{
 	margin: auto;
-
 	pointer-events: none;
 
 	#canvas-audio{
 		margin-top: 60px;
+	}
+	.recording-feedback{
+		position:absolute;
+		z-index: 100;
+		bottom:90px;
+		left: 40px;
+		.record-feedback{
+			width:20px;
+			height:20px;
+			background-color: red;
+			border-radius: 30px;
+			display: inline-block;
+		}
+		.time-feedback {
+			display: inline-block;
+			vertical-align: top;
+			margin-left: 10px;
+		}
 	}
 }
 
