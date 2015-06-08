@@ -6605,7 +6605,6 @@ body.capture .buttons .title {
   background-color: #48c2b5;
   outline: none;
 }
-<<<<<<< HEAD
 .media-choice .choice div {
   padding: 10px 14px;
   background-color: #48c2b5;
@@ -6617,10 +6616,7 @@ body.capture .buttons .title {
   z-index: 102;
   display: none;
 }
-.left {
-=======
 .captureLeft {
->>>>>>> 2722acba74f6122aee8dc46c7caab80d6d86a819
   width: 550px;
   height: 480px;
   margin: auto;
@@ -6907,7 +6903,7 @@ audio {
 }
 .container-bibli .buffer .mediaContainer .media {
   list-style: none;
-  width: 32%;
+  width: calc( 33% - 10px);
   display: inline-block;
   vertical-align: top;
   margin: 0px 10px 10px 0px;

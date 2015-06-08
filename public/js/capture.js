@@ -908,7 +908,6 @@ jQuery(document).ready(function($) {
       //console.log('right class active')
       $(".captureRight").css('display', 'block').addClass('active');
       $(".form-meta").show().addClass('active');
-<<<<<<< HEAD
       $("#canvas-equalizer").hide();
       $('.left').velocity({'left':'26%'}, 'slow');
       $('.right').velocity({'left':'52%'}, 'slow', function(){
@@ -919,11 +918,9 @@ jQuery(document).ready(function($) {
             $(this).remove();
           });
         });
-=======
       $('.captureLeft').velocity({'left':'26%'}, 'slow');
       $('.captureRight').velocity({'left':'52%'}, 'slow', function(){
         //$('.captureRight').css('height', "auto");
->>>>>>> 2722acba74f6122aee8dc46c7caab80d6d86a819
         socket.emit(capture, {data: data, id: sessionId, name: app.session});
       });
     }
