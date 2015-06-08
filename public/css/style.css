@@ -6620,7 +6620,6 @@ body.capture .buttons .title {
 }
 .captureLeft #canvas-audio {
   display: none;
-  background-color: orange;
 }
 .captureRight {
   width: 550px;

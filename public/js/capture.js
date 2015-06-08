@@ -770,7 +770,7 @@ jQuery(document).ready(function($) {
         //$("#stop-recording").off();
         $("#stop-recording").on('click', function(e){
           console.log("stop equalizer");
-          stopEqualizer(e);
+          //stopEqualizer(e);
         });
       }
 
@@ -797,7 +797,7 @@ jQuery(document).ready(function($) {
       //Stop Equalizer
       if(countEqualizer > 1){
         console.log("stop equalizer");
-        stopEqualizer(e);
+        //stopEqualizer(e);
         countEqualizer = 0;
         console.log('stop recording');
       }
