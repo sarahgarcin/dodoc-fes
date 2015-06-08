@@ -25,12 +25,6 @@ html
           button#stopmotion Stop motion
           button#audio Son
 
-        div.choice
-          div.image-choice Mode image
-          div.video-choice Mode vidéo
-          div.stopmotion-choice Mode stop motion
-          div.audio-choice Mode audio
-
       //- div.left
       div.captureLeft
         div.video-view
@@ -40,25 +34,35 @@ html
 
         div.capture
           div.photo-capture
-            button#capture-btn
-              img(src="/images/save.svg")
+            button#capture-btn(data-toggle="tooltip" data-placement="left" title="Enregistrer une photo")
+              include templates/images/save.svg
           div.video-capture
             div.video-save
-              button(id='record-btn')
-                img(src="/images/save.svg")
+              button(id='record-btn' data-toggle="tooltip" data-placement="left" title="Démarrer l\'enregistrement d\'une vidéo")
+                include templates/images/save.svg
               button(id='stop-btn' disabled)
-                img(src="/images/stop.svg")
+                include templates/images/stop.svg
             span#elasped-time
           div.stopmotion-capture
             button#start-sm
-              img(src="/images/save.svg")
+              include templates/images/save.svg
             button#capture-sm
-              img(src="/images/save.svg")
+              include templates/images/save.svg
           div.audio-capture
             button(id='start-recording')
-              img(src="/images/save.svg")
+              include templates/images/save.svg
             button(id='stop-recording' disabled)
-              img(src="/images/stop.svg")
+              include templates/images/stop.svg
+        div.choice
+          div.choices.image-choice 
+            .caption mode image
+          div.choices.video-choice 
+            .caption mode vidéo
+          div.choices.stopmotion-choice 
+            .caption mode stop motion
+          div.choices.audio-choice 
+            .caption mode audio
+
 
       div.captureRight
 
@@ -66,13 +70,13 @@ html
         div.title.form-meta
           div.clear
             button#clear
-              img(src='/images/clear.svg')
+              include templates/images/clear.svg
         div.screenshot
           canvas#canvas.canvas-view
           canvas(id="canvas-equalizer" width=480 height=256)
           video(id="camera-preview" autoplay controls loop)
           button#stop-sm
-            img(src="/images/enregistre.svg")
+            include templates/images/enregistre.svg
         
         div.son
           audio(id="son" src="/star-wars-theme.mp3" controls)

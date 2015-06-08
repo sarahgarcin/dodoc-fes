@@ -18,6 +18,8 @@ jQuery(document).ready(function($) {
   var isEventExecutedAudio = false;
   var isEventExecutedEqualizer = false;
 
+  var fadeInModeTimer = 00;
+  var fadeOutModeTimer = 1600;
   var sarahCouleur = "gray";
 
 
@@ -55,12 +57,20 @@ $("body").keypress(function(e){
 
   function events(){
     $("#photo").addClass('active');
+    $(".choices").hide();
+    $(".image-choice").show();
+
+    setTimeout(function(){
+      $(".image-choice").fadeOut( fadeOutModeTimer );
+    }, 2000);
+
     $("#canvas-equalizer").hide()
     setTimeout(function(){
       $(".choice .image-choice").fadeIn(1000, function(){
         $(this).fadeOut(1000);
       });
     }, 1000);
+    
     changeMedia();
     $('audio').mediaelementplayer({
         alwaysShowControls: true,
@@ -156,8 +166,8 @@ $("body").keypress(function(e){
       $('#video').show();
       $('#canvas-audio').hide();$("#canvas-equalizer").hide();
       $('.instructions-stopmotion').hide(); $(".meta-stopmotion").hide();
-      $(".choice .image-choice").fadeIn(1000, function(){
-        $(this).fadeOut(1000);
+      $(".image-choice").fadeIn(fadeInModeTimer, function(){
+        $(this).fadeOut(fadeOutModeTimer);
       });
     }
     function videoDisplay(){
@@ -169,8 +179,8 @@ $("body").keypress(function(e){
       $('#video').show();
       $('#canvas-audio').hide();$("#canvas-equalizer").hide();
       $('.instructions-stopmotion').hide(); $(".meta-stopmotion").hide();
-      $(".choice .video-choice").fadeIn(1000, function(){
-        $(this).fadeOut(1000);
+      $(".video-choice").fadeIn(fadeInModeTimer, function(){
+        $(this).fadeOut(fadeOutModeTimer);
       });
     }
     function stopMotionDisplay(){
@@ -182,8 +192,8 @@ $("body").keypress(function(e){
       $('.audio-capture').css('display','none');
       $(".son").css("display", "none");
       $('#video').show();    
-      $(".choice .stopmotion-choice").fadeIn(1000, function(){
-        $(this).fadeOut(1000);
+      $(".stopmotion-choice").fadeIn(fadeInModeTimer, function(){
+        $(this).fadeOut(fadeOutModeTimer);
       });
       $('#canvas-audio').hide(); $("#canvas-equalizer").hide();
       var canvas = document.querySelector('#canvas');
@@ -200,8 +210,8 @@ $("body").keypress(function(e){
       $('#video').hide();
       $('.instructions-stopmotion').hide(); $(".meta-stopmotion").hide();
       $('#canvas-audio').show();$("#canvas-equalizer").show();
-      $(".choice .audio-choice").fadeIn(1000, function(){
-        $(this).fadeOut(1000);
+      $(".audio-choice").fadeIn(fadeInModeTimer, function(){
+        $(this).fadeOut(fadeOutModeTimer);
       });
     }
     $(".clear").off();
@@ -931,7 +941,6 @@ $("body").keypress(function(e){
       $('.captureLeft').velocity({'left':'50%'}, 'slow');
       $('.captureRight').removeClass('active').velocity({'left':'30%'}, 500,function(){
         $(this).fadeOut('slow');
-
       });
     }
   }

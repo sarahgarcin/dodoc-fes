@@ -81,7 +81,7 @@ a:hover {
 	text-decoration: none;
 }
 
-img, video, audio {
+img, video, audio, svg {
 	min-width: 100%;
 	width:100%;	
 	display: block;
@@ -110,11 +110,28 @@ button{
 
 /* fade au chargement de la page */
 .js body {
-	opacity: 0;
 
-	transition: opacity 1s;
-	&.is-loaded {
+	.container, .container-bibli {
+		opacity: 0;
+		transition: opacity .8s ease-out;
+	}
+	&.is-loaded .container, &.is-loaded .container-bibli  {
 		opacity: 1;
+	}
+
+	.media {
+		opacity: 0;
+		transition: opacity 1s ease-out;
+	}
+	.mediaOpacityLoop(18);
+	.mediaOpacityLoop(@n, @i: 1) when (@i =< @n) {
+	  .container-bibli .buffer .mediaContainer .media:nth-child(@{i}) {
+	    transition-delay: @i * .05s;
+	  }
+	  .mediaOpacityLoop(@n, (@i + 1));
+	}
+	&.is-loaded .media  {
+		opacity:1;
 	}
 }
 
@@ -268,7 +285,7 @@ button{
 
 	.title {
 		font-weight: 700;
-		letter-spacing: .4px;
+		letter-spacing: .2px;
 	}
 
 	body.select & .title {
@@ -475,42 +492,48 @@ button{
 .media-choice {
 	width:62%;
 	margin: 20px auto 40px auto;
+
 	.btn-choice{
+
 		width: 100%;
 		text-align: center;
-		margin-left: 12px;
-		button{
-			color:@grisfonce;
-			background-color: @grisclair;
+
+		button {
+
+			color:#333;
+			background-color: #fff;
 			border:none;
-			margin: 0px 45px 0px 25px;
+			margin: 0;
 			outline: none;
 			font-size: 1em;
 			padding: 5px 15px;
-			&:hover {
-				color:@bleumarine;
+
+			&.active, &:hover {
+				color:#fff;
 				background-color: @bleuvert;
 				outline: none;
+
+				&#photo {
+					background-color: @cimages;
+				}
+				&#video-btn {
+					background-color: @cvideos;
+				}
+				&#stopmotion {
+					background-color: @canim;
+				}
+				&#audio {
+					background-color: @csons;
+				}
+
 			}
+
 			&.active {
-				color:@bleumarine;
-				background-color: @bleuvert;
-				outline: none;
 			}
+
+
 		}
-	}
-	.choice{
-		div{
-			padding: 10px 14px;
-			background-color: @bleuvert;
-			text-align: center;
-			width: 200px;
-			position: absolute;
-			left: 43%;
-			top: 50%;
-			z-index: 102;
-			display: none;
-		}
+
 	}
 }
 
@@ -525,10 +548,18 @@ button{
 	left:@cardL;
 	margin-left: -@cardW/2;
 	  	background-color: #FFF;
+
+
+
 	.capture{
+
 		width:100%;
+		width: ~"calc(100% - 20px)";
 		position: absolute;
 		top:410px;
+
+		z-index: 1000;
+
 		&>div{
 			width:60px;
 			margin:0px auto 20px auto;
@@ -539,11 +570,47 @@ button{
 			background: none;
 			width:60px;
 			margin: auto;
+
+			svg {
+				#FOND {
+					transform-origin: center center;
+				}
+			}
+
+			&:active {
+				svg {
+					#FOND {
+						transform: scale( 1.01);
+					}
+				}
+			}
 		}
+
+		svg {
+			width: 100%;
+			height: 100%;
+		}
+
+		.photo-capture {
+			svg {
+				#FOND {
+					fill: @cimages;
+				}
+			}
+		}
+		
 		.video-capture{
 			.video-save{
 				#stop-btn{
 					display: none;
+				}
+			}
+			svg {
+				#FOND {
+					fill: @cvideos;
+				}
+				#CENTRE {
+					fill: @cimages;
 				}
 			}
 		}
@@ -555,13 +622,60 @@ button{
 			#capture-sm{
 				display:none;
 			}
+			svg {
+				#FOND {
+					fill: @canim;
+				}
+			}
 		}
 		.audio-capture{
 			#stop-recording{
 				display: none;
 			}
+			svg {
+				#FOND {
+					fill: @csons;
+				}
+			}
 		}
 	}
+
+	.choice{
+		width: 100%;
+		height: 100%;
+		position: absolute;
+		top: 0;
+		left: 0;
+
+		.choices {
+			width: 100%;
+			height: 100%;
+			position: absolute;
+			top: 0;
+			left: 0;
+			&.image-choice {
+				background-color: @cimages;
+			}
+			&.video-choice {
+				background-color: @cvideos;
+			}
+			&.stopmotion-choice {
+				background-color: @canim;
+			}
+			&.audio-choice {
+				background-color: @csons;
+			}
+
+			.caption {
+				height: 100%;
+				line-height: 160px;
+				text-align: center;
+				color: #fff;
+  			}
+		}
+
+	}
+
 	#canvas-audio{
 		display: none;
 		//background-color: orange;
@@ -634,8 +748,10 @@ button{
 }
 
 .video-view{
-	width: 90%;
-	margin:-40px auto 0px auto;
+	margin: auto;
+
+	pointer-events: none;
+
 	#canvas-audio{
 		margin-top: 60px;
 	}
@@ -643,6 +759,8 @@ button{
 
 .video-view video, .screenshot canvas{
 	width: 100%;
+	height: 100%;
+	padding: 20px;
 	// background-color: @grisclair;
 }
 
@@ -845,7 +963,9 @@ button{
 		.mediaContainer {
 			height: auto;
 			overflow-y: scroll;
-			padding: 30px;
+			padding: 0px;
+			padding-top: 20px;
+			padding-bottom: 80px;
 
 			.media{
 				list-style: none;
@@ -856,7 +976,7 @@ button{
 				display: inline-block;
 				vertical-align: top;
 				padding: 15px;
-				margin:5px;
+				margin:0px;
 
 				.mediaTitre {
 					margin: 0;
@@ -887,7 +1007,8 @@ button{
 					    background-image: url("/images/icone-dodoc_image.png");
 					}
 					.mediaTitre {
-						border-left-color: #ffb520;
+						border-left-color: @cimages;
+
 					}
 
 				}
@@ -898,7 +1019,7 @@ button{
 					    background-image: url("/images/icone-dodoc_video.png");
 					}
 					.mediaTitre {
-						border-left-color: #fe414d;
+						border-left-color: @cvideos;
 					}
 				}
 				&.sons-bibli{
@@ -907,7 +1028,7 @@ button{
 						height: 0;
 						padding-bottom: 33%;
 
-						background-color: #09227c;
+						background-color: @csons;
 					}
 
 					audio {
