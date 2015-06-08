@@ -94,5 +94,8 @@ jQuery(document).ready(function($) {
 
 	$('[data-toggle="tooltip"]').tooltip()
 
+	// fade in au chargement de la page
+	$("body").addClass("is-loaded");
+
 
 });
