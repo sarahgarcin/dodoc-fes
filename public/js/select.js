@@ -34,31 +34,31 @@ jQuery(document).ready(function($) {
     	var identifiant =  array[i].replace("." + extension, "");
     	console.log(identifiant);
 			if(extension == "jpg"){
-				$('.mediaContainer').append("<li class='media images-bibli' id='"+ identifiant+"'><img src='https://"+domainUrl + "/" +app.session + "/"+ array[i] + "'></li>");
+				$('.mediaContainer').append("<li class='media images-bibli' id='"+ identifiant+"'><div class='mediaContent'><img src='https://"+domainUrl + "/" +app.session + "/"+ array[i] + "'></div></li>");
 			}
 			if(extension == "webm" || extension == "mp4"){
-				$('.mediaContainer').append("<li class='media videos-bibli' id='"+ identifiant+"'><video src='https://"+domainUrl + "/"+app.session + "/" + array[i] + "' controls></li>");""
+				$('.mediaContainer').append("<li class='media videos-bibli' id='"+ identifiant+"'><div class='mediaContent'><video src='https://"+domainUrl + "/"+app.session + "/" + array[i] + "' controls></div></li>");""
 			}
 			if(extension == "wav"){
-				$('.mediaContainer').append("<li class='media sons-bibli' id='"+ identifiant+"'><audio src='https://"+domainUrl + "/"+app.session + "/" + array[i] + "' controls></li>");""
+				$('.mediaContainer').append("<li class='media sons-bibli' id='"+ identifiant+"'><div class='mediaContent'><audio src='https://"+domainUrl + "/"+app.session + "/" + array[i] + "' controls></div></li>");""
 				//console.log(array[i]);
 			}
 		}
 		var matchID = $(".mediaContainer .media").attr("id");
 		$.each(json["files"]["images"], function(i, val) {
-			$("#" + val['name']).append("<h3>" +val['titre'] + "</h3>");
+			$("#" + val['name']).append("<h3 class='mediaTitre'>" +val['titre'] + "</h3>");
 		  //console.log(i + "-" + val["titre"]);
 		});
 		$.each(json["files"]["stopmotion"], function(i, val) {
-			$("#" + val['name']).append("<h3>" +val['titre'] + "</h3>");
+			$("#" + val['name']).append("<h3 class='mediaTitre'>" +val['titre'] + "</h3>");
 		  //console.log(i + "-" + val["titre"]);
 		});
 		$.each(json["files"]["videos"], function(i, val) {
-			$("#" + val['name']).append("<h3>" +val['titre'] + "</h3>");
+			$("#" + val['name']).append("<h3 class='mediaTitre'>" +val['titre'] + "</h3>");
 		  //console.log(i + "-" + val["titre"]);
 		});
 		$.each(json["files"]["audio"], function(i, val) {
-			$("#" + val['name']).append("<h3>" +val['titre'] + "</h3>");
+			$("#" + val['name']).append("<h3 class='mediaTitre'>" +val['titre'] + "</h3>");
 		  //console.log(i + "-" + val["titre"]);
 		});
 		//var identifiant = images.replace(".jpg", "");
