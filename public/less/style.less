@@ -107,6 +107,20 @@ button{
 	vertical-align: top;
 }
 
+
+/* fade au chargement de la page */
+.js body {
+	opacity: 0;
+
+	transition: opacity 1s;
+	&.is-loaded {
+		opacity: 1;
+	}
+}
+
+
+
+
 /* HEADER NAVBAR */
 
 /*******************************************************************
@@ -276,7 +290,7 @@ button{
   width: 48px;
   height: 48px;
   padding:0;
-border-radius: 50%;
+  border-radius: 50%;
 
   transition: all .2s ease-out;
 
