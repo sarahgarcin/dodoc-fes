@@ -6364,7 +6364,7 @@ button {
 .buttons .button {
   border-radius: 0.25em;
   padding: 6px;
-  margin: 6px;
+  margin: 6px 40px;
   cursor: pointer;
   color: #000;
   -webkit-font-smoothing: antialiased;
@@ -6383,6 +6383,20 @@ body.capture .buttons .title {
 .buttons img {
   width: 40px;
   height: 40px;
+}
+.buttons .count-add-media {
+  background-color: #48c2b5;
+  padding: 4px 7px;
+  color: #FFF;
+  border-radius: 100px;
+  text-align: center;
+  font-size: 13px;
+  font-weight: bold;
+  position: absolute;
+  right: 28px;
+  top: 5px;
+  z-index: 30;
+  display: none;
 }
 .btn.icon {
   width: 48px;
@@ -6425,20 +6439,6 @@ body.capture .buttons .title {
 .btn-bibli {
   display: inline-block;
   float: right;
-}
-.btn-bibli .count-add-media {
-  background-color: #48c2b5;
-  padding: 7px 2px 5px 0px;
-  color: #FFF;
-  border-radius: 100px;
-  text-align: center;
-  font-size: 13px;
-  font-weight: bold;
-  width: 30px;
-  position: absolute;
-  right: 10px;
-  top: 5px;
-  opacity: 0;
 }
 .select .button.btn-bibli {
   display: none !important;

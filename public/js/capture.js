@@ -209,6 +209,7 @@ $("body").keypress(function(e){
       console.log('File was delete');
       socket.emit("deleteFile", {name:app.session});
       backAnimation();
+      deleteFeedback();
       e.stopPropagation;
     });
   }
@@ -954,14 +955,21 @@ $("body").keypress(function(e){
   }
 
   function saveFeedback(icone){
-    //setTimeout(function(){
-      $("body").append("<div class='icone-feedback'><img src='"+icone+"'></div>");
-      $(".icone-feedback").fadeIn('slow').velocity({"top":"10px", "left":"92%"},function(){
-        $(this).fadeOut('fast', function(){
-          $(this).remove();
+    $("body").append("<div class='icone-feedback'><img src='"+icone+"'></div>");
+    $(".icone-feedback").fadeIn('slow').velocity({"top":"20px", "left":"94%", "width":"20px"},"slow", "ease", function(){
+      $(this).fadeOut('slow', function(){
+        $(this).remove();
+        $(".count-add-media.plus-media").fadeIn('slow', function(){
+          $(this).fadeOut('slow');
         });
       });
-    //},400);
+    });
+  }
+
+  function deleteFeedback(){
+    $(".count-add-media.moins-media").fadeIn('slow', function(){
+      $(this).fadeOut('slow');
+    });
   }
 
   function timestampToDate(timestamp){

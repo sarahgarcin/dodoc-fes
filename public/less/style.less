@@ -256,7 +256,7 @@ button{
 
 		border-radius: 0.25em;
 		padding: 6px;
-		margin: 6px;
+		margin: 6px 40px;
 
 		cursor: pointer;
 		color: #000;
@@ -282,6 +282,21 @@ button{
 	img {
 		width: 	40px;
 		height: 40px;
+	}
+
+	.count-add-media{
+		background-color: @bleuvert;
+		padding: 4px 7px;
+		color: #FFF;
+		border-radius: 100px;
+		text-align: center;
+		font-size: 13px;
+		font-weight: bold;
+		position: absolute;
+		right:28px;
+		top: 5px;
+		z-index: 30;
+		display: none;
 	}
 
 }
@@ -347,20 +362,6 @@ button{
 	display: inline-block;
 	float: right;	
 
-	.count-add-media{
-		background-color: @bleuvert;
-		padding: 7px 2px 5px 0px;
-		color: #FFF;
-		border-radius: 100px;
-		text-align: center;
-		font-size: 13px;
-		font-weight: bold;
-		width:30px;
-		position: absolute;
-		right:10px;
-		top: 5px;
-		opacity: 0;
-	}
 }
 
 // DISPARITION / APPARITION DES BOUTONS DE LA NAVBAR
