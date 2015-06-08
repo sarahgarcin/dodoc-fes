@@ -47,6 +47,11 @@ jQuery(document).ready(function($) {
 
   function events(){
     $("#photo").addClass('active');
+    setTimeout(function(){
+      $(".choice .image-choice").fadeIn(1000, function(){
+        $(this).fadeOut(1000);
+      });
+    }, 2000);
     changeMedia();
     $('audio').mediaelementplayer({
         alwaysShowControls: true,
@@ -140,7 +145,10 @@ jQuery(document).ready(function($) {
       $('.audio-capture').css('display','none');
       $(".son").css("display", "none");
       $('#video').show();
-      $('#canvas-audio').hide();$("#canvas-equalizer").hide();
+      $('#canvas-audio').hide();$("#canvas-equalizer").css("display",'none');
+      $(".choice .image-choice").fadeIn(1000, function(){
+        $(this).fadeOut(1000);
+      });
     }
     function videoDisplay(){
       $('.photo-capture').css('display', 'none');
@@ -150,6 +158,9 @@ jQuery(document).ready(function($) {
       $(".son").css("display", "none");
       $('#video').show();
       $('#canvas-audio').hide();$("#canvas-equalizer").hide();
+      $(".choice .video-choice").fadeIn(1000, function(){
+        $(this).fadeOut(1000);
+      });
     }
     function stopMotionDisplay(){
       $('.screenshot .canvas-view').show();
@@ -160,6 +171,9 @@ jQuery(document).ready(function($) {
       $('.audio-capture').css('display','none');
       $(".son").css("display", "none");
       $('#video').show();
+      $(".choice .stopmotion-choice").fadeIn(1000, function(){
+        $(this).fadeOut(1000);
+      });
       $('#canvas-audio').hide(); $("#canvas-equalizer").hide();
       var canvas = document.querySelector('#canvas');
       canvas.getContext("2d").clearRect(0, 0, canvas.width, canvas.height)
@@ -174,6 +188,9 @@ jQuery(document).ready(function($) {
       $('.right .son').css('display', 'block');
       $('#video').hide();
       $('#canvas-audio').show();$("#canvas-equalizer").show();
+      $(".choice .audio-choice").fadeIn(1000, function(){
+        $(this).fadeOut(1000);
+      });
     }
     $(".clear").off();
     $(".clear").on("click", function(e){
@@ -891,9 +908,16 @@ jQuery(document).ready(function($) {
       //console.log('right class active')
       $(".right").css('display', 'block').addClass('active');
       $(".form-meta").show().addClass('active');
+      $("#canvas-equalizer").hide();
       $('.left').velocity({'left':'26%'}, 'slow');
       $('.right').velocity({'left':'52%'}, 'slow', function(){
         //$('.right').css('height', "auto");
+        $('.right').clone().appendTo('.clone');
+        $(".clone").velocity({'width':"200px", 'top':'60px', 'left':'87%'}, 'slow', function(){
+          $(this).fadeOut('slow', function() {
+            $(this).remove();
+          });
+        });
         socket.emit(capture, {data: data, id: sessionId, name: app.session});
       });
     }
