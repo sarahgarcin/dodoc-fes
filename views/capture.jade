@@ -24,12 +24,6 @@ html
           button#stopmotion Stop motion
           button#audio Son
 
-        div.choice
-          div.image-choice Mode image
-          div.video-choice Mode vidéo
-          div.stopmotion-choice Mode stop motion
-          div.audio-choice Mode audio
-
       //- div.left
       div.captureLeft
         div.video-view
@@ -58,6 +52,16 @@ html
               include templates/images/save.svg
             button(id='stop-recording' disabled)
               include templates/images/stop.svg
+        div.choice
+          div.choices.image-choice 
+            .caption mode image
+          div.choices.video-choice 
+            .caption mode vidéo
+          div.choices.stopmotion-choice 
+            .caption mode stop motion
+          div.choices.audio-choice 
+            .caption mode audio
+
 
       div.captureRight
 
