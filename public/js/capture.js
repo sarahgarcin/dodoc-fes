@@ -18,6 +18,8 @@ jQuery(document).ready(function($) {
   var isEventExecutedAudio = false;
   var isEventExecutedEqualizer = false;
 
+  var fadeInModeTimer = 00;
+  var fadeOutModeTimer = 1600;
 
 	/**
 	* Events
@@ -47,10 +49,11 @@ jQuery(document).ready(function($) {
 
   function events(){
     $("#photo").addClass('active');
+    $(".choices").hide();
+    $(".image-choice").show();
+
     setTimeout(function(){
-      $(".choice .image-choice").fadeIn(1000, function(){
-        $(this).fadeOut(1000);
-      });
+      $(".image-choice").fadeOut( fadeOutModeTimer );
     }, 2000);
     changeMedia();
     $('audio').mediaelementplayer({
@@ -147,8 +150,8 @@ jQuery(document).ready(function($) {
       $('#video').show();
       $('#canvas-audio').hide();$("#canvas-equalizer").hide();
       $('.instructions-stopmotion').hide(); $(".meta-stopmotion").hide();
-      $(".choice .image-choice").fadeIn(1000, function(){
-        $(this).fadeOut(1000);
+      $(".image-choice").fadeIn(fadeInModeTimer, function(){
+        $(this).fadeOut(fadeOutModeTimer);
       });
     }
     function videoDisplay(){
@@ -160,8 +163,8 @@ jQuery(document).ready(function($) {
       $('#video').show();
       $('#canvas-audio').hide();$("#canvas-equalizer").hide();
       $('.instructions-stopmotion').hide(); $(".meta-stopmotion").hide();
-      $(".choice .video-choice").fadeIn(1000, function(){
-        $(this).fadeOut(1000);
+      $(".video-choice").fadeIn(fadeInModeTimer, function(){
+        $(this).fadeOut(fadeOutModeTimer);
       });
     }
     function stopMotionDisplay(){
@@ -173,8 +176,8 @@ jQuery(document).ready(function($) {
       $('.audio-capture').css('display','none');
       $(".son").css("display", "none");
       $('#video').show();    
-      $(".choice .stopmotion-choice").fadeIn(1000, function(){
-        $(this).fadeOut(1000);
+      $(".stopmotion-choice").fadeIn(fadeInModeTimer, function(){
+        $(this).fadeOut(fadeOutModeTimer);
       });
       $('#canvas-audio').hide(); $("#canvas-equalizer").hide();
       var canvas = document.querySelector('#canvas');
@@ -191,8 +194,8 @@ jQuery(document).ready(function($) {
       $('#video').hide();
       $('.instructions-stopmotion').hide(); $(".meta-stopmotion").hide();
       $('#canvas-audio').show();$("#canvas-equalizer").show();
-      $(".choice .audio-choice").fadeIn(1000, function(){
-        $(this).fadeOut(1000);
+      $(".audio-choice").fadeIn(fadeInModeTimer, function(){
+        $(this).fadeOut(fadeOutModeTimer);
       });
     }
     $(".clear").off();
@@ -905,7 +908,6 @@ jQuery(document).ready(function($) {
       $('.captureLeft').velocity({'left':'50%'}, 'slow');
       $('.captureRight').removeClass('active').velocity({'left':'30%'}, 500,function(){
         $(this).fadeOut('slow');
-
       });
     }
   }

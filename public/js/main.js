@@ -78,9 +78,9 @@ function closePopover( closeCallbackFunction) {
 jQuery(document).ready(function($) {
 	$(".navbar-brand svg").find("rect,circle,polyline,line,path").velocity({
 			scale: 0
-		}, {
-    	duration: 0,
-		});
+	}, {
+    		duration: 0,
+	});
 
 	$(".navbar-brand svg").velocity({ opacity: 1} );
 	$( $(".navbar-brand svg").find("rect,circle,polyline,line,path").get().reverse() ).each(function(i) {
@@ -93,6 +93,14 @@ jQuery(document).ready(function($) {
 	});
 
 	$('[data-toggle="tooltip"]').tooltip()
+
+	// fade in au chargement de la page
+	setTimeout(function() {
+		$("body").addClass("is-loaded");
+	}, 500);
+
+	// fade out au changement de page
+
 
 
 });
