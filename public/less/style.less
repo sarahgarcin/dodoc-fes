@@ -107,6 +107,20 @@ button{
 	vertical-align: top;
 }
 
+
+/* fade au chargement de la page */
+.js body {
+	opacity: 0;
+
+	transition: opacity 1s;
+	&.is-loaded {
+		opacity: 1;
+	}
+}
+
+
+
+
 /* HEADER NAVBAR */
 
 /*******************************************************************
@@ -141,7 +155,7 @@ button{
 
 		width: auto;
 
-		padding-top: 	4px;
+		padding-top: 	6px;
 		padding-bottom: 12px;
 
 		font-size: 16px;
@@ -180,8 +194,11 @@ button{
 	.lopendocProjet {
 		display: inline-block;
 		font-weight: bold;
-		vertical-align: text-top;
-		padding-top: 5px;
+		vertical-align: top;
+
+		height: 50px;
+
+		padding-top: 13px;
 		padding-bottom: 5px;
 
 		padding-left: 15px;
@@ -256,11 +273,9 @@ button{
 
 	body.select & .title {
 		color: #FE414D;
-		border-top: 2px solid #FFB520;
 	}
 	body.capture & .title {
 		color: #FFB520;
-		border-top: 2px solid #FE414D;
 	}
 
 	// icones dans les boutons
@@ -275,13 +290,12 @@ button{
   width: 48px;
   height: 48px;
   padding:0;
-border-radius: 50%;
+  border-radius: 50%;
 
   transition: all .2s ease-out;
 
 	&:hover, &:hover{
 		border-radius: 20%;
-	    box-shadow:  0 1px 4px rgba(0, 0, 0, 0.4);
 
 	}
 
