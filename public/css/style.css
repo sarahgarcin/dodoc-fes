@@ -6739,8 +6739,8 @@ body.capture .buttons .title {
   display: inline-block;
   width: 50px;
   position: absolute;
-  top: 40px;
-  right: 30px;
+  top: 10px;
+  right: 10px;
   z-index: 100;
 }
 .record-button-animated {
