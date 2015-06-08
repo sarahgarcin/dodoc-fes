@@ -4,7 +4,7 @@ jQuery(document).ready(function($) {
 	var domainUrl = window.location.host;
 	var socket = io.connect();
 	var sessionId = '';
-
+	var time;
 	/**
 	* Events
 	*/
@@ -32,7 +32,7 @@ jQuery(document).ready(function($) {
 		for (var i = 0; i < array.length; i++) {    	
     	var extension = array[i].split('.').pop();
     	var identifiant =  array[i].replace("." + extension, "");
-    	console.log(identifiant);
+    	//console.log(identifiant);
 			if(extension == "jpg"){
 				$('.mediaContainer').append("<li class='media images-bibli' id='"+ identifiant+"'><div class='mediaContent'><img src='https://"+domainUrl + "/" +app.session + "/"+ array[i] + "' preload='none'></div></li>");
 			}
@@ -46,39 +46,21 @@ jQuery(document).ready(function($) {
 		}
 		var matchID = $(".mediaContainer .media").attr("id");
 		$.each(json["files"]["images"], function(i, val) {
-			$("#" + val['name']).append("<h3 class='mediaTitre'>" +val['titre'] + "</h3>");
-		  //console.log(i + "-" + val["titre"]);
+			timestampToDate(val['name']);
+			$("#" + val['name']).append("<h3 class='mediaTitre'>" +time+ "</h3>");
 		});
 		$.each(json["files"]["stopmotion"], function(i, val) {
-			$("#" + val['name']).append("<h3 class='mediaTitre'>" +val['titre'] + "</h3>");
-		  //console.log(i + "-" + val["titre"]);
+			timestampToDate(val['name']);
+			$("#" + val['name']).append("<h3 class='mediaTitre'>" +time + "</h3>");
 		});
 		$.each(json["files"]["videos"], function(i, val) {
-			$("#" + val['name']).append("<h3 class='mediaTitre'>" +val['titre'] + "</h3>");
-		  //console.log(i + "-" + val["titre"]);
+			timestampToDate(val['name']);
+			$("#" + val['name']).append("<h3 class='mediaTitre'>" +time + "</h3>");
 		});
 		$.each(json["files"]["audio"], function(i, val) {
-			$("#" + val['name']).append("<h3 class='mediaTitre'>" +val['titre'] + "</h3>");
-		  //console.log(i + "-" + val["titre"]);
+			timestampToDate(val['name']);
+			$("#" + val['name']).append("<h3 class='mediaTitre'>" +time+ "</h3>");
 		});
-		//var identifiant = images.replace(".jpg", "");
-		//for(var i=0; i<images.length; i++) {
-        	// $('.mediaContainer').append("<li><img src='http://localhost:8080/" + app.session + "/" + images[i] + "'></li>");
-   //  	$('.mediaContainer').append("<li class='images-bibli' id='"+ identifiant+"'' ><img src='http://localhost:8080/" + app.session + "/" + images + "'></li>");    	
-   //  //}
-   //  	//console.log(json["files"]["images"]['name']);
-   //  	var matchID = $(".images-bibli").attr("id");
-			// // for(var key in json["files"]["images"]) {
-			// // 	console.log(key['name']);	
-			// // 	//if(matchID == json["files"]["images"][key]['name']){
-			// // 		$("#" + json["files"]["images"][key]['name']).append("<h2>" +json["files"]["images"][key]['titre'] + "</h2>");
-	  // //  			//console.log("key:"+key+", value:"+json["files"]["images"][key]['titre']);
-	  // //  		//}
-			// // }
-			// $.each(json["files"]["images"], function(i, val) {
-			// 		$("#" + val['name']).append("<h2>" +val['titre'] + "</h2>");
-			//   //console.log(i + "-" + val["titre"]);
-			// });
 	}
 
 	function ondisplayVideos(videos){
@@ -87,6 +69,20 @@ jQuery(document).ready(function($) {
 
 	function ondisplayAudio(audio){
     $('.mediaContainer').append("<li class='audio-bibli'><audio controls src='https://"+domainUrl + "/"+app.session + "/" + audio + "'></li>");    	
+	}
+
+	function timestampToDate(timestamp){
+    var date = new Date(timestamp);
+		// hours part from the timestamp
+		var hours = date.getHours();
+		// minutes part from the timestamp
+		var minutes = "0" + date.getMinutes();
+		// seconds part from the timestamp
+		var seconds = "0" + date.getSeconds();
+
+		// will display time in 10:30:23 format
+		time = hours + 'h' + minutes.substr(minutes.length-2);
+		//console.log(time);
 	}
 
 });
