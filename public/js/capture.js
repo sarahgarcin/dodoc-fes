@@ -145,7 +145,8 @@ jQuery(document).ready(function($) {
       $('.audio-capture').css('display','none');
       $(".son").css("display", "none");
       $('#video').show();
-      $('#canvas-audio').hide();$("#canvas-equalizer").css("display",'none');
+      $('#canvas-audio').hide();$("#canvas-equalizer").hide();
+      $('.instructions-stopmotion').hide(); $(".meta-stopmotion").hide();
       $(".choice .image-choice").fadeIn(1000, function(){
         $(this).fadeOut(1000);
       });
@@ -158,6 +159,7 @@ jQuery(document).ready(function($) {
       $(".son").css("display", "none");
       $('#video').show();
       $('#canvas-audio').hide();$("#canvas-equalizer").hide();
+      $('.instructions-stopmotion').hide(); $(".meta-stopmotion").hide();
       $(".choice .video-choice").fadeIn(1000, function(){
         $(this).fadeOut(1000);
       });
@@ -170,7 +172,7 @@ jQuery(document).ready(function($) {
       $('.stopmotion-capture').css('display','block');
       $('.audio-capture').css('display','none');
       $(".son").css("display", "none");
-      $('#video').show();
+      $('#video').show();    
       $(".choice .stopmotion-choice").fadeIn(1000, function(){
         $(this).fadeOut(1000);
       });
@@ -187,6 +189,7 @@ jQuery(document).ready(function($) {
       $('.screenshot #canvas').css('display', 'none');
       $('.captureRight .son').css('display', 'block');
       $('#video').hide();
+      $('.instructions-stopmotion').hide(); $(".meta-stopmotion").hide();
       $('#canvas-audio').show();$("#canvas-equalizer").show();
       $(".choice .audio-choice").fadeIn(1000, function(){
         $(this).fadeOut(1000);
@@ -529,6 +532,7 @@ jQuery(document).ready(function($) {
         canvas.getContext('2d').drawImage(canvasAudio, 0, 0, widthAudio, heightAudio);
         var data = canvas.toDataURL('image/png');
         photo.setAttribute('src', data);
+        $('#canvas-equalizer').show();
 
         // stop audio recorder
         recordAudio.stopRecording(function(url) {
@@ -637,13 +641,13 @@ jQuery(document).ready(function($) {
       }
 
       function startVideo(){
-        $('#camera-preview').hide();
-        $('.screenshot .canvas-view').hide();
         if($(".form-meta").hasClass('active')){
           $(".form-meta.active").hide(function(){ 
             $(".form-meta").removeClass('active');
           });
         }
+        $('#camera-preview').hide();
+        $('.screenshot .canvas-view').hide();
         $(".captureRight").css('display', 'block').addClass('active');
         $('.captureLeft').velocity({'left':'26%'}, 'slow');
         $('.captureRight').velocity({'left':'52%'}, 'slow');
@@ -897,21 +901,22 @@ jQuery(document).ready(function($) {
   //fenêtre de preview retourne au center
   function backAnimation(){
     if($(".captureRight").hasClass('active')){
+      $('.form-meta.active').hide();
       $('.captureLeft').velocity({'left':'50%'}, 'slow');
-      $('.captureRight').removeClass('active').velocity({'left':'50%'}, 500,function(){$(this).css("display", "none")});
+      $('.captureRight').removeClass('active').velocity({'left':'30%'}, 500,function(){
+        $(this).fadeOut('slow');
+
+      });
     }
   }
 
   //animation des fenêtres à la capture
   function animateWindows(data, capture){
     if(!$('.captureRight').hasClass('active')){
-      //console.log('right class active')
       $(".captureRight").css('display', 'block').addClass('active');
       $(".form-meta").show().addClass('active');
-      $("#canvas-equalizer").hide();
       $('.left').velocity({'left':'26%'}, 'slow');
       $('.right').velocity({'left':'52%'}, 'slow', function(){
-        //$('.right').css('height', "auto");
         $('.right').clone().appendTo('.clone');
         $(".clone").velocity({'width':"200px", 'top':'60px', 'left':'87%'}, 'slow', function(){
           $(this).fadeOut('slow', function() {
@@ -921,7 +926,6 @@ jQuery(document).ready(function($) {
       });
       $('.captureLeft').velocity({'left':'26%'}, 'slow');
       $('.captureRight').velocity({'left':'52%'}, 'slow', function(){
-        //$('.captureRight').css('height', "auto");
         socket.emit(capture, {data: data, id: sessionId, name: app.session});
       });
     }
