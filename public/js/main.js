@@ -13,6 +13,11 @@ function fillPopOver( content, thisbutton, finalWidth, finalHeight, closeCallbac
 
 	$popover.addClass("is-visible");
 
+	// si il y a un champ input dedans, passer le focus au premier 
+	if( $popover.find("input").length > 0 ) {
+		$popover.find("input").eq(0).focus();	
+	}
+
 	var button = thisbutton;
 	var maxQuickWidth = 900;
 
