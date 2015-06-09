@@ -29,15 +29,15 @@ jQuery(document).ready(function($) {
 	};
 
 	function ondisplayMedias(array, json){
-		for (var i = 0; i < array.length; i++) {    	
+		for (var i = 0; i < array.length; i++) {
     	var extension = array[i].split('.').pop();
     	var identifiant =  array[i].replace("." + extension, "");
     	//console.log(identifiant);
 			if(extension == "jpg"){
 				$('.mediaContainer').append("<li class='media images-bibli' id='"+ identifiant+"'><div class='mediaContent'><img src='https://"+domainUrl + "/" +app.session + "/"+ array[i] + "' preload='none'></div></li>");
 			}
-			if(extension == "mp4"){
-				$('.mediaContainer').append("<li class='media videos-bibli' id='"+ identifiant+"'><div class='mediaContent'><video controls><source src='https://"+domainUrl + "/"+app.session + "/" + array[i] + "' type='video/mp4'></video></div></li>");""
+			if(extension == "mp4" || extension == "webm"){
+				$('.mediaContainer').append("<li class='media videos-bibli' id='"+ identifiant+"'><div class='mediaContent'><video preload='none' controls><source src='https://"+domainUrl + "/"+app.session + "/" + array[i] + "'></video></div></li>");""
 			}
 			if(extension == "wav"){
 				$('.mediaContainer').append("<li class='media sons-bibli' id='"+ identifiant+"'><div class='mediaContent'><audio src='https://"+domainUrl + "/"+app.session + "/" + array[i] + "' preload='none' controls></div></li>");""
@@ -64,11 +64,11 @@ jQuery(document).ready(function($) {
 	}
 
 	function ondisplayVideos(videos){
-    $('.mediaContainer').append("<li class='video-bibli'><video controls preload='none' controls><source src='https://"+domainUrl + "/"+app.session + "/" + videos + "' type='video/mp4'></video></li>");    	
+    $('.mediaContainer').append("<li class='video-bibli'><video controls preload='none' controls><source src='https://"+domainUrl + "/"+app.session + "/" + videos + "' type='video/webm'></video></li>");
 	}
 
 	function ondisplayAudio(audio){
-    $('.mediaContainer').append("<li class='audio-bibli'><audio controls src='https://"+domainUrl + "/"+app.session + "/" + audio + "'></li>");    	
+    $('.mediaContainer').append("<li class='audio-bibli'><audio controls src='https://"+domainUrl + "/"+app.session + "/" + audio + "'></li>");
 	}
 
 	function timestampToDate(timestamp){
