@@ -37,7 +37,7 @@ jQuery(document).ready(function($) {
 				$('.mediaContainer').append("<li class='media images-bibli' id='"+ identifiant+"'><div class='mediaContent'><img src='https://"+domainUrl + "/" +app.session + "/"+ array[i] + "' preload='none'></div></li>");
 			}
 			if(extension == "mp4"){
-				$('.mediaContainer').append("<li class='media videos-bibli' id='"+ identifiant+"'><div class='mediaContent'><video preload='none' controls><source src='https://"+domainUrl + "/"+app.session + "/" + array[i] + "' type='video/mp4'></video></div></li>");""
+				$('.mediaContainer').append("<li class='media videos-bibli' id='"+ identifiant+"'><div class='mediaContent'><video controls><source src='https://"+domainUrl + "/"+app.session + "/" + array[i] + "' type='video/mp4'></video></div></li>");""
 			}
 			if(extension == "wav"){
 				$('.mediaContainer').append("<li class='media sons-bibli' id='"+ identifiant+"'><div class='mediaContent'><audio src='https://"+domainUrl + "/"+app.session + "/" + array[i] + "' preload='none' controls></div></li>");""
