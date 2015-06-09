@@ -24,12 +24,6 @@ jQuery(document).ready(function($) {
   var sarahCouleur = "gray";
 
 
-$("body").keypress(function(e){
-  var code = e.keyCode || e.which;
-  console.log(code);
-});
-
-
 	/**
 	* Events
 	*/
@@ -62,7 +56,7 @@ $("body").keypress(function(e){
     $(".image-choice").show();
 
     setTimeout(function(){
-      $(".image-choice").fadeOut( fadeOutModeTimer );
+      $(".image-choice").fadeOut(fadeOutModeTimer);
     }, 2000);
 
     $("#canvas-equalizer").hide()
@@ -104,11 +98,8 @@ $("body").keypress(function(e){
       });
       $(".btn-choice").on('click', backAnimation);
       $("body").keypress(function(e){
-        // countClick ++;
         var code = e.keyCode || e.which;
         var $activeButton = $(".btn-choice").find('.active');
-        //if(countClick > 10){
-        //   countClick = 0;
           if(code == 115) { //remplacer 155 par 115 
             var $nextButton = $activeButton.next();
             $activeButton.removeClass('active');
@@ -118,7 +109,6 @@ $("body").keypress(function(e){
             else{
               $nextButton = $(".btn-choice button").first().addClass('active');
             }
-            //console.log("Powermate Rotate to Right");
           }
           if(code == 122) { //remplacer 98 par 122 
             var $prevButton = $activeButton.prev();
@@ -128,8 +118,8 @@ $("body").keypress(function(e){
             }
             else{
               $prevButton = $(".btn-choice button").last().addClass('active');
+              $activeButton.removeClass('active');
             }
-            //console.log("Powermate Rotate to Left");
           }
           if(code == 115 || code == 122){
             $(".form-meta.active").slideUp( "slow" ); 
@@ -285,8 +275,9 @@ $("body").keypress(function(e){
       $("#stop-sm").on('click', stopStopMotion);
 
       //redémarre le stop motion quand un autre média est choisi au milieu du stop motion
+      var isEventExecutedSM = false;
       $("#stopmotion").click(function(){
-        var isEventExecutedSM = false;
+        isEventExecutedSM = false;
         $(".btn-choice button").click(function(){
           if(isEventExecutedSM == false){
             isEventExecutedSM = true;
@@ -301,13 +292,12 @@ $("body").keypress(function(e){
       $("#video-btn").on('click', function(){
         audioVideo("click");
       });
-      $(".btn-choice button").on('click', function(){
-        createEqualizer("click");
-      });
       $("#audio").on('click', function(e){
         audioCapture("click");
-        //createEqualizer(e, "click");
       });
+
+      //initiate Equalizer at the beginning
+      createEqualizer();
 
       //Powermate function
       $("body").keypress(function(e){
@@ -329,10 +319,11 @@ $("body").keypress(function(e){
         // Taking StopMotion
         if($("#stopmotion").hasClass('active')){
           //redémarre le stop motion quand un autre média est choisi au milieu du stop motion
-          var isEventExecutedSM = false;
+          isEventExecutedSM = false;
           if(code == 115 || code == 122){
-            if(isEventExecutedVideo == false){
-              isEventExecutedVideo = true;
+            console.log(isEventExecutedSM);
+            if(isEventExecutedSM == false){
+              isEventExecutedSM = true;
               $("#stop-sm").hide();
               $("#start-sm").show();
               $("#capture-sm").hide();
@@ -346,16 +337,12 @@ $("body").keypress(function(e){
               startStopMotion();
             }
             else{
+              console.log("start taking pictures");
               onStopMotionDirectory();
             }
           }
-          // if(code == 99){
-          //   stopStopMotion();
-          //   countPress = 0;
-          // }
         }
         if($("#audio").hasClass('active')){
-          createEqualizer("keypress");
           if(code == 113) {
             countPress ++;
             countEqualizer ++;
@@ -421,8 +408,8 @@ $("body").keypress(function(e){
         $('.captureRight').velocity({'left':'52%'}, 'slow');
         $('.screenshot').append('<div class="instructions-stopmotion"><div class="icone-stopmotion"><img src="/images/stopmotion.svg"></div><h4>Vous venez de créer un nouveau stop-motion.</br>Appuyez sur <b>enregistrer</b> pour prendre des photos</h4></div>')
         socket.emit('newStopMotion', {id: sessionId, name: app.session});
-        $(".screenshot").append("<div class='meta-stopmotion'><p class='count-image'></p></div>");
-        $(".screenshot .meta-stopmotion").prepend("<div class='delete-image'><img src='/images/clear.svg'></div>").hide();
+        $(".screenshot").append("<div class='meta-stopmotion'><div class='delete-image'><img src='/images/clear.svg'></div><p class='count-image'></p></div>");
+        $(".screenshot .meta-stopmotion").hide();
       }
              
       function onStopMotionDirectory(){
@@ -525,6 +512,7 @@ $("body").keypress(function(e){
           startRecordingBtn.disabled = false;
           stopRecordingBtn.disabled = true;
           countPress = 0;
+          sarahCouleur = "gray";
         }
       }
       
@@ -823,33 +811,8 @@ $("body").keypress(function(e){
       } catch(e) {
           console.log('Web Audio API is not supported in this browser');
       }
-      //click events
-      if(event == "click"){
-        startEqualizer();
-
-        $("#stop-recording").on('click', function(e){
-          console.log("stop equalizer");
-          //stopEqualizer(e);
-        });
-      }
-
-
-      //Powermate events
-      //Clear Equalizer Canvas
-      if(event == "keypress"){
-        console.log("quel est l'évènement envoyé ? ");
-        startEqualizer();
-
-        //Stop Equalizer
-        $("body").keypress(function(e){
-          var code = e.keyCode || e.which;
-          if(code == 113){
-            console.log("stop equalizer");
-            //stopEqualizer(e);
-            countEqualizer = 0;
-          }
-        });
-      }
+      
+      startEqualizer();
 
       function startEqualizer(){
         // e.preventDefault();
@@ -979,7 +942,7 @@ $("body").keypress(function(e){
 
   function saveFeedback(icone){
     $("body").append("<div class='icone-feedback'><img src='"+icone+"'></div>");
-    $(".icone-feedback").fadeIn('slow').velocity({"top":"20px", "left":"94%", "width":"20px"},"slow", "ease", function(){
+    $(".icone-feedback").fadeIn('slow').velocity({"top":"25px", "left":"95.6%", "width":"20px"},"slow", "ease", function(){
       $(this).fadeOut('slow', function(){
         $(this).remove();
         $(".count-add-media.plus-media").fadeIn('slow', function(){

@@ -6667,6 +6667,7 @@ body.capture .buttons .title {
   left: 50%;
   margin-left: -275px;
   background-color: #FFF;
+  z-index: 2;
 }
 .captureLeft .capture {
   width: 100%;
@@ -6773,7 +6774,7 @@ body.capture .buttons .title {
   position: absolute;
   top: 150px;
   left: 50%;
-  z-index: -1;
+  z-index: 1;
   display: none;
   margin-bottom: 50px;
 }
@@ -6850,6 +6851,9 @@ body.capture .buttons .title {
   height: 100%;
   padding: 20px;
 }
+.screenshot .canvas-view {
+  padding: 0px;
+}
 .photo-capture {
   display: block;
 }
@@ -6890,8 +6894,8 @@ body.capture .buttons .title {
   display: inline-block;
   width: 50px;
   position: absolute;
-  top: 10px;
-  right: 10px;
+  top: 5px;
+  right: 5px;
   z-index: 100;
 }
 .record-button-animated {

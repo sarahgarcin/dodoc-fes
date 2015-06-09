@@ -557,12 +557,10 @@ button{
 	top: @cardT;
 	left:@cardL;
 	margin-left: -@cardW/2;
-	  	background-color: #FFF;
-
-
+	background-color: #FFF;
+	z-index:2;
 
 	.capture{
-
 		width:100%;
 		width: ~"calc(100% - 20px)";
 		position: absolute;
@@ -709,7 +707,7 @@ button{
 	position: absolute;
 	top: @cardT;
 	left:@cardL;
-	z-index: -1;
+	z-index: 1;
 	display: none;
 	margin-bottom: 50px;
 	.flash{
@@ -791,6 +789,10 @@ button{
 	// background-color: @grisclair;
 }
 
+.screenshot .canvas-view{
+	padding: 0px;
+}
+
 .photo-capture{
 	display: block;
 }
@@ -840,9 +842,8 @@ button{
 		display: inline-block;
 		width: 50px;
 		position: absolute;
-		//margin-top: -10px;
-		top:10px;
-		right: 10px;
+		top:5px;
+		right: 5px;
 		z-index: 100;
 	}
 }
