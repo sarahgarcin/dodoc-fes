@@ -42,10 +42,10 @@ jQuery(document).ready(function($) {
 				$('.mediaContainer').append("<li class='media images-bibli' id='"+ identifiant+"'><div class='mediaContent'><img src='https://"+domainUrl + "/" +app.session + "/"+ array[i] + "' preload='none'></div></li>");
 			}
 			if(extension == "webm"){
-				$('.mediaContainer').append("<li class='media videos-bibli' id='"+ identifiant+"'><div class='mediaContent'><video preload='none' controls><source src='https://"+domainUrl + "/"+app.session + "/" + array[i] + "'></video></div></li>");
+				$('.mediaContainer').append("<li class='media videos-bibli' id='"+ identifiant+"'><div class='mediaContent'><video preload='none' controls poster='https://"+domainUrl + "/"+app.session + "/"+identifiant +"-thumb.png'><source src='https://"+domainUrl + "/"+app.session + "/" + array[i] + "'></video></div></li>");
 			}
 			if(extension == "mp4"){
-				$('.mediaContainer').append("<li class='media stopmotion-bibli' id='"+ identifiant+"'><div class='mediaContent'><video preload='none' controls><source src='https://"+domainUrl + "/"+app.session + "/" + array[i] + "'></video></div></li>");
+				$('.mediaContainer').append("<li class='media stopmotion-bibli' id='"+ identifiant+"'><div class='mediaContent'><video preload='none' controls poster='https://"+domainUrl + "/"+app.session + "/"+identifiant +"-thumb.png'><source src='https://"+domainUrl + "/"+app.session + "/" + array[i] + "'></video></div></li>");
 			}
 			if(extension == "wav"){
 				$('.mediaContainer').append("<li class='media sons-bibli' id='"+ identifiant+"'><div class='mediaContent'><audio src='https://"+domainUrl + "/"+app.session + "/" + array[i] + "' preload='none' controls></div></li>");
@@ -77,12 +77,12 @@ jQuery(document).ready(function($) {
 
 	function displayNewStopMotion(stopmotion){
 		timestampToDate(stopmotion.title);
-	  $('.mediaContainer').append("<li class='media stopmotion-bibli' id='"+ stopmotion.title+"'><div class='mediaContent'><video controls preload='none' controls><source src='https://"+domainUrl + "/"+app.session + "/" + stopmotion.file + "' type='video/webm'></video></div><h3 class='mediaTitre'>" +time+ "</h3></li>");
+	  $('.mediaContainer').append("<li class='media stopmotion-bibli' id='"+ stopmotion.title+"'><div class='mediaContent'><video controls preload='none' poster='https://"+domainUrl + "/"+app.session + "/"+stopmotion.title +"-thumb.png'><source src='https://"+domainUrl + "/"+app.session + "/" + stopmotion.file + "' type='video/webm'></video></div><h3 class='mediaTitre'>" +time+ "</h3></li>");
 	}
 
 	function displayNewVideo(videos){
 		timestampToDate(videos.title);
-	  $('.mediaContainer').append("<li class='media videos-bibli' id='"+ videos.title+"'><div class='mediaContent'><video controls preload='none' controls><source src='https://"+domainUrl + "/"+app.session + "/" + videos.file + "' type='video/webm'></video></div><h3 class='mediaTitre'>" +time+ "</h3></li>");
+	  $('.mediaContainer').append("<li class='media videos-bibli' id='"+ videos.title+"'><div class='mediaContent'><video controls preload='none' poster='https://"+domainUrl + "/"+app.session + "/"+videos.title +"-thumb.png'><source src='https://"+domainUrl + "/"+app.session + "/" + videos.file + "' type='video/webm'></video></div><h3 class='mediaTitre'>" +time+ "</h3></li>");
 	}
 
 	function displayNewAudio(audio){

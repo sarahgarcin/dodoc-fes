@@ -7076,6 +7076,9 @@ audio {
 .container-bibli .buffer .mediaContainer .media.sons-bibli .mediaTitre {
   border-left-color: #09227c;
 }
+.container-bibli .buffer .mediaContainer .media.sons-bibli .mediaContent {
+  background-color: #0038bb;
+}
 .container-bibli .montage {
   overflow-y: scroll;
   -webkit-box-shadow: 0 1px 4px rgba(0, 0, 0, 0.1);

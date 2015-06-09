@@ -5,7 +5,7 @@ var fs = require('fs-extra'),
 		markdown = require( "markdown" ).markdown,
 		exec = require('child_process').exec,
 		phantom = require('phantom'),
-		ffmpeg = require('fluent-ffmpeg')
+		ffmpeg = require('fluent-ffmpeg'),
 		sprintf = require("sprintf-js").sprintf,
     vsprintf = require("sprintf-js").vsprintf;
 
@@ -192,6 +192,18 @@ module.exports = function(app, io){
 		    console.log('file has been converted succesfully');
 		    io.sockets.emit("newStopMotionCreated", {fileName:fileName + '.mp4', name:req.name, dir:req.dir });
 		  	io.sockets.emit("displayNewStopMotion", {file: fileName + ".mp4", extension:"mp4", name:req.name, title: fileName});
+		  	var proc = ffmpeg(videoPath)
+			  // set the size of your thumbnails
+			  //.size('150x100')
+			  // setup event handlers
+			  .on('end', function(files) {
+			    console.log('screenshots were saved as ' + fileName + "-thumb.png");
+			  })
+			  .on('error', function(err) {
+			    console.log('an error happened: ' + err.message);
+			  })
+			  // take 2 screenshots at predefined timemarks
+			  .takeScreenshots({ count: 1, timemarks: [ '00:00:00'], filename: fileName + "-thumb.png"}, 'sessions/' + req.name);
 		  })
 		  .on('error', function(err) {
 		    console.log('an error happened: ' + err.message);
@@ -211,6 +223,7 @@ module.exports = function(app, io){
           console.log("The file was saved!");
       }
     });
+
     
 	}
 
@@ -236,7 +249,20 @@ module.exports = function(app, io){
           console.log("The file was saved!");
       }
     });
-    io.sockets.emit("displayNewVideo", {file: fileName + ".webm", extension:"webm", name:data.name, title: fileName});
+ 		var proc = ffmpeg(sessionDirectory + "/" + fileName + ".webm")
+	  // set the size of your thumbnails
+	  //.size('150x100')
+	  // setup event handlers
+	  .on('end', function(files) {
+	    console.log('screenshots were saved as ' + files);
+	  })
+	  .on('error', function(err) {
+	    console.log('an error happened: ' + err.message);
+	  })
+	  // take 2 screenshots at predefined timemarks
+	  .takeScreenshots({ count: 1, timemarks: [ '00:00:01'], filename: fileName + "-thumb.png"}, sessionDirectory);
+	  
+	  io.sockets.emit("displayNewVideo", {file: fileName + ".webm", extension:"webm", name:data.name, title: fileName});
 	}
 
 	function writeToDisk(dataURL, fileName, session) {
