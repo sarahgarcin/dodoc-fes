@@ -6191,6 +6191,10 @@ button.close {
 html {
   margin: 0;
 }
+body,
+html {
+  height: 100%;
+}
 body {
   margin: 0;
   color: #000;
@@ -6485,13 +6489,13 @@ body.capture .buttons .title {
   font-size: 16px;
 }
 .btn.capture {
-  background-color: #FE414D;
+  background-color: #FFB520;
 }
 .btn.capture + .tooltip .tooltip-arrow {
-  border-right-color: #FE414D;
+  border-right-color: #FFB520;
 }
 .btn.capture + .tooltip .tooltip-inner {
-  background-color: #FE414D;
+  background-color: #FFB520;
 }
 .btn.bibli {
   background-color: #FFB520;

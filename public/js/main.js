@@ -147,7 +147,7 @@ jQuery(document).ready(function($) {
 					window.location = newLocation;
 				}, 550);
 
-				$(".mediaContainer").velocity({
+				$(".buffer").velocity({
 					opacity: 0,
 					translateX: 20
 				}, {
@@ -174,15 +174,27 @@ jQuery(document).ready(function($) {
 
 				setTimeout( function() {
 					window.location = newLocation;
-				}, 550);
+				}, 350);
 
-				$(".container").velocity({
+				$(".titleAndActions").velocity({
+					translateX: -10,
+					opacity: 0
+				},{
+					duration: 300,
+				});
+
+				$(".media-choice").velocity({
 					opacity: 0,
 					translateX: -20
 				}, {
 					duration: 300,
 				});
-
+				$(".captureLeft, .captureRight").velocity({
+					opacity: 0,
+					translateX: -40
+				}, {
+					duration: 300,
+				});
 			});
 		});
 
