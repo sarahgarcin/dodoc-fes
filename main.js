@@ -23,7 +23,7 @@ module.exports = function(app, io){
 
 	io.on("connection", function(socket){
 		socket.on("newUser", onNewUser);
-		socket.on("newUserSelect", onNewUserSelect);
+		socket.on("newUserSelect", listMedias);
 		socket.on("newSession", addNewSession);
 		socket.on("imageCapture", onNewImage);
 		socket.on("newStopMotion", onNewStopMotion);
@@ -46,10 +46,6 @@ module.exports = function(app, io){
 		console.log(req);
 		listSessions();		
 	};
-
-	function onNewUserSelect(req){
-		listMedias(req);
-	}
 
 	//Ajoute le dossier de la session + l'ajouter à la liste des sessions
 	function addNewSession(session) {

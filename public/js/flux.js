@@ -20,7 +20,8 @@ jQuery(document).ready(function($) {
 	socket.on('displayNewAudio', displayNewAudio);
 
 
-	socket.emit('newUserSelect', {id: socket.io.engine.id, name: app.session});
+	//socket.emit('newUserSelect', {id: socket.io.engine.id, name: app.session});
+	//ondisplayMedias();
 
 	/**
 	* handlers
@@ -31,7 +32,7 @@ jQuery(document).ready(function($) {
 	function onSocketConnect() {
 		sessionId = socket.io.engine.id;
 		console.log('Connected ' + sessionId);
-		// socket.emit('newUserSelect', {id: sessionId, name: app.session});
+		socket.emit('newUserSelect', {id: sessionId, name: app.session});
 	};
 	function onSocketError(reason) {
 		console.log('Unable to connect to server', reason);
@@ -53,6 +54,19 @@ jQuery(document).ready(function($) {
 			}
 		}
 	}
+	// function ondisplayMedias(){
+	// 	$.getJSON("https://"+host+"/" + app.session + "/" + app.session + ".json", function( json ) {
+	// 	  $.each( json["files"], function( i, item ) {
+	// 	  	// timestampToDate(parseFloat(item.name));
+	// 	  	console.log(item);
+	// 	  	// $('.container-flux .content ul').prepend("<li class='images-bibli' id='"+ item.name+"'' ><img src='https://"+host+"/" + app.session + "/" + item.name + ".jpg'><h3 class='mediaTitre'>" +time+ "</h3></li>");
+ //      });
+ //     //  $.each( json["files"]["videos"], function( i, item ) {
+	// 	  	// timestampToDate(parseFloat(item.name));
+	// 	  	// $('.container-flux .content ul').prepend("<li class='videos-bibli' id='"+ item.name+"'' ><video src='https://"+host+"/" + app.session + "/" + item.name + ".webm' controls preload='none'></video><h3 class='mediaTitre'>" +time+ "</h3></li>");
+ //     //  });
+	// 	});
+	// }
 
 	function displayNewImage(req){
 		var identifiant = req.name;

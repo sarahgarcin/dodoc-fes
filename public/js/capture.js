@@ -15,6 +15,7 @@ jQuery(document).ready(function($) {
   // var recordAudio;
   // var recordVideo;
   var isEventExecutedVideo = false;
+  var isEventExecutedVideoBtn = false;
   var isEventExecutedAudio = false;
   var isEventExecutedEqualizer = false;
 
@@ -300,7 +301,9 @@ $("body").keypress(function(e){
       $("#video-btn").on('click', function(){
         audioVideo("click");
       });
-      createEqualizer("click")
+      $(".btn-choice button").on('click', function(){
+        createEqualizer("click");
+      });
       $("#audio").on('click', function(e){
         audioCapture("click");
         //createEqualizer(e, "click");
@@ -352,11 +355,11 @@ $("body").keypress(function(e){
           // }
         }
         if($("#audio").hasClass('active')){
+          createEqualizer("keypress");
           if(code == 113) {
             countPress ++;
             countEqualizer ++;
             audioCapture(code);
-            createEqualizer(e);
           }
         }
       });
@@ -470,15 +473,8 @@ $("body").keypress(function(e){
           startRecordAudio();
           isEventExecutedVideo = false;
           $(".btn-choice").click(function(e){
-            if(isEventExecutedVideo == false){
-              isEventExecutedVideo = true;
-              console.log("Audio File was not saved");
-              recordAudio.stopRecording();
-              startRecordingBtn.style.display = "block";
-              stopRecordingBtn.style.display = "none";
-              startRecordingBtn.disabled = false;
-              stopRecordingBtn.disabled = true;
-            }
+            isEventExecutedVideo = false;
+            stopAudioOnChange(e, isEventExecutedVideo);
           });
         });
 
@@ -494,17 +490,12 @@ $("body").keypress(function(e){
         startRecordAudio();
         console.log("recording audio");
         isEventExecutedAudio = false;
-        $("body").keypress(function(e){
-          if(isEventExecutedAudio == false){
-            var code = e.keyCode || e.which;
-            if(code == 115 || code == 122){
-              isEventExecutedAudio = true;
-              console.log("File was not saved");
-              recordAudio.stopRecording();
-              startRecordingBtn.style.display = "block";
-              stopRecordingBtn.style.display = "none";
-              countPress = 0;
-            }
+        $("body").unbind("keypress.key115");
+        $("body").bind("keypress.key115", function(e){
+          var code = e.keyCode || e.which;
+          if(code == 115 || code == 122){
+            isEventExecutedVideo = false;
+            stopAudioOnChange(e, isEventExecutedVideo);
           }
         });
       }
@@ -523,6 +514,19 @@ $("body").keypress(function(e){
         cameraPreview.muted = false;
         cameraPreview.controls = true;
       });
+
+      function stopAudioOnChange(e){
+        if(isEventExecutedVideo == false){
+          isEventExecutedVideo = true;
+          console.log("Audio File was not saved");
+          recordAudio.stopRecording();
+          startRecordingBtn.style.display = "block";
+          stopRecordingBtn.style.display = "none";
+          startRecordingBtn.disabled = false;
+          stopRecordingBtn.disabled = true;
+          countPress = 0;
+        }
+      }
       
       function startRecordAudio(){
         backAnimation();
@@ -620,18 +624,9 @@ $("body").keypress(function(e){
         $("#record-btn").on('click', function(){
           console.log("you are using the mouse for recording");
           startVideo();
-          isEventExecutedVideo = false;
           $(".btn-choice").click(function(e){
-            if(isEventExecutedVideo == false){
-              isEventExecutedVideo = true;
-              console.log('your video was not saved');
-              recordVideo.stopRecording();
-              e.preventDefault();
-              startVideoRecording.style.display = "block";
-              stopVideoRecording.style.display = "none";
-              startVideoRecording.disabled = false;
-              stopVideoRecording.disabled = true;
-            }
+            isEventExecutedVideo = false;
+            stopVideoOnChange(e, isEventExecutedVideo);
           });
         });
 
@@ -646,20 +641,13 @@ $("body").keypress(function(e){
       if(countPress == 1){
         startVideo();
         console.log("recording video");
-        isEventExecutedVideo = false;
-        $("body").keypress(function(e){
-          if(isEventExecutedVideo == false){
-            var code = e.keyCode || e.which;
-            if(code == 115 || code == 122){
-                isEventExecutedVideo = true;
-                console.log('your video was not saved');
-                recordVideo.stopRecording();
-                e.preventDefault();
-                startVideoRecording.style.display = "block";
-                stopVideoRecording.style.display = "none";
-                countPress = 0;
-              }
-            }
+        $("body").unbind("keypress.key115");
+        $("body").bind("keypress.key115", function(e){
+          var code = e.keyCode || e.which;
+          if(code == 115 || code == 122){
+            isEventExecutedVideo = false;
+            stopVideoOnChange(e, isEventExecutedVideo);
+          }
         });
       }
 
@@ -677,6 +665,21 @@ $("body").keypress(function(e){
         cameraPreview.muted = false;
         cameraPreview.controls = true;
       });
+
+      function stopVideoOnChange(e) {
+        if(isEventExecutedVideo == false){
+          isEventExecutedVideo = true;
+          console.log('your video was not saved');
+          recordVideo.stopRecording();
+          e.preventDefault();
+          startVideoRecording.style.display = "block";
+          stopVideoRecording.style.display = "none";
+          startVideoRecording.disabled = false;
+          stopVideoRecording.disabled = true;
+          $(".recording-feedback").remove();
+          countPress = 0;
+        }
+      }
 
       function startVideo(){
         backAnimation();
@@ -784,7 +787,7 @@ $("body").keypress(function(e){
     }
 
     // CREATE A SOUND EQUALIZER
-    function createEqualizer(click){
+    function createEqualizer(event){
       window.requestAnimFrame = (function(){
         return  window.requestAnimationFrame       ||
                 window.webkitRequestAnimationFrame ||
@@ -821,27 +824,9 @@ $("body").keypress(function(e){
           console.log('Web Audio API is not supported in this browser');
       }
       //click events
-      if(click == "click"){
-        //$("#start-recording").off();
-        //$("#start-recording").on('click', function(e){
-          startEqualizer();
-          // isEventExecutedVideo = false;
-          // $(".btn-choice").click(function(e){
-          //   if(isEventExecutedVideo == false){
-          //     isEventExecutedVideo = true;
-          //     stopEqualizer(e);
-          //     console.log("equalizer stoped");
-          //   }
-          // });
-        //});
-        // $("#start-recording").on('click', function(){
-        //   var offscreenCanvas = document.createElement('canvas');
-        //   offscreenCanvas.width = "480px";
-        //   offscreenCanvas.height = "256px";
-        //   var context = offscreenCanvas.getContext('2d');
-        // }
+      if(event == "click"){
+        startEqualizer();
 
-        //$("#stop-recording").off();
         $("#stop-recording").on('click', function(e){
           console.log("stop equalizer");
           //stopEqualizer(e);
@@ -851,29 +836,19 @@ $("body").keypress(function(e){
 
       //Powermate events
       //Clear Equalizer Canvas
-      if(countEqualizer == 1){
-        startEqualizer(e);
-        isEventExecutedEqualizer == false;
-        console.log('start recording');
+      if(event == "keypress"){
+        console.log("quel est l'évènement envoyé ? ");
+        startEqualizer();
+
+        //Stop Equalizer
         $("body").keypress(function(e){
-          if(isEventExecutedEqualizer == false){
-            var code = e.keyCode || e.which;
-            if(code == 115 || code == 122){
-              console.log("equalizer stoped");
-              isEventExecutedEqualizer = true;
-              stopEqualizer(e);
-              countEqualizer = 0;
-            }
+          var code = e.keyCode || e.which;
+          if(code == 113){
+            console.log("stop equalizer");
+            //stopEqualizer(e);
+            countEqualizer = 0;
           }
         });
-      }
-
-      //Stop Equalizer
-      if(countEqualizer > 1){
-        console.log("stop equalizer");
-        //stopEqualizer(e);
-        countEqualizer = 0;
-        console.log('stop recording');
       }
 
       function startEqualizer(){
