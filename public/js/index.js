@@ -41,11 +41,10 @@ jQuery(document).ready(function($) {
 
 			console.log("CLICK");
 
-			var newContentToAdd = "<h3 class='popoverTitle'>Ajouter un projet</h3><p>Entrez un nom</p><div class='add-project'><input class='new-session' placeholder='Nom du projet'></input><input type='submit' class='submit-session'></input></div>";
+			var newContentToAdd = "<h3 class='popoverTitle'>Ajouter un projet</h3><p>Entrez un nom</p><form class='add-project'><input class='new-session' placeholder='Nom du projet'></input><input type='submit' class='submit-session'></input></form>";
 			
 			var closeAddProjectFunction = function() {
 			};
-
 
 			fillPopOver( newContentToAdd, $(this), 300, 300, closeAddProjectFunction);
 
