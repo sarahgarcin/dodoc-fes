@@ -6191,6 +6191,10 @@ button.close {
 html {
   margin: 0;
 }
+body,
+html {
+  height: 100%;
+}
 body {
   margin: 0;
   color: #000;
@@ -6406,6 +6410,7 @@ button {
   margin: 0;
   padding: 0;
   position: relative;
+  padding: 0 5px;
 }
 .buttons.alignRight {
   text-align: right;
@@ -6428,7 +6433,7 @@ button {
 .buttons .button {
   border-radius: 0.25em;
   padding: 6px;
-  margin: 6px 40px;
+  margin: 6px 10px;
   cursor: pointer;
   color: #000;
   -webkit-font-smoothing: antialiased;
@@ -6461,6 +6466,7 @@ body.capture .buttons .title {
   top: 5px;
   z-index: 30;
   display: none;
+  pointer-events: none;
 }
 .btn.icon {
   width: 48px;
@@ -6483,13 +6489,13 @@ body.capture .buttons .title {
   font-size: 16px;
 }
 .btn.capture {
-  background-color: #FE414D;
+  background-color: #FFB520;
 }
 .btn.capture + .tooltip .tooltip-arrow {
-  border-right-color: #FE414D;
+  border-right-color: #FFB520;
 }
 .btn.capture + .tooltip .tooltip-inner {
-  background-color: #FE414D;
+  background-color: #FFB520;
 }
 .btn.bibli {
   background-color: #FFB520;
@@ -6563,6 +6569,7 @@ body.capture .buttons .title {
   padding: 0;
   transition: background-color 0.4s ease-out;
   display: inline-block;
+  transform: translate(0, 0, 0);
 }
 .index .session .list-session ul .session-project a {
   color: #333;
@@ -7025,14 +7032,12 @@ audio {
 .container-bibli .buffer .mediaContainer {
   height: auto;
   overflow-y: scroll;
-  padding: 0px;
-  padding-top: 20px;
-  padding-bottom: 80px;
+  padding: 20px 10px 80px;
 }
 .container-bibli .buffer .mediaContainer .media {
   list-style: none;
   position: relative;
-  width: calc( 33% - 10px);
+  width: 33.3%;
   display: inline-block;
   vertical-align: top;
   padding: 15px;

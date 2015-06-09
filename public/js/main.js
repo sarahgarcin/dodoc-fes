@@ -13,6 +13,11 @@ function fillPopOver( content, thisbutton, finalWidth, finalHeight, closeCallbac
 
 	$popover.addClass("is-visible");
 
+	// si il y a un champ input dedans, passer le focus au premier 
+	if( $popover.find("input").length > 0 ) {
+		$popover.find("input").eq(0).focus();	
+	}
+
 	var button = thisbutton;
 	var maxQuickWidth = 900;
 
@@ -51,6 +56,8 @@ function fillPopOver( content, thisbutton, finalWidth, finalHeight, closeCallbac
 		});
 */
 	});
+
+
 
 	$("body").on('click', function(event){
 		if( $(event.target).is('.close-panel') || $(event.target).is('body.is-overlaid')) {
@@ -94,13 +101,106 @@ jQuery(document).ready(function($) {
 
 	$('[data-toggle="tooltip"]').tooltip()
 
-	// fade in au chargement de la page
 	setTimeout(function() {
+
+		// fade out au changement de page
+		$(".session-project a").each( function() {
+			$that = $(this);
+			$that.on("click", function(event) {
+
+				console.log("CLICK");
+
+				event.preventDefault();
+				newLocation = this.href;
+				setTimeout( function() {
+					window.location = newLocation;
+				}, 500);
+
+				$(event.target).closest("li").velocity({
+					translateY: -5,
+				}, {
+					duration: 600,
+					easing: "easeout"
+				});
+
+				$(".session-project a").not(event.target).each(function(i) {
+					$(this).closest("li").delay(i*15).velocity({
+						translateY: 20,
+						opacity: 0
+					}, {
+						duration: 600,
+						easing: "easeout"
+					});
+				});
+			});
+		});
+
+		// page select.js, click sur bouton vers capture
+		$(".button a.capture").each( function() {
+			$that = $(this);
+			$that.on("click", function(event) {
+				
+				event.preventDefault();
+				newLocation = this.href;
+
+				setTimeout( function() {
+					window.location = newLocation;
+				}, 550);
+
+				$(".buffer").velocity({
+					opacity: 0,
+					translateX: 20
+				}, {
+					duration: 300,
+				});
+				$(".montage").velocity({
+					opacity: 0,
+					translateX: 50
+				}, {
+					duration: 400,
+				});
+
+
+			});
+		});
+
+		// page capture.js, click sur bouton vers select
+		$(".button a.bibli").each( function() {
+			$that = $(this);
+			$that.on("click", function(event) {
+				
+				event.preventDefault();
+				newLocation = this.href;
+
+				setTimeout( function() {
+					window.location = newLocation;
+				}, 350);
+
+				$(".titleAndActions").velocity({
+					translateX: -10,
+					opacity: 0
+				},{
+					duration: 300,
+				});
+
+				$(".media-choice").velocity({
+					opacity: 0,
+					translateX: -20
+				}, {
+					duration: 300,
+				});
+				$(".captureLeft, .captureRight").velocity({
+					opacity: 0,
+					translateX: -40
+				}, {
+					duration: 300,
+				});
+			});
+		});
+
+		// fade in au chargement de la page
 		$("body").addClass("is-loaded");
 	}, 500);
-
-	// fade out au changement de page
-
 
 
 });

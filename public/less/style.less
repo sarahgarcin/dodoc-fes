@@ -33,6 +33,10 @@ html {
 	margin:0;
 }
 
+body,html {
+	height:100%;
+}
+
 body {
   margin: 0;
   color: #000;
@@ -245,6 +249,7 @@ button{
 	margin: 0;
 	padding: 0;
 	position: relative;
+	padding: 0 5px;
 
 	&.alignRight {
 		text-align: right;
@@ -273,7 +278,7 @@ button{
 
 		border-radius: 0.25em;
 		padding: 6px;
-		margin: 6px 40px;
+		margin: 6px 10px;
 
 		cursor: pointer;
 		color: #000;
@@ -314,6 +319,8 @@ button{
 		top: 5px;
 		z-index: 30;
 		display: none;
+
+		pointer-events: none;
 	}
 
 }
@@ -350,14 +357,14 @@ button{
 
 
 .btn.capture {
-	background-color: #FE414D;
+	background-color: #FFB520;
 	// tooltip
 	+ .tooltip {
 		.tooltip-arrow {
-	 	   border-right-color: #FE414D;
+	 	   border-right-color: #FFB520;
 		}
 		.tooltip-inner {
-		    background-color: #FE414D;
+		    background-color: #FFB520;
 		}
 	}
 }
@@ -455,6 +462,8 @@ button{
 
 					.vignetteProjet;
 					display: inline-block;
+
+					transform: translate(0,0,0);
 
 
 				}			  	
@@ -981,15 +990,13 @@ button{
 		.mediaContainer {
 			height: auto;
 			overflow-y: scroll;
-			padding: 0px;
-			padding-top: 20px;
-			padding-bottom: 80px;
+			padding: 20px 10px 80px;
 
 			.media{
 				list-style: none;
 				position: relative;;
   				
-  				width: ~"calc( 33% - 10px)";
+  				width: 33.3%;
   				// height: 215px;
 				display: inline-block;
 				vertical-align: top;

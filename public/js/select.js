@@ -29,7 +29,7 @@ jQuery(document).ready(function($) {
 	};
 
 	function ondisplayMedias(array, json){
-		for (var i = 0; i < array.length; i++) {    	
+		for (var i = 0; i < array.length; i++) {
     	var extension = array[i].split('.').pop();
     	var identifiant =  array[i].replace("." + extension, "");
     	//console.log(identifiant);
@@ -64,11 +64,11 @@ jQuery(document).ready(function($) {
 	}
 
 	function ondisplayVideos(videos){
-    $('.mediaContainer').append("<li class='video-bibli'><video controls preload='none' controls><source src='https://"+domainUrl + "/"+app.session + "/" + videos + "' type='video/webm'></video></li>");    	
+	    $('.mediaContainer').append("<li class='video-bibli'><video controls preload='none' controls><source src='https://"+domainUrl + "/"+app.session + "/" + videos + "' type='video/webm'></video></li>");
 	}
 
 	function ondisplayAudio(audio){
-    $('.mediaContainer').append("<li class='audio-bibli'><audio controls src='https://"+domainUrl + "/"+app.session + "/" + audio + "'></li>");    	
+ 	   $('.mediaContainer').append("<li class='audio-bibli'><audio controls src='https://"+domainUrl + "/"+app.session + "/" + audio + "'></li>");
 	}
 
 	function timestampToDate(timestamp){
