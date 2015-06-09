@@ -6565,6 +6565,7 @@ body.capture .buttons .title {
   padding: 0;
   transition: background-color 0.4s ease-out;
   display: inline-block;
+  transform: translate(0, 0, 0);
 }
 .index .session .list-session ul .session-project a {
   color: #333;
