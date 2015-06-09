@@ -946,37 +946,8 @@ button{
 
 //END CUSTOM AUDIO PLAYER
 
-//FLUX PAGE
-.container-flux{
-	ul{
-			padding: 40px 30px 30px 20px;
-			li{
-				list-style: none;
-				// height: 215px;
-				display: inline-block;
-				vertical-align: top;
-				margin: 0px 10px 10px 0px;
-				&.images-bibli{
-					img{
-						border: 5px solid blue;
-
-					}
-				}
-				&.videos-bibli{
-					video{
-						width: 100%;
-						border: 5px solid green;
-					}	
-				}
-				&.audios-bibli{
-					border: 5px solid red;
-				}
-			}
-		}
-}
 // BIBLI PAGE ------
 .container-bibli {
-
 	width:100%;
 	height: 100vh;
 	margin: auto;
@@ -987,7 +958,6 @@ button{
 
 	.buffer {
 		background-color:#e5e5e5;
-
 		.mediaContainer {
 			height: auto;
 			overflow-y: scroll;
@@ -995,9 +965,8 @@ button{
 
 			.media{
 				list-style: none;
-				position: relative;;
-  				
-  				width: 33.3%;
+				position: relative;;	
+  			width: 33.3%;
   				// height: 215px;
 				display: inline-block;
 				vertical-align: top;
@@ -1048,15 +1017,17 @@ button{
 						border-left-color: @cvideos;
 					}
 				}
-				&.sons-bibli{
-					.mediaContent {
-						width: 100%;
-						height: 0;
-						padding-bottom: 33%;
-
-						background-color: @csons;
+				&.stopmotion-bibli{
+					video{
+					}	
+					&:after {
+					    background-image: url("/images/icone-dodoc_anim.png");
 					}
-
+					.mediaTitre {
+						border-left-color: @canim;
+					}
+				}
+				&.sons-bibli{
 					audio {
 						opacity: 1;
 						padding-top:33%;
@@ -1068,7 +1039,6 @@ button{
 						border-left-color: #09227c;
 					}
 				}
-
 			}
 		}
 	}
@@ -1111,7 +1081,6 @@ button{
 	}
 
 	.content {
-
 		//background-color: white;
 
 		@whiteMargins : 40px;
@@ -1132,13 +1101,73 @@ button{
 			position: relative;
 			text-align: right;
 			margin-right: 15px;
-
+		}
+		.mediaTitre {
+			border-right: 3px solid #000;
+			position: relative;
+			text-align: right;
+			padding-right: 15px;
+			font-style: italic;
 		}
 
 		img {
 			max-width: 800px;
 			min-width: 0;
 			margin-bottom: 15px;
+		}
+		ul{
+			.media{
+				list-style: none;
+				position: relative;;
+				margin: 0px 10px 40px 0px;
+				&:after {
+			    content: "";
+			    position: absolute;
+			    top:0;
+			    right:0;
+			    margin:5px;
+			    width: 40px;
+			    height: 40px;
+			    background-size: cover;
+			    z-index: 11;
+				}
+				&.images-bibli{
+					&:after {
+					  background-image: url("/images/icone-dodoc_image.png");
+					}
+					.mediaTitre {
+						border-right-color: @cimages;
+					}
+				}
+				&.videos-bibli{	
+					&:after {
+					    background-image: url("/images/icone-dodoc_video.png");
+					}
+					.mediaTitre {
+						border-right-color: @cvideos;
+					}
+				}
+				&.sons-bibli{
+					audio {
+						opacity: 1;
+						padding-top:33%;
+					}
+					&:after {
+					    background-image: url("/images/icone-dodoc_son.png");
+					}
+					.mediaTitre {
+						border-right-color: @csons;
+					}
+				}
+				&.stopmotion-bibli{
+					&:after {
+					    background-image: url("/images/icone-dodoc_anim.png");
+					}
+					.mediaTitre {
+						border-right-color: @canim;
+					}
+				}
+			}
 		}
 
 	}

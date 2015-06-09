@@ -39,40 +39,31 @@ jQuery(document).ready(function($) {
 	};
 
 	function ondisplayMedias(array, json){
+		$('.container-flux .content ul li').remove();
 		for (var i = 0; i < array.length; i++) {    	
     	var extension = array[i].split('.').pop();
     	var identifiant =  array[i].replace("." + extension, "");
     	timestampToDate(parseFloat(identifiant));
 			if(extension == "jpg"){
-				$('.container-flux .content ul').prepend("<li class='images-bibli' id='"+ identifiant+"'' ><img src='https://"+host+"/" + app.session + "/" + array[i] + "'><h3 class='mediaTitre'>" +time+ "</h3></li>");
+				$('.container-flux .content ul').prepend("<li class='media images-bibli' id='"+ identifiant+"'' ><img src='https://"+host+"/" + app.session + "/" + array[i] + "'><h3 class='mediaTitre'>" +time+ "</h3></li>");
 			}
-			if(extension == "mp4" || extension == "webm"){
-				$('.container-flux .content ul').prepend("<li class='videos-bibli' id='"+ identifiant+"'' ><video src='https://"+host+"/" + app.session + "/" + array[i] + "' controls preload='none'><h3 class='mediaTitre'>" +time+ "</h3></li>");
+			if(extension == "webm"){
+				$('.container-flux .content ul').prepend("<li class='media videos-bibli' id='"+ identifiant+"'' ><video src='https://"+host+"/" + app.session + "/" + array[i] + "' controls preload='none'></video><h3 class='mediaTitre'>" +time+ "</h3></li>");
+			}
+			if(extension == "mp4"){
+				$('.container-flux .content ul').prepend("<li class='media stopmotion-bibli' id='"+ identifiant+"'' ><video src='https://"+host+"/" + app.session + "/" + array[i] + "' controls preload='none'></video><h3 class='mediaTitre'>" +time+ "</h3></li>");
 			}
 			if(extension == "wav"){
-				$('.container-flux .content ul').prepend("<li class='sons-bibli' id='"+ identifiant+"'' ><audio src='https://"+host+"/" + app.session + "/" + array[i] + "' controls preload='none'><h3 class='mediaTitre'>" +time+ "</h3></li>");
+				$('.container-flux .content ul').prepend("<li class='media sons-bibli' id='"+ identifiant+"'' ><audio src='https://"+host+"/" + app.session + "/" + array[i] + "' preload='none' controls></audio><h3 class='mediaTitre'>" +time+ "</h3></li>");
 			}
 		}
 	}
-	// function ondisplayMedias(){
-	// 	$.getJSON("https://"+host+"/" + app.session + "/" + app.session + ".json", function( json ) {
-	// 	  $.each( json["files"], function( i, item ) {
-	// 	  	// timestampToDate(parseFloat(item.name));
-	// 	  	console.log(item);
-	// 	  	// $('.container-flux .content ul').prepend("<li class='images-bibli' id='"+ item.name+"'' ><img src='https://"+host+"/" + app.session + "/" + item.name + ".jpg'><h3 class='mediaTitre'>" +time+ "</h3></li>");
- //      });
- //     //  $.each( json["files"]["videos"], function( i, item ) {
-	// 	  	// timestampToDate(parseFloat(item.name));
-	// 	  	// $('.container-flux .content ul').prepend("<li class='videos-bibli' id='"+ item.name+"'' ><video src='https://"+host+"/" + app.session + "/" + item.name + ".webm' controls preload='none'></video><h3 class='mediaTitre'>" +time+ "</h3></li>");
- //     //  });
-	// 	});
-	// }
 
 	function displayNewImage(req){
 		var identifiant = req.name;
 		timestampToDate(identifiant);
 		if(req.extension == "jpg"){
-			$('.container-flux .content ul').prepend("<li class='images-bibli' id='"+ req.title+"'' ><img src='https://"+host+"/" + app.session + "/" + req.file + "'><h3 class='mediaTitre'>" +time+ "</h3></li>");
+			$('.container-flux .content ul').prepend("<li class='media images-bibli' id='"+ req.title+"'' ><img src='https://"+host+"/" + app.session + "/" + req.file + "'><h3 class='mediaTitre'>" +time+ "</h3></li>");
 		}
 	}
 
@@ -80,7 +71,7 @@ jQuery(document).ready(function($) {
 		var identifiant = req.name;
 		timestampToDate(identifiant);
 		if(req.extension == "mp4"){
-			$('.container-flux .content ul').prepend("<li class='motion-bibli' id='"+ req.title+"'' ><video src='https://"+host+"/" + app.session + "/" + req.file + "' controls preload='none'><h3 class='mediaTitre'>" +time+ "</h3></li>");
+			$('.container-flux .content ul').prepend("<li class='media motion-bibli' id='"+ req.title+"'' ><video src='https://"+host+"/" + app.session + "/" + req.file + "' controls preload='none'><h3 class='mediaTitre'>" +time+ "</h3></li>");
 		}
 	}
 
@@ -88,7 +79,7 @@ jQuery(document).ready(function($) {
 		var identifiant = req.name;
 		timestampToDate(identifiant);
 		if(req.extension == "webm"){
-			$('.container-flux .content ul').prepend("<li class='video-bibli' id='"+ req.title+"'' ><video src='https://"+host+"/" + app.session + "/" + req.file + "' controls preload='none'><h3 class='mediaTitre'>" +time+ "</h3></li>");
+			$('.container-flux .content ul').prepend("<li class='media video-bibli' id='"+ req.title+"'' ><video src='https://"+host+"/" + app.session + "/" + req.file + "' controls preload='none'><h3 class='mediaTitre'>" +time+ "</h3></li>");
 		}
 	}
 
@@ -96,7 +87,7 @@ jQuery(document).ready(function($) {
 		var identifiant = req.name;
 		timestampToDate(identifiant);
 		if(req.extension == "wav"){
-			$('.container-flux .content ul').prepend("<li class='audio-bibli' id='"+ req.title+"'' ><audio src='https://"+host+"/" + app.session + "/" + req.file + "' controls preload='none'><h3 class='mediaTitre'>" +time+ "</h3></li>");
+			$('.container-flux .content ul').prepend("<li class='media audio-bibli' id='"+ req.title+"'' ><audio src='https://"+host+"/" + app.session + "/" + req.file + "' preload='none' controls><h3 class='mediaTitre'>" +time+ "</h3></li>");
 		}
 	}
 
