@@ -457,7 +457,6 @@ $("body").keypress(function(e){
       
       //Variables     
       var mediaStream = null;
-      //var recordAudio;
 
       var startRecordingBtn = document.getElementById('start-recording');
       var stopRecordingBtn = document.getElementById('stop-recording');
@@ -486,14 +485,6 @@ $("body").keypress(function(e){
         $("#stop-recording").off();
         $("#stop-recording").on('click', function(){
           stopRecordAudio();
-          socket.on('AudioFile', function(fileName, sessionName) {
-            href = 'https://localhost:8080/static/' + sessionName + '/' + fileName;
-            console.log('got file ' + href);
-            cameraPreview.src = href;
-            cameraPreview.play();
-            cameraPreview.muted = false;
-            cameraPreview.controls = true;
-          });
           console.log("stop recording audio");
         });
       }
@@ -520,17 +511,18 @@ $("body").keypress(function(e){
 
       if(countPress > 1){
         stopRecordAudio();
-        socket.on('AudioFile', function(fileName, sessionName) {
-          href = 'https://localhost:8080/static/' + sessionName + '/' + fileName;
-          console.log('got file ' + href);
-          cameraPreview.src = href;
-          cameraPreview.play();
-          cameraPreview.muted = false;
-          cameraPreview.controls = true;
-        });
         console.log("stop recording audio");
         countPress = 0;
       }
+
+      socket.on('AudioFile', function(fileName, sessionName) {
+        href = 'https://'+ host +'/static/' + sessionName + '/' + fileName;
+        console.log('got file ' + href);
+        cameraPreview.src = href;
+        cameraPreview.play();
+        cameraPreview.muted = false;
+        cameraPreview.controls = true;
+      });
       
       function startRecordAudio(){
         backAnimation();
@@ -596,7 +588,7 @@ $("body").keypress(function(e){
                     dataURL: audioDataURL
                 }
             };
-            socket.emit('audio', {files: files, id: sessionId, name: app.session});
+            //socket.emit('audio', {files: files, id: sessionId, name: app.session});
             console.log("Audio is recording url " + url);
             animateWindows(files, "audioCapture");
             saveFeedback("/images/icone-dodoc_son.png");
@@ -646,14 +638,6 @@ $("body").keypress(function(e){
         $("#stop-btn").off();
         $("#stop-btn").on('click', function(){
           stopVideo();
-          socket.on('merged', function(fileName, sessionName) {
-            href = 'https://localhost:8080/static/' + sessionName + '/' + fileName;
-            console.log('got file ' + href);
-            cameraPreview.src = href;
-            cameraPreview.play();
-            cameraPreview.muted = false;
-            cameraPreview.controls = true;
-          });
         });
       }
 
@@ -681,17 +665,18 @@ $("body").keypress(function(e){
 
       if(countPress > 1){
         stopVideo();
-        socket.on('merged', function(fileName, sessionName) {
-          href = 'https://localhost:8080/static/' + sessionName + '/' + fileName;
-          console.log('got file ' + href);
-          cameraPreview.src = href;
-          cameraPreview.play();
-          cameraPreview.muted = false;
-          cameraPreview.controls = true;
-        });
         countPress = 0;
         console.log("stop recording video");
       }
+
+      socket.on('merged', function(fileName, sessionName) {
+        href = 'https://localhost:8080/static/' + sessionName + '/' + fileName;
+        console.log('got file ' + href);
+        cameraPreview.src = href;
+        cameraPreview.play();
+        cameraPreview.muted = false;
+        cameraPreview.controls = true;
+      });
 
       function startVideo(){
         backAnimation();
