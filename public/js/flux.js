@@ -45,7 +45,7 @@ jQuery(document).ready(function($) {
 			if(extension == "jpg"){
 				$('.container-flux .content ul').prepend("<li class='images-bibli' id='"+ identifiant+"'' ><img src='https://"+host+"/" + app.session + "/" + array[i] + "'><h3 class='mediaTitre'>" +time+ "</h3></li>");
 			}
-			if(extension == "webm" || extension == "mp4"){
+			if(extension == "mp4"){
 				$('.container-flux .content ul').prepend("<li class='videos-bibli' id='"+ identifiant+"'' ><video src='https://"+host+"/" + app.session + "/" + array[i] + "' controls preload='none'><h3 class='mediaTitre'>" +time+ "</h3></li>");
 			}
 			if(extension == "wav"){
@@ -73,7 +73,7 @@ jQuery(document).ready(function($) {
 	function displayNewVideo(req){
 		var identifiant = req.name;
 		timestampToDate(identifiant);
-		if(req.extension == "webm"){
+		if(req.extension == "mp4"){
 			$('.container-flux .content ul').prepend("<li class='video-bibli' id='"+ req.title+"'' ><video src='https://"+host+"/" + app.session + "/" + req.file + "' controls preload='none'><h3 class='mediaTitre'>" +time+ "</h3></li>");
 		}
 	}

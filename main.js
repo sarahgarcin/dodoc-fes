@@ -229,8 +229,8 @@ module.exports = function(app, io){
     var VideoDirectory = 'sessions/' + data.name + '/00-audiovideo';
     var sessionDirectory = 'sessions/' + data.name;
 
-    writeToDisk(data.files.video.dataURL, fileName + '.webm', data.name);
-    io.sockets.emit('merged', fileName + '.webm', data.name);
+    writeToDisk(data.files.video.dataURL, fileName + '.mp4', data.name);
+    io.sockets.emit('merged', fileName + '.mp4', data.name);
     
     //Write data to json
     var jsonFile = 'sessions/' + data.name + '/' +data.name+'.json';
@@ -245,7 +245,7 @@ module.exports = function(app, io){
           console.log("The file was saved!");
       }
     });
-    io.sockets.emit("displayNewVideo", {file: fileName + ".webm", extension:"webm", name:data.name, title: fileName});
+    io.sockets.emit("displayNewVideo", {file: fileName + ".mp4", extension:"mp4", name:data.name, title: fileName});
 	}
 
 	function writeToDisk(dataURL, fileName, session) {
@@ -272,8 +272,8 @@ module.exports = function(app, io){
 	    var FFmpeg = require('fluent-ffmpeg');
 
 	    var audioFile = path.join(__dirname, 'sessions', session, '00-audiovideo', fileName + '.wav'),
-	        videoFile = path.join(__dirname, 'sessions', session, '00-audiovideo', fileName + '.webm'),
-	        mergedFile = path.join(__dirname, 'sessions', session, '00-audiovideo', fileName + '-merged.webm');
+	        videoFile = path.join(__dirname, 'sessions', session, '00-audiovideo', fileName + '.mp4'),
+	        mergedFile = path.join(__dirname, 'sessions', session, '00-audiovideo', fileName + '-merged.mp4');
 
 	    new FFmpeg({
 	            source: videoFile
@@ -286,7 +286,7 @@ module.exports = function(app, io){
 	            io.sockets.emit('ffmpeg-output', Math.round(progress.percent));
 	        })
 	        .on('end', function () {
-	            io.sockets.emit('merged', fileName + '-merged.webm', session);
+	            io.sockets.emit('merged', fileName + '-merged.mp4', session);
 	            console.log('Merging finished !');
 
 	            // removing audio/video files
@@ -306,8 +306,8 @@ module.exports = function(app, io){
 		// var newWave = fs.createWriteStream('sessions/' + req.name + '/' + file + ".wav" );
 		// wav.pipe(newWave);
 		//move video file
-    var video = fs.createReadStream(VideoDirectory + file +".webm");
-		var newVideo = fs.createWriteStream('sessions/' + req.name + '/' + file + ".webm" );
+    var video = fs.createReadStream(VideoDirectory + file +".mp4");
+		var newVideo = fs.createWriteStream('sessions/' + req.name + '/' + file + ".mp4" );
 		video.pipe(newVideo);
 		//move merge file
   	//   var merge = fs.createReadStream(VideoDirectory + req.file);
@@ -336,7 +336,7 @@ module.exports = function(app, io){
           console.log("The file was saved!");
       }
     });
-    io.sockets.emit("displayNewVideo", {file: currentDate + "-merged.webm", extension:"webm", name:req.name, title: currentDate});
+    io.sockets.emit("displayNewVideo", {file: currentDate + ".mp4", extension:"mp4", name:req.name, title: currentDate});
 	}
 
 	function onNewAudioCapture(req){

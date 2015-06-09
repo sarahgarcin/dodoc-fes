@@ -36,8 +36,8 @@ jQuery(document).ready(function($) {
 			if(extension == "jpg"){
 				$('.mediaContainer').append("<li class='media images-bibli' id='"+ identifiant+"'><div class='mediaContent'><img src='https://"+domainUrl + "/" +app.session + "/"+ array[i] + "' preload='none'></div></li>");
 			}
-			if(extension == "webm" || extension == "mp4"){
-				$('.mediaContainer').append("<li class='media videos-bibli' id='"+ identifiant+"'><div class='mediaContent'><video src='https://"+domainUrl + "/"+app.session + "/" + array[i] + "' preload='none' controls></div></li>");""
+			if(extension == "mp4"){
+				$('.mediaContainer').append("<li class='media videos-bibli' id='"+ identifiant+"'><div class='mediaContent'><video preload='none' controls><source src='https://"+domainUrl + "/"+app.session + "/" + array[i] + "' type='video/mp4'></video></div></li>");""
 			}
 			if(extension == "wav"){
 				$('.mediaContainer').append("<li class='media sons-bibli' id='"+ identifiant+"'><div class='mediaContent'><audio src='https://"+domainUrl + "/"+app.session + "/" + array[i] + "' preload='none' controls></div></li>");""
@@ -64,7 +64,7 @@ jQuery(document).ready(function($) {
 	}
 
 	function ondisplayVideos(videos){
-    $('.mediaContainer').append("<li class='video-bibli'><video controls src='https://"+domainUrl + "/"+app.session + "/" + videos + "'></li>");    	
+    $('.mediaContainer').append("<li class='video-bibli'><video controls preload='none' controls><source src='https://"+domainUrl + "/"+app.session + "/" + videos + "' type='video/mp4'></video></li>");    	
 	}
 
 	function ondisplayAudio(audio){
