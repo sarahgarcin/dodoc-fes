@@ -422,7 +422,6 @@ $("body").keypress(function(e){
         socket.emit('stopmotionCapture', {id: sessionId, name: app.session, dir: dir});
         socket.on('newStopMotionCreated', function(req){
           $('.screenshot .canvas-view').hide();
-          $('.captureRight').css('height', "auto");
           $('#camera-preview').attr('src', 'https://'+host+'/' + app.session + '/'+req.fileName+'')
           $('#camera-preview').show();
           $(".form-meta").slideDown( "slow" ).addClass('active'); 
@@ -761,7 +760,7 @@ $("body").keypress(function(e){
           recordVideo.getDataURL(function(videoDataURL) {
             var files = {
                 video: {
-                    type: recordVideo.getBlob().type || 'video/webm',
+                    type: recordVideo.getBlob().type || 'video/mp4',
                     dataURL: videoDataURL
                 }
             };
