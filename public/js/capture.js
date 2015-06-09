@@ -282,6 +282,21 @@ $("body").keypress(function(e){
       $("#start-sm").on('click', startStopMotion);
       $("#capture-sm").on('click', onStopMotionDirectory);
       $("#stop-sm").on('click', stopStopMotion);
+
+      //redémarre le stop motion quand un autre média est choisi au milieu du stop motion
+      $("#stopmotion").click(function(){
+        var isEventExecutedSM = false;
+        $(".btn-choice button").click(function(){
+          if(isEventExecutedSM == false){
+            isEventExecutedSM = true;
+            $("#stop-sm").hide();
+            $("#start-sm").show();
+            $("#capture-sm").hide();
+            $('.screenshot .meta-stopmotion').remove();
+          }
+        });
+      });
+
       $("#video-btn").on('click', function(){
         audioVideo("click");
       });
@@ -308,25 +323,33 @@ $("body").keypress(function(e){
             audioVideo();
           }
         }
+        // Taking StopMotion
         if($("#stopmotion").hasClass('active')){
-          // Taking StopMotion
+          //redémarre le stop motion quand un autre média est choisi au milieu du stop motion
+          var isEventExecutedSM = false;
+          if(code == 115 || code == 122){
+            if(isEventExecutedVideo == false){
+              isEventExecutedVideo = true;
+              $("#stop-sm").hide();
+              $("#start-sm").show();
+              $("#capture-sm").hide();
+              $('.screenshot .meta-stopmotion').remove();
+            }
+          }
           if(code == 113) { //When Space is pressed
             countPress ++;
-            //console.log(countPress);
             if(countPress == 1){
               console.log("start a stopmotion");
               startStopMotion();
             }
             else{
-              //console.log('test');
               onStopMotionDirectory();
-              //socket.on('newStopMotionDirectory', onStopMotionDirectory);
             }
           }
-          if(code == 99){
-            stopStopMotion();
-            countPress = 0;
-          }
+          // if(code == 99){
+          //   stopStopMotion();
+          //   countPress = 0;
+          // }
         }
         if($("#audio").hasClass('active')){
           if(code == 113) {
@@ -395,19 +418,17 @@ $("body").keypress(function(e){
         $('.captureRight').velocity({'left':'52%'}, 'slow');
         $('.screenshot').append('<div class="instructions-stopmotion"><div class="icone-stopmotion"><img src="/images/stopmotion.svg"></div><h4>Vous venez de créer un nouveau stop-motion.</br>Appuyez sur <b>enregistrer</b> pour prendre des photos</h4></div>')
         socket.emit('newStopMotion', {id: sessionId, name: app.session});
-        //socket.on('newStopMotionDirectory', onStopMotionDirectory);
         $(".screenshot").append("<div class='meta-stopmotion'><p class='count-image'></p></div>");
         $(".screenshot .meta-stopmotion").prepend("<div class='delete-image'><img src='/images/clear.svg'></div>").hide();
       }
              
       function onStopMotionDirectory(){
-          //console.log("start taking picture");
-          var dir = "sessions/" + app.session + "/01-stopmotion";
-          $("#stop-sm").show();
-          $('.screenshot .canvas-view').show();
-          $('.screenshot .instructions-stopmotion').remove(); 
-          $(".screenshot .meta-stopmotion").show();   
-          takepictureMotion(dir);
+        var dir = "sessions/" + app.session + "/01-stopmotion";
+        $("#stop-sm").show();
+        $('.screenshot .canvas-view').show();
+        $('.screenshot .instructions-stopmotion').remove(); 
+        $(".screenshot .meta-stopmotion").show();   
+        takepictureMotion(dir);
       }
 
       function stopStopMotion(){
@@ -416,6 +437,7 @@ $("body").keypress(function(e){
         $("#start-sm").show();
         $("#capture-sm").hide();
         countImage = 0;
+        countPress = 0;
         $('.screenshot .meta-stopmotion').remove();
         saveFeedback("/images/icone-dodoc_anim.png");
         //socket.emit('StopMotion', {id: sessionId, name: app.session, dir: dir});
@@ -760,7 +782,7 @@ $("body").keypress(function(e){
           recordVideo.getDataURL(function(videoDataURL) {
             var files = {
                 video: {
-                    type: recordVideo.getBlob().type || 'video/mp4',
+                    type: recordVideo.getBlob().type || 'video/webm',
                     dataURL: videoDataURL
                 }
             };
