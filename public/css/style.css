@@ -8161,9 +8161,14 @@ audio {
   position: absolute;
   z-index: 100;
   background-image: url("/images/icones-04.svg");
-  opacity: .2;
+  opacity: .4;
   background-position: center center;
   background-repeat: no-repeat;
+  transition: opacity 0.8s ease-out;
+}
+.container-flux .content ul .media .videoButton:hover {
+  opacity: 1;
+  transition: opacity 0.1s ease-out;
 }
 .container-flux .content ul .media:after {
   content: "";

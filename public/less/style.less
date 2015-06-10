@@ -1175,10 +1175,17 @@ audio {
 					z-index: 100;
 
 					background-image: url("/images/icones-04.svg");
-					opacity: .2;
+					opacity: .4;
 
 					background-position: center center;
 					background-repeat: no-repeat;
+
+					transition: opacity .8s ease-out;
+
+					&:hover {
+						opacity: 1;
+						transition: opacity .1s ease-out;
+					}
 				}
 
 				&:after {
