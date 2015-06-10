@@ -207,6 +207,7 @@ jQuery(document).ready(function($) {
 			var videoTag = $(e.target).closest(".media").find("video")[0];
 			videojs( videoTag, {
 				autoplay: true,
+				controls: true,
 				width:790,
 				height: 590
 			}, function() {
