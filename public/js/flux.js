@@ -48,10 +48,10 @@ jQuery(document).ready(function($) {
 				$('.container-flux .content ul').prepend("<li class='media images-bibli' id='"+ identifiant+"'' ><img src='https://"+host+"/" + app.session + "/" + array[i] + "'><h3 class='mediaTitre'>" +time+ "</h3></li>");
 			}
 			if(extension == "webm"){
-				$('.container-flux .content ul').prepend("<li class='media videos-bibli' id='"+ identifiant+"'' ><video src='https://"+host+"/" + app.session + "/" + array[i] + "' controls preload='none'></video><h3 class='mediaTitre'>" +time+ "</h3></li>");
+				$('.container-flux .content ul').prepend("<li class='media videos-bibli' id='"+ identifiant+"'' ><video src='https://"+host+"/" + app.session + "/" + array[i] + "' controls preload='none' poster='https://"+host + "/"+app.session + "/"+identifiant +"-thumb.png'></video><h3 class='mediaTitre'>" +time+ "</h3></li>");
 			}
 			if(extension == "mp4"){
-				$('.container-flux .content ul').prepend("<li class='media stopmotion-bibli' id='"+ identifiant+"'' ><video src='https://"+host+"/" + app.session + "/" + array[i] + "' controls preload='none'></video><h3 class='mediaTitre'>" +time+ "</h3></li>");
+				$('.container-flux .content ul').prepend("<li class='media stopmotion-bibli' id='"+ identifiant+"'' ><video src='https://"+host+"/" + app.session + "/" + array[i] + "' controls preload='none' poster='https://"+host + "/"+app.session + "/"+identifiant +"-thumb.png'></video><h3 class='mediaTitre'>" +time+ "</h3></li>");
 			}
 			if(extension == "wav"){
 				$('.container-flux .content ul').prepend("<li class='media sons-bibli' id='"+ identifiant+"'' ><audio src='https://"+host+"/" + app.session + "/" + array[i] + "' preload='none' controls></audio><h3 class='mediaTitre'>" +time+ "</h3></li>");
@@ -71,7 +71,7 @@ jQuery(document).ready(function($) {
 		var identifiant = req.name;
 		timestampToDate(identifiant);
 		if(req.extension == "mp4"){
-			$('.container-flux .content ul').prepend("<li class='media motion-bibli' id='"+ req.title+"'' ><video src='https://"+host+"/" + app.session + "/" + req.file + "' controls preload='none'><h3 class='mediaTitre'>" +time+ "</h3></li>");
+			$('.container-flux .content ul').prepend("<li class='media motion-bibli' id='"+ req.title+"'' ><video src='https://"+host+"/" + app.session + "/" + req.file + "' controls preload='none' poster='https://"+domainUrl + "/"+app.session + "/"+identifiant +"-thumb.png'><h3 class='mediaTitre'>" +time+ "</h3></li>");
 		}
 	}
 
@@ -79,7 +79,7 @@ jQuery(document).ready(function($) {
 		var identifiant = req.name;
 		timestampToDate(identifiant);
 		if(req.extension == "webm"){
-			$('.container-flux .content ul').prepend("<li class='media video-bibli' id='"+ req.title+"'' ><video src='https://"+host+"/" + app.session + "/" + req.file + "' controls preload='none'><h3 class='mediaTitre'>" +time+ "</h3></li>");
+			$('.container-flux .content ul').prepend("<li class='media video-bibli' id='"+ req.title+"'' ><video src='https://"+host+"/" + app.session + "/" + req.file + "' controls preload='none' poster='https://"+domainUrl + "/"+app.session + "/"+identifiant +"-thumb.png'><h3 class='mediaTitre'>" +time+ "</h3></li>");
 		}
 	}
 

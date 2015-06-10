@@ -7161,6 +7161,7 @@ audio {
 .container-flux .content ul .media.sons-bibli audio {
   opacity: 1;
   padding-top: 33%;
+  background-color: #09227c;
 }
 .container-flux .content ul .media.sons-bibli:after {
   background-image: url("/images/icone-dodoc_son.png");

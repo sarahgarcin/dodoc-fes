@@ -404,9 +404,9 @@ jQuery(document).ready(function($) {
           $(".form-meta.active").hide().removeClass('active');
         }
         $(".captureRight").css('display', 'block').addClass('active');
+        $('.screenshot').append('<div class="instructions-stopmotion"><div class="icone-stopmotion"><img src="/images/stopmotion.svg"></div><h4>Vous venez de créer un nouveau stop-motion.</br>Appuyez sur <b>enregistrer</b> pour prendre des photos</h4></div>');
         $('.captureLeft').velocity({'left':'26%'}, 'slow');
         $('.captureRight').velocity({'left':'52%'}, 'slow');
-        $('.screenshot').append('<div class="instructions-stopmotion"><div class="icone-stopmotion"><img src="/images/stopmotion.svg"></div><h4>Vous venez de créer un nouveau stop-motion.</br>Appuyez sur <b>enregistrer</b> pour prendre des photos</h4></div>')
         socket.emit('newStopMotion', {id: sessionId, name: app.session});
         $(".screenshot").append("<div class='meta-stopmotion'><div class='delete-image'><img src='/images/clear.svg'></div><p class='count-image'></p></div>");
         $(".screenshot .meta-stopmotion").hide();
