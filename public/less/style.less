@@ -26,6 +26,7 @@
 }
 
 @import 'bootstrap.less';
+@import 'video-js.less';
 @import 'variables.less';
 
 
@@ -1164,9 +1165,20 @@ audio {
 			.media{
 				list-style: none;
 				position: relative;;
-				margin: 0px 10px 40px 0px;
-				padding: 50px 25px 10px;
-				background-color: white;
+				margin: 0px 10px 60px 0px;
+
+				.videoButton {
+					width: 740px;
+					height: 370px;
+					position: absolute;
+					z-index: 100;
+
+					background-image: url("/images/icones-04.svg");
+					opacity: .2;
+
+					background-position: center center;
+					background-repeat: no-repeat;
+				}
 
 				&:after {
 				    content: "";

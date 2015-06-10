@@ -52,11 +52,11 @@ jQuery(document).ready(function($) {
 				prependAndFormat( "photos", thismediaElement);
 			}
 			if(extension == "webm"){
-				thismediaElement = "<li class='media videos-bibli' id='"+ identifiant+"'' ><video src='https://"+host+"/" + app.session + "/" + array[i] + "' controls preload='none' poster='https://"+host + "/"+app.session + "/"+identifiant +"-thumb.png'></video><h3 class='mediaTitre'>" +time+ "</h3></li>";
+				thismediaElement = "<li class='media videos-bibli' id='"+ identifiant+"'' ><video class='video-js vjs-default-skin vjs-big-play-centered' src='https://"+host+"/" + app.session + "/" + array[i] + "' preload='none' poster='https://"+host + "/"+app.session + "/"+identifiant +"-thumb.png'></video><h3 class='mediaTitre'>" +time+ "</h3></li>";
 				prependAndFormat( "video", thismediaElement);
 			}
 			if(extension == "mp4"){
-				thismediaElement = "<li class='media stopmotion-bibli' id='"+ identifiant+"'' ><video src='https://"+host+"/" + app.session + "/" + array[i] + "' controls preload='none' poster='https://"+host + "/"+app.session + "/"+identifiant +"-thumb.png'></video><h3 class='mediaTitre'>" +time+ "</h3></li>";
+				thismediaElement = "<li class='media stopmotion-bibli' id='"+ identifiant+"'' ><video src='https://"+host+"/" + app.session + "/" + array[i] + "' preload='none' poster='https://"+host + "/"+app.session + "/"+identifiant +"-thumb.png'></video><h3 class='mediaTitre'>" +time+ "</h3></li>";
 				prependAndFormat( "video", thismediaElement);
 			}
 			if(extension == "wav"){
@@ -77,14 +77,14 @@ jQuery(document).ready(function($) {
 	function displayNewStopMotion(req){
 		var identifiant = req.name;
 		timestampToDate(identifiant);
-		var thisStringToAdd = "<li class='media motion-bibli' id='"+ req.title+"'' ><video src='https://"+host+"/" + app.session + "/" + req.file + "' controls preload='none' poster='https://"+domainUrl + "/"+app.session + "/"+identifiant +"-thumb.png'><h3 class='mediaTitre'>" +time+ "</h3></li>";
+		var thisStringToAdd = "<li class='media motion-bibli' id='"+ req.title+"'' ><video src='https://"+host+"/" + app.session + "/" + req.file + "' preload='none' poster='https://"+domainUrl + "/"+app.session + "/"+identifiant +"-thumb.png'><h3 class='mediaTitre'>" +time+ "</h3></li>";
 		prependAndFormat( "video", thisStringToAdd);
 	}
 
 	function displayNewVideo(req){
 		var identifiant = req.name;
 		timestampToDate(identifiant);
-		var thisStringToAdd = "<li class='media video-bibli' id='"+ req.title+"'' ><video src='https://"+host+"/" + app.session + "/" + req.file + "' controls preload='none' poster='https://"+domainUrl + "/"+app.session + "/"+identifiant +"-thumb.png'><h3 class='mediaTitre'>" +time+ "</h3></li>";
+		var thisStringToAdd = "<li class='media video-bibli' id='"+ req.title+"'' ><video src='https://"+host+"/" + app.session + "/" + req.file + "' preload='none' poster='https://"+domainUrl + "/"+app.session + "/"+identifiant +"-thumb.png'><h3 class='mediaTitre'>" +time+ "</h3></li>";
 		prependAndFormat( "video", thisStringToAdd);
 	}
 
@@ -134,6 +134,10 @@ jQuery(document).ready(function($) {
 		//         videoHeight: 623
 		//     });					
 		// }
+
+		if( mediaType == "video" ) {
+			$stringToAdd.prepend( "<div class='videoButton'></div>")	
+		}
 
 		$('.container-flux .content ul').prepend( $stringToAdd);
 
