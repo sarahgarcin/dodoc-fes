@@ -931,48 +931,52 @@ body.flux & .title {
 
 //CUSTOM AUDIO PLAYER
 
-	audio {
-	   opacity: 0;
-	}
+audio {
+   opacity: 0;
+}
 
-	.mejs-controls .mejs-button button{
-		transform: scale(1.6);
-		margin-top: 10px;
-	}
+.mejs-controls .mejs-button button{
+	transform: scale(1.6);
+	margin-top: 10px;
+}
 
-	.mejs-container .mejs-controls{
-		background: #FFF;
-		height: 70px;
-		margin-top: 0;
-		padding-top:10px;
-  	}
-	.mejs-controls .mejs-time-rail .mejs-time-total{
-		height: 20px;
-		background: @bleuvert;
-	}
+.mejs-container {
+	outline: 0;
+}
 
-	.mejs-controls .mejs-time-rail .mejs-time-current{
-		background: @bleuvert;
-		height: 20px;
+.mejs-container .mejs-controls{
+	background: #FFF;
+	height: 70px;
+	margin-top: 0;
+	padding-top:10px;
 	}
+.mejs-controls .mejs-time-rail .mejs-time-total{
+	height: 20px;
+	background: @bleuvert;
+}
 
-	.mejs-controls .mejs-time-rail .mejs-time-loaded{
-		background: @bleumarine;
-		height: 20px;
-	}
+.mejs-controls .mejs-time-rail .mejs-time-current{
+	background: @bleuvert;
+	height: 20px;
+}
 
-	.mejs-controls .mejs-time-rail .mejs-time-float, .mejs-controls .mejs-time-rail .mejs-time-handle{
-		height: 20px;
-		background: @bleuvert;
-	}
+.mejs-controls .mejs-time-rail .mejs-time-loaded{
+	background: @bleumarine;
+	height: 20px;
+}
 
-	.mejs-controls .mejs-horizontal-volume-slider .mejs-horizontal-volume-total{
-		background: @grisfonce;
-	}
+.mejs-controls .mejs-time-rail .mejs-time-float, .mejs-controls .mejs-time-rail .mejs-time-handle{
+	height: 20px;
+	background: @bleuvert;
+}
 
-	.mejs-controls .mejs-horizontal-volume-slider .mejs-horizontal-volume-current{
-		background: @bleuvert;
-	}
+.mejs-controls .mejs-horizontal-volume-slider .mejs-horizontal-volume-total{
+	background: @grisfonce;
+}
+
+.mejs-controls .mejs-horizontal-volume-slider .mejs-horizontal-volume-current{
+	background: @bleuvert;
+}
 
 //END CUSTOM AUDIO PLAYER
 
@@ -1161,6 +1165,8 @@ body.flux & .title {
 				list-style: none;
 				position: relative;;
 				margin: 0px 10px 40px 0px;
+				padding: 50px 25px 10px;
+				background-color: white;
 
 				&:after {
 				    content: "";
@@ -1183,9 +1189,6 @@ body.flux & .title {
 				}
 				&.videos-bibli{	
 
-					padding: 50px 25px 10px;
-					background-color: white;
-
 					&:after {
 					    background-image: url("/images/icone-dodoc_video.png");
 					}
@@ -1198,9 +1201,6 @@ body.flux & .title {
 				}
 				&.sons-bibli{
   					
-					padding: 50px 25px 10px;
-					background-color: white;
-
   					audio {
 						opacity: 1;
 						padding-top:33%;
