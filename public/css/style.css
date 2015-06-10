@@ -6768,7 +6768,7 @@ body.flux  .title {
 .icone-feedback {
   position: absolute;
   width: 50px;
-  top: 50%;
+  top: 40%;
   left: 70%;
   z-index: 104;
   display: none;
@@ -6789,6 +6789,7 @@ body.flux  .title {
   height: 480px;
   background-color: #FFF;
   display: none;
+  position: absolute;
 }
 .captureRight .screenshot {
   width: 90%;
@@ -6987,7 +6988,7 @@ audio {
 .mejs-container .mejs-controls {
   background: #FFF;
   height: 70px;
-  margin-top: 30px;
+  margin-top: 0;
 }
 .mejs-controls .mejs-time-rail .mejs-time-total {
   height: 20px;
@@ -7162,11 +7163,22 @@ audio {
 .container-flux .content ul .media.images-bibli .mediaTitre {
   border-right-color: #ffb520;
 }
+.container-flux .content ul .media.videos-bibli {
+  padding: 50px 25px 10px;
+  background-color: white;
+}
 .container-flux .content ul .media.videos-bibli:after {
   background-image: url("/images/icone-dodoc_video.png");
 }
 .container-flux .content ul .media.videos-bibli .mediaTitre {
   border-right-color: #fe414d;
+}
+.container-flux .content ul .media.videos-bibli .mejs-container .mejs-controls {
+  bottom: 0;
+}
+.container-flux .content ul .media.sons-bibli {
+  padding: 50px 25px 10px;
+  background-color: white;
 }
 .container-flux .content ul .media.sons-bibli audio {
   opacity: 1;
@@ -7179,11 +7191,17 @@ audio {
 .container-flux .content ul .media.sons-bibli .mediaTitre {
   border-right-color: #09227c;
 }
+.container-flux .content ul .media.sons-bibli .mejs-container .mejs-controls {
+  bottom: auto;
+}
 .container-flux .content ul .media.stopmotion-bibli:after {
   background-image: url("/images/icone-dodoc_anim.png");
 }
 .container-flux .content ul .media.stopmotion-bibli .mediaTitre {
   border-right-color: #48c2b5;
+}
+.container-flux .content ul .media.stopmotion-bibli .mejs-container .mejs-controls {
+  bottom: 0;
 }
 .container-flux .timelineContainer {
   width: 30px;

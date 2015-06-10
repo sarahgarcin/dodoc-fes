@@ -703,7 +703,7 @@ body.flux & .title {
 .icone-feedback{
 	position: absolute;
 	width: 50px;
-	top:50%;
+	top:40%;
 	left:70%;
 	z-index: 104;
 	display: none;
@@ -724,6 +724,21 @@ body.flux & .title {
 		height:@cardH;
 		background-color: #FFF;
 		display: none;
+		position: absolute;
+
+
+		body[data-mode="photo"] {
+
+		}
+		body[data-mode="video"] {
+			
+		}
+		body[data-mode="stopmotion"] {
+			
+		}
+		body[data-mode="audio"] {
+			
+		}
 	}
 	.screenshot {
 		width: 90%;
@@ -923,8 +938,8 @@ body.flux & .title {
 	.mejs-container .mejs-controls{
 		background: #FFF;
 		height: 70px;
-		margin-top: 30px;
-	}
+		margin-top: 0;
+  	}
 	.mejs-controls .mejs-time-rail .mejs-time-total{
 		height: 20px;
 		background: @bleuvert;
@@ -1161,15 +1176,26 @@ body.flux & .title {
 					}
 				}
 				&.videos-bibli{	
+
+					padding: 50px 25px 10px;
+					background-color: white;
+
 					&:after {
 					    background-image: url("/images/icone-dodoc_video.png");
 					}
 					.mediaTitre {
 						border-right-color: @cvideos;
 					}
+					.mejs-container .mejs-controls {
+						bottom: 0;
+					}			
 				}
 				&.sons-bibli{
-					audio {
+  					
+					padding: 50px 25px 10px;
+					background-color: white;
+
+  					audio {
 						opacity: 1;
 						padding-top:33%;
 						background-color: @csons;
@@ -1180,6 +1206,11 @@ body.flux & .title {
 					.mediaTitre {
 						border-right-color: @csons;
 					}
+
+					.mejs-container .mejs-controls {
+						bottom: auto;
+
+					}			
 				}
 				&.stopmotion-bibli{
 					&:after {
@@ -1188,6 +1219,9 @@ body.flux & .title {
 					.mediaTitre {
 						border-right-color: @canim;
 					}
+					.mejs-container .mejs-controls {
+						bottom: 0;
+					}			
 				}
 			}
 		}
