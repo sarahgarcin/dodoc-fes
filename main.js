@@ -5,7 +5,7 @@ var fs = require('fs-extra'),
 		markdown = require( "markdown" ).markdown,
 		exec = require('child_process').exec,
 		phantom = require('phantom'),
-		ffmpeg = require('fluent-ffmpeg')
+		ffmpeg = require('fluent-ffmpeg'),
 		sprintf = require("sprintf-js").sprintf,
     vsprintf = require("sprintf-js").vsprintf;
 
@@ -23,21 +23,16 @@ module.exports = function(app, io){
 
 	io.on("connection", function(socket){
 		socket.on("newUser", onNewUser);
-		socket.on("newUserSelect", onNewUserSelect);
+		socket.on("newUserSelect", listMedias);
 		socket.on("newSession", addNewSession);
 		socket.on("imageCapture", onNewImage);
 		socket.on("newStopMotion", onNewStopMotion);
 		socket.on("imageMotion", onNewImageMotion);
-		//socket.on("StopMotion", onStopMotion);
 		socket.on("stopmotionCapture", onStopMotionCapture);
-		//socket.on("videoCapture", onNewVideo);
 		socket.on("audioVideo", onNewAudioVideo);
-		// socket.on("audioVideoCapture", onNewAudioVideoCapture);
-		//socket.on("audio", onNewAudio);
 		socket.on("audioCapture", onNewAudioCapture);
 		socket.on("deleteFile", deleteFile);
 		socket.on("deleteImageMotion", deleteImageMotion);
-
 	});
 
 	// events
@@ -46,10 +41,6 @@ module.exports = function(app, io){
 		console.log(req);
 		listSessions();		
 	};
-
-	function onNewUserSelect(req){
-		listMedias(req);
-	}
 
 	//Ajoute le dossier de la session + l'ajouter à la liste des sessions
 	function addNewSession(session) {
@@ -93,6 +84,24 @@ module.exports = function(app, io){
 		});
 	}
 
+	//Liste les medias sur la page select et flux
+	function listMedias(req){
+		//read json file to send data
+		var jsonFile = 'sessions/' + req.name + '/' +req.name+'.json';
+		var data = fs.readFileSync(jsonFile,"UTF-8");
+		var jsonObj = JSON.parse(data);
+
+		var dir = "sessions/" + req.name ;
+		fs.readdir(dir, function(err, files) {
+			var media = [];
+			if (err) return;
+			files.forEach(function(f) {
+				media.push(f);
+			});
+			io.sockets.emit('listMedias', media,jsonObj);
+		});
+	}
+
 	//ajoute les images au dossier de session
 	function onNewImage(req) {
 		var imageBuffer = decodeBase64Image(req.data);
@@ -115,24 +124,6 @@ module.exports = function(app, io){
       }
     });
     io.sockets.emit("displayNewImage", {file: currentDate + ".jpg", extension:"jpg", name:req.name, title: currentDate});
-	}
-
-	//Liste les medias sur la page select
-	function listMedias(req){
-		//read json file to send data
-		var jsonFile = 'sessions/' + req.name + '/' +req.name+'.json';
-		var data = fs.readFileSync(jsonFile,"UTF-8");
-		var jsonObj = JSON.parse(data);
-
-		var dir = "sessions/" + req.name ;
-		fs.readdir(dir, function(err, files) {
-			var media = [];
-			if (err) return;
-			files.forEach(function(f) {
-				media.push(f);
-			});
-			io.sockets.emit('listMedias', media,jsonObj);
-		});
 	}
 
 	// Crée un nouveau dossier pour le stop motion
@@ -201,6 +192,18 @@ module.exports = function(app, io){
 		    console.log('file has been converted succesfully');
 		    io.sockets.emit("newStopMotionCreated", {fileName:fileName + '.mp4', name:req.name, dir:req.dir });
 		  	io.sockets.emit("displayNewStopMotion", {file: fileName + ".mp4", extension:"mp4", name:req.name, title: fileName});
+		  	var proc = ffmpeg(videoPath)
+			  // set the size of your thumbnails
+			  //.size('150x100')
+			  // setup event handlers
+			  .on('end', function(files) {
+			    console.log('screenshots were saved as ' + fileName + "-thumb.png");
+			  })
+			  .on('error', function(err) {
+			    console.log('an error happened: ' + err.message);
+			  })
+			  // take 2 screenshots at predefined timemarks
+			  .takeScreenshots({ count: 1, timemarks: [ '00:00:00'], filename: fileName + "-thumb.png"}, 'sessions/' + req.name);
 		  })
 		  .on('error', function(err) {
 		    console.log('an error happened: ' + err.message);
@@ -220,6 +223,7 @@ module.exports = function(app, io){
           console.log("The file was saved!");
       }
     });
+
     
 	}
 
@@ -245,7 +249,20 @@ module.exports = function(app, io){
           console.log("The file was saved!");
       }
     });
-    io.sockets.emit("displayNewVideo", {file: fileName + ".webm", extension:"webm", name:data.name, title: fileName});
+ 		var proc = ffmpeg(sessionDirectory + "/" + fileName + ".webm")
+	  // set the size of your thumbnails
+	  //.size('150x100')
+	  // setup event handlers
+	  .on('end', function(files) {
+	    console.log('screenshots were saved as ' + files);
+	  })
+	  .on('error', function(err) {
+	    console.log('an error happened: ' + err.message);
+	  })
+	  // take 2 screenshots at predefined timemarks
+	  .takeScreenshots({ count: 1, timemarks: [ '00:00:01'], filename: fileName + "-thumb.png"}, sessionDirectory);
+	  
+	  io.sockets.emit("displayNewVideo", {file: fileName + ".webm", extension:"webm", name:data.name, title: fileName});
 	}
 
 	function writeToDisk(dataURL, fileName, session) {
@@ -301,18 +318,11 @@ module.exports = function(app, io){
 		var VideoDirectory = 'sessions/' + req.name + '/00-audiovideo/';
 		var file = req.file.substring(0, 13);
 		var filename = parseInt(file);
-		//move wav file
-  	//   var wav = fs.createReadStream(VideoDirectory + file +".wav");
-		// var newWave = fs.createWriteStream('sessions/' + req.name + '/' + file + ".wav" );
-		// wav.pipe(newWave);
-		//move video file
+
+		//save only video without audio
     var video = fs.createReadStream(VideoDirectory + file +".webm");
 		var newVideo = fs.createWriteStream('sessions/' + req.name + '/' + file + ".webm" );
 		video.pipe(newVideo);
-		//move merge file
-  	//   var merge = fs.createReadStream(VideoDirectory + req.file);
-		// var newMerge = fs.createWriteStream('sessions/' + req.name + '/' + req.file );
-		// merge.pipe(newMerge);
 
 		//add data to json file
 		var jsonObj = null;
@@ -336,6 +346,7 @@ module.exports = function(app, io){
           console.log("The file was saved!");
       }
     });
+
     io.sockets.emit("displayNewVideo", {file: currentDate + ".webm", extension:"webm", name:req.name, title: currentDate});
 	}
 
