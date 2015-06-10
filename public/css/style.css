@@ -6257,6 +6257,9 @@ button {
   overflow-y: scroll;
   vertical-align: top;
 }
+.media {
+  overflow: visible;
+}
 /* fade au chargement de la page */
 .js body .container,
 .js body .container-bibli {
@@ -6332,6 +6335,19 @@ button {
 /*******************************************************************
 	NAVBAR
 *********************************************************************/
+.title {
+  font-weight: 700;
+  letter-spacing: .2px;
+}
+body.select  .title {
+  color: #FE414D;
+}
+body.capture  .title {
+  color: #FFB520;
+}
+body.flux  .title {
+  color: #FFB520;
+}
 .navbar-default {
   background-color: #fff;
   padding-top: 0px;
@@ -6438,16 +6454,6 @@ button {
   color: #000;
   -webkit-font-smoothing: antialiased;
   z-index: 2;
-}
-.buttons .title {
-  font-weight: 700;
-  letter-spacing: .2px;
-}
-body.select .buttons .title {
-  color: #FE414D;
-}
-body.capture .buttons .title {
-  color: #FFB520;
 }
 .buttons img {
   width: 40px;
@@ -7099,6 +7105,7 @@ audio {
   width: 100%;
   max-width: 800px;
   margin: auto;
+  margin-top: 50px;
 }
 .container-flux .bloctitre {
   padding: 15px 30px;
@@ -7130,6 +7137,9 @@ audio {
   min-width: 0;
   margin-bottom: 15px;
 }
+.container-flux .content ul {
+  padding: 0;
+}
 .container-flux .content ul .media {
   list-style: none;
   position: relative;
@@ -7138,8 +7148,8 @@ audio {
 .container-flux .content ul .media:after {
   content: "";
   position: absolute;
-  top: 0;
-  right: 0;
+  top: -20px;
+  right: -20px;
   margin: 5px;
   width: 40px;
   height: 40px;
@@ -7214,8 +7224,8 @@ audio {
 .popover:before {
   content: "";
   position: absolute;
-  right: -40px;
-  top: -40px;
+  right: -18px;
+  top: -18px;
   height: 0;
   width: 0;
   background-image: url("/images/clear.svg");

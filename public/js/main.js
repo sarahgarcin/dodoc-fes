@@ -9,8 +9,6 @@ function fillPopOver( content, thisbutton, finalWidth, finalHeight, closeCallbac
 	$popoverContainer = $popover.find(".popoverContainer");
 	$popoverContainer.html(content);
 
-	$popoverContainer.append('<div class="spinner"><div class="double-bounce1"></div><div class="double-bounce2"></div>');
-
 	$popover.addClass("is-visible");
 
 	// si il y a un champ input dedans, passer le focus au premier 

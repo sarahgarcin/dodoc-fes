@@ -111,6 +111,10 @@ button{
 	vertical-align: top;
 }
 
+.media {
+	overflow: visible;
+}
+
 
 /* fade au chargement de la page */
 .js body {
@@ -142,11 +146,28 @@ button{
 
 
 
+
 /* HEADER NAVBAR */
 
 /*******************************************************************
 	NAVBAR
 *********************************************************************/
+
+
+.title {
+	font-weight: 700;
+	letter-spacing: .2px;
+}
+
+body.select & .title {
+	color: #FE414D;
+}
+body.capture & .title {
+	color: #FFB520;
+}
+body.flux & .title {
+	color: #FFB520;
+}
 
 .navbar-default {
 
@@ -286,18 +307,6 @@ button{
 		-webkit-font-smoothing: antialiased;
 		z-index: 2;
 
-	}
-
-	.title {
-		font-weight: 700;
-		letter-spacing: .2px;
-	}
-
-	body.select & .title {
-		color: #FE414D;
-	}
-	body.capture & .title {
-		color: #FFB520;
 	}
 
 	// icones dans les boutons
@@ -966,7 +975,7 @@ button{
 			.media{
 				list-style: none;
 				position: relative;;	
-  			width: 33.3%;
+  				width: 33.3%;
   				// height: 215px;
 				display: inline-block;
 				vertical-align: top;
@@ -985,6 +994,10 @@ button{
 				}
 
 
+				// agrandir un média
+
+
+				// icone du type de média
 				&:after {
 				    content: "";
 				    position: absolute;
@@ -1074,6 +1087,7 @@ button{
 	width: 100%;
 	max-width: 800px;
 	margin:auto;
+	margin-top: 50px;
 	
 	.bloctitre {
 		padding: 15px 30px;
@@ -1119,20 +1133,24 @@ button{
 			margin-bottom: 15px;
 		}
 		ul{
+
+			padding: 0;
+
 			.media{
 				list-style: none;
 				position: relative;;
 				margin: 0px 10px 40px 0px;
+
 				&:after {
-			    content: "";
-			    position: absolute;
-			    top:0;
-			    right:0;
-			    margin:5px;
-			    width: 40px;
-			    height: 40px;
-			    background-size: cover;
-			    z-index: 11;
+				    content: "";
+				    position: absolute;
+				    top:-20px;
+				    right:-20px;
+				    margin:5px;
+				    width: 40px;
+				    height: 40px;
+				    background-size: cover;
+				    z-index: 11;
 				}
 				&.images-bibli{
 					&:after {
@@ -1229,8 +1247,8 @@ button{
 	&:before {
 	  content: "";
 	  position: absolute;
-	  right: -40px;
-	  top: -40px;
+	  right: -18px;
+	  top: -18px;
 	  height: 0;
 	  width: 0;
 	  background-image: url("/images/clear.svg");
