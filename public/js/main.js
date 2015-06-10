@@ -200,5 +200,20 @@ jQuery(document).ready(function($) {
 		$("body").addClass("is-loaded");
 	}, 500);
 
+	$("body").on("click", function(e) {
+		console.log( "plop");
+		console.log( $(e.target));
+		if( $(e.target).hasClass("videoButton") ) {
+			var videoTag = $(e.target).closest(".media").find("video")[0];
+			videojs( videoTag, {
+				autoplay: true,
+				width:790,
+				height: 590
+			}, function() {
+			});			
 
+			$(e.target).remove();
+		}
+
+	})
 });
