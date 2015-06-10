@@ -54,6 +54,8 @@ jQuery(document).ready(function($) {
     $("#photo").addClass('active');
     $(".choices").hide();
     $(".image-choice").show();
+    $("body").attr("data-mode", "photo");
+
 
     setTimeout(function(){
       $(".image-choice").fadeOut(fadeOutModeTimer);
@@ -160,6 +162,7 @@ jQuery(document).ready(function($) {
       $(".image-choice").fadeIn(fadeInModeTimer, function(){
         $(this).fadeOut(fadeOutModeTimer);
       });
+      $("body").attr("data-mode", "photo");
     }
     function videoDisplay(){
       $('.photo-capture').css('display', 'none');
@@ -173,6 +176,7 @@ jQuery(document).ready(function($) {
       $(".video-choice").fadeIn(fadeInModeTimer, function(){
         $(this).fadeOut(fadeOutModeTimer);
       });
+      $("body").attr("data-mode", "video");
     }
     function stopMotionDisplay(){
       $('.screenshot .canvas-view').show();
@@ -189,6 +193,7 @@ jQuery(document).ready(function($) {
       $('#canvas-audio').hide(); $("#canvas-equalizer").hide();
       var canvas = document.querySelector('#canvas');
       canvas.getContext("2d").clearRect(0, 0, canvas.width, canvas.height)
+      $("body").attr("data-mode", "stopmotion");
     }
     function audioDisplay(){
       $('.screenshot #camera-preview').hide();
@@ -204,6 +209,7 @@ jQuery(document).ready(function($) {
       $(".audio-choice").fadeIn(fadeInModeTimer, function(){
         $(this).fadeOut(fadeOutModeTimer);
       });
+      $("body").attr("data-mode", "audio");
     }
     $(".clear").off();
     $(".clear").on("click", function(e){
@@ -359,8 +365,8 @@ jQuery(document).ready(function($) {
         var data = canvas.toDataURL('image/png');
         photo.setAttribute('src', data);
         animateWindows(data, "imageCapture");
-        $(".captureRight .flash").fadeIn(50, function(){
-          $(this).fadeOut(50);
+        $(".captureRight .flash").fadeIn(0, function(){
+          $(this).fadeOut(500);
         });
         saveFeedback("/images/icone-dodoc_image.png");
       }
@@ -941,8 +947,11 @@ jQuery(document).ready(function($) {
   }
 
   function saveFeedback(icone){
-    $("body").append("<div class='icone-feedback'><img src='"+icone+"'></div>");
-    $(".icone-feedback").fadeIn('slow').velocity({"top":"25px", "left":"95.6%", "width":"20px"},"slow", "ease", function(){
+    
+    var $iconeFeedback = $("<div class='icone-feedback'><img src='"+icone+"'></div>");
+    $("body").append( $iconeFeedback );
+
+    $iconeFeedback.fadeIn('slow').velocity({"top":"25px", "left":"95.6%", "width":"20px"},"slow", "ease", function(){
       $(this).fadeOut('slow', function(){
         $(this).remove();
         $(".count-add-media.plus-media").fadeIn('slow', function(){

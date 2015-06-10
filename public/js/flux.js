@@ -63,14 +63,24 @@ jQuery(document).ready(function($) {
 			// mediaelement
 			if( thismediaElement != undefined ) {
 
-			    thismediaElement.mediaelementplayer({
-			        alwaysShowControls: true,
-			        features: ['playpause', 'progress', 'volume'],
-			        audioVolume: 'vertical',
-			        audioWidth: 495,
-			        audioHeight: 0
-			    });				
-
+				if( thismediaElement.find("audio").length > 0 ) {
+				    thismediaElement.find("audio").mediaelementplayer({
+				        alwaysShowControls: true,
+				        features: ['playpause', 'progress', 'volume'],
+				        audioVolume: 'vertical',
+				        audioWidth: 740,
+				        audioHeight: 0
+				    });
+				}
+				if( thismediaElement.find("video").length > 0 ) {
+				    thismediaElement.find("video").mediaelementplayer({
+				        alwaysShowControls: true,
+				        features: ['playpause', 'progress', 'volume'],
+				        audioVolume: 'vertical',
+				        videoWidth: 740,
+				        videoHeight: 553
+				    });					
+				}
 			}
 
 		}
