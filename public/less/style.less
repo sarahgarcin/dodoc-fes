@@ -703,10 +703,12 @@ body.flux & .title {
 .icone-feedback{
 	position: absolute;
 	width: 50px;
-	top:40%;
-	left:70%;
+	top:20%;
+	left:90%;
 	z-index: 104;
 	display: none;
+
+	pointer-events: none;
 }
 
 .captureRight {
@@ -719,6 +721,9 @@ body.flux & .title {
 	z-index: 1;
 	display: none;
 	margin-bottom: 50px;
+
+	overflow: hidden;
+
 	.flash{
 		width:@cardW;
 		height:@cardH;
@@ -727,17 +732,17 @@ body.flux & .title {
 		position: absolute;
 
 
-		body[data-mode="photo"] {
-
+		body[data-mode="photo"] & {
+			background-color: @cimages;
 		}
 		body[data-mode="video"] {
-			
+			background-color: @cvideos;
 		}
 		body[data-mode="stopmotion"] {
-			
+			background-color: @canim;
 		}
 		body[data-mode="audio"] {
-			
+			background-color: @csons;			
 		}
 	}
 	.screenshot {
@@ -939,6 +944,7 @@ body.flux & .title {
 		background: #FFF;
 		height: 70px;
 		margin-top: 0;
+		padding-top:10px;
   	}
 	.mejs-controls .mejs-time-rail .mejs-time-total{
 		height: 20px;
