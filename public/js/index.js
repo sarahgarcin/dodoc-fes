@@ -41,7 +41,7 @@ jQuery(document).ready(function($) {
 
 			console.log("CLICK");
 
-			var newContentToAdd = "<h3 class='popoverTitle'>Ajouter un projet</h3><p>Entrez un nom</p><form class='add-project'><input class='new-session' placeholder='Nom du projet'></input><input type='submit' class='submit-session'></input></form>";
+			var newContentToAdd = "<h3 class='popoverTitle'>Ajouter un projet</h3><p>Entrez un nom</p><form onsubmit='return false;' class='add-project'><input class='new-session' placeholder='Nom du projet'></input><input type='submit' class='submit-session'></input></form>";
 			
 			var closeAddProjectFunction = function() {
 			};

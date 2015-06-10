@@ -41,9 +41,12 @@ jQuery(document).ready(function($) {
 	function ondisplayMedias(array, json){
 		$('.container-flux .content ul li').remove();
 		for (var i = 0; i < array.length; i++) {    	
-    	var extension = array[i].split('.').pop();
-    	var identifiant =  array[i].replace("." + extension, "");
-    	timestampToDate(parseFloat(identifiant));
+	    	var extension = array[i].split('.').pop();
+	    	var identifiant =  array[i].replace("." + extension, "");
+	    	timestampToDate(parseFloat(identifiant));
+
+	    	var thismediaElement;
+
 			if(extension == "jpg"){
 				$('.container-flux .content ul').prepend("<li class='media images-bibli' id='"+ identifiant+"'' ><img src='https://"+host+"/" + app.session + "/" + array[i] + "'><h3 class='mediaTitre'>" +time+ "</h3></li>");
 			}
@@ -54,8 +57,22 @@ jQuery(document).ready(function($) {
 				$('.container-flux .content ul').prepend("<li class='media stopmotion-bibli' id='"+ identifiant+"'' ><video src='https://"+host+"/" + app.session + "/" + array[i] + "' controls preload='none' poster='https://"+host + "/"+app.session + "/"+identifiant +"-thumb.png'></video><h3 class='mediaTitre'>" +time+ "</h3></li>");
 			}
 			if(extension == "wav"){
-				$('.container-flux .content ul').prepend("<li class='media sons-bibli' id='"+ identifiant+"'' ><audio src='https://"+host+"/" + app.session + "/" + array[i] + "' preload='none' controls></audio><h3 class='mediaTitre'>" +time+ "</h3></li>");
+				thismediaElement = $('.container-flux .content ul').prepend("<li class='media sons-bibli' id='"+ identifiant+"'' ><audio src='https://"+host+"/" + app.session + "/" + array[i] + "' preload='none' controls></audio><h3 class='mediaTitre'>" +time+ "</h3></li>");
 			}
+
+			// mediaelement
+			if( thismediaElement != undefined ) {
+
+			    thismediaElement.mediaelementplayer({
+			        alwaysShowControls: true,
+			        features: ['playpause', 'progress', 'volume'],
+			        audioVolume: 'vertical',
+			        audioWidth: 495,
+			        audioHeight: 0
+			    });				
+
+			}
+
 		}
 	}
 
