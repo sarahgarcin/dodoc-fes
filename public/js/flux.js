@@ -113,26 +113,27 @@ jQuery(document).ready(function($) {
 	function prependAndFormat( mediaType, stringToAdd) {
 		$stringToAdd = $(stringToAdd);
 
-		if( mediaType == "audio" ) {
-			console.log("audio");
-		    $stringToAdd.find("audio").mediaelementplayer({
-		        alwaysShowControls: true,
-		        features: ['playpause', 'progress', 'volume'],
-		        audioVolume: 'vertical',
-		        audioWidth: 740,
-		        audioHeight: 0
-		    });
-		}
-		if( mediaType == "video" ) {
-			console.log("video");
-		    $stringToAdd.find("video").mediaelementplayer({
-		        alwaysShowControls: true,
-		        features: ['playpause', 'progress', 'volume'],
-		        audioVolume: 'vertical',
-		        videoWidth: 740,
-		        videoHeight: 623
-		    });					
-		}
+
+		// if( mediaType == "audio" ) {
+		// 	console.log("audio");
+		//     $stringToAdd.find("audio").mediaelementplayer({
+		//         alwaysShowControls: true,
+		//         features: ['playpause', 'progress', 'volume'],
+		//         audioVolume: 'vertical',
+		//         audioWidth: 740,
+		//         audioHeight: 0
+		//     });
+		// }
+		// if( mediaType == "video" ) {
+		// 	console.log("video");
+		//     $stringToAdd.find("video").mediaelementplayer({
+		//         alwaysShowControls: true,
+		//         features: ['playpause', 'progress', 'volume'],
+		//         audioVolume: 'vertical',
+		//         videoWidth: 740,
+		//         videoHeight: 623
+		//     });					
+		// }
 
 		$('.container-flux .content ul').prepend( $stringToAdd);
 
