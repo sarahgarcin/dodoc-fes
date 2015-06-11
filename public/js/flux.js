@@ -77,6 +77,7 @@ jQuery(document).ready(function($) {
 	function displayNewStopMotion(req){
 		var identifiant = req.name;
 		timestampToDate(identifiant);
+		console.log( "https://"+host + "/"+app.session + "/"+identifiant +"-thumb.png");
 		var thisStringToAdd = "<li class='media motion-bibli' id='"+ req.title+"'' ><video class='video-js vjs-default-skin vjs-big-play-centered' src='https://"+host+"/" + app.session + "/" + req.file + "' preload='none' poster='https://"+host + "/"+app.session + "/"+identifiant +"-thumb.png'></video><h3 class='mediaTitre'>" +time+ "</h3></li>";
 		prependAndFormat( "video", thisStringToAdd);
 	}
