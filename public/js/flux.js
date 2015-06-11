@@ -56,7 +56,7 @@ jQuery(document).ready(function($) {
 				prependAndFormat( "video", thismediaElement);
 			}
 			if(extension == "mp4"){
-				thismediaElement = "<li class='media stopmotion-bibli' id='"+ identifiant+"'' ><video src='https://"+host+"/" + app.session + "/" + array[i] + "' preload='none' poster='https://"+host + "/"+app.session + "/"+identifiant +"-thumb.png'></video><h3 class='mediaTitre'>" +time+ "</h3></li>";
+				thismediaElement = "<li class='media stopmotion-bibli' id='"+ identifiant+"'' ><video class='video-js vjs-default-skin vjs-big-play-centered' src='https://"+host+"/" + app.session + "/" + array[i] + "' preload='none' poster='https://"+host + "/"+app.session + "/"+identifiant +"-thumb.png'></video><h3 class='mediaTitre'>" +time+ "</h3></li>";
 				prependAndFormat( "video", thismediaElement);
 			}
 			if(extension == "wav"){
