@@ -77,14 +77,14 @@ jQuery(document).ready(function($) {
 	function displayNewStopMotion(req){
 		var identifiant = req.name;
 		timestampToDate(identifiant);
-		var thisStringToAdd = "<li class='media motion-bibli' id='"+ req.title+"'' ><video src='https://"+host+"/" + app.session + "/" + req.file + "' preload='none' poster='https://"+domainUrl + "/"+app.session + "/"+identifiant +"-thumb.png'><h3 class='mediaTitre'>" +time+ "</h3></li>";
+		var thisStringToAdd = "<li class='media motion-bibli' id='"+ req.title+"'' ><video  class='video-js vjs-default-skin vjs-big-play-centered' src='https://"+host+"/" + app.session + "/" + req.file + "' preload='none' poster='https://"+domainUrl + "/"+app.session + "/"+identifiant +"-thumb.png'></video><h3 class='mediaTitre'>" +time+ "</h3></li>";
 		prependAndFormat( "video", thisStringToAdd);
 	}
 
 	function displayNewVideo(req){
 		var identifiant = req.name;
 		timestampToDate(identifiant);
-		var thisStringToAdd = "<li class='media video-bibli' id='"+ req.title+"'' ><video src='https://"+host+"/" + app.session + "/" + req.file + "' preload='none' poster='https://"+domainUrl + "/"+app.session + "/"+identifiant +"-thumb.png'><h3 class='mediaTitre'>" +time+ "</h3></li>";
+		var thisStringToAdd = "<li class='media videos-bibli' id='"+ req.title+"'' ><video  class='video-js vjs-default-skin vjs-big-play-centered' src='https://"+host+"/" + app.session + "/" + req.file + "' preload='none' poster='https://"+domainUrl + "/"+app.session + "/"+identifiant +"-thumb.png'></video><h3 class='mediaTitre'>" +time+ "</h3></li>";
 		prependAndFormat( "video", thisStringToAdd);
 	}
 
