@@ -404,7 +404,6 @@ jQuery(document).ready(function($) {
       function startStopMotion(){
         countImage = 0;
         $("#start-sm").hide(); $("#capture-sm").show(); $("#stop-sm").hide();
-
         $('.screenshot .canvas-view').hide(); $('#camera-preview').hide();
         if($(".form-meta").hasClass('active')){
           $(".form-meta.active").hide().removeClass('active');
