@@ -201,8 +201,6 @@ jQuery(document).ready(function($) {
 	}, 500);
 
 	$("body").on("click", function(e) {
-		console.log( "plop");
-		console.log( $(e.target));
 		if( $(e.target).hasClass("videoButton") ) {
 			var videoTag = $(e.target).closest(".media").find("video")[0];
 			videojs( videoTag, {
