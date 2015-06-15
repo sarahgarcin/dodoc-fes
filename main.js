@@ -164,7 +164,7 @@ module.exports = function(app, io){
 		//make sure you set the correct path to your video file
 		var proc = new ffmpeg({ source: req.dir + '/%d.png'})
 		  // using 12 fps
-		  .fps(6)
+		  .fps(3)
 		  // setup event handlers
 		  .on('end', function() {
 		    console.log('file has been converted succesfully');
@@ -186,7 +186,8 @@ module.exports = function(app, io){
 		//make sure you set the correct path to your video file
 		var proc = new ffmpeg({ source: req.dir + '/%d.png'})
 		  // using 12 fps
-		  .fps(6)
+		  .withFpsInput(5)
+		  .fps(5)
 		  // setup event handlers
 		  .on('end', function() {
 		    console.log('file has been converted succesfully');
