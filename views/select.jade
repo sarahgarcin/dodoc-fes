@@ -23,7 +23,8 @@ html
 
       div.montage.demi 
         div.publish
-          include templates/images/enregistre.svg
+          a(href="/select/#{session}/publi" class="btn icon publish"  data-toggle="tooltip" data-placement="left" title= __("Publish"))
+            include templates/images/enregistre.svg
         div.montage-content
           div.montage-title
             input(type="text" value= __("Titre"))

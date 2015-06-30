@@ -410,7 +410,7 @@ jQuery(document).ready(function($) {
           $(".form-meta.active").hide().removeClass('active');
         }
         $(".captureRight").css('display', 'block').addClass('active');
-        $('.screenshot').append('<div class="instructions-stopmotion"><div class="icone-stopmotion"><img src="/images/stopmotion.svg"></div><h4>You have created a new stop motion.</br> Click on <b>save</b> to start taking pictures</h4></div>');
+        $('.screenshot').append('<div class="instructions-stopmotion"><div class="icone-stopmotion"><img src="/images/stopmotion.svg"></div><h4>You have created a new stop motion.</br> Click on the <b>record button</b> to start taking pictures</h4></div>');
         $('.captureLeft').velocity({'left':'26%'}, 'slow');
         $('.captureRight').velocity({'left':'52%'}, 'slow');
         socket.emit('newStopMotion', {id: sessionId, name: app.session});

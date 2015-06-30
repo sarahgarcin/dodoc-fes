@@ -1,7 +1,7 @@
 {
 	"Ajouter un compte": "Add a session",
 	"Bibliothèque de médias": "Media library",
-	"Interface de capture": "Capture interface",
+	"Interface de capture": "Record",
 	"Titre": "Title",
 	"Image": "Picture",
 	"Vidéo": "Video",
@@ -12,5 +12,6 @@
 	"mode stop motion": "stop motion mode",
 	"mode audio": "audio mode",
 	"Enregistrer une photo": "Take a picture",
-	"Démarrer l'enregistrement d'une vidéo": "Recording video"
+	"Démarrer l'enregistrement d'une vidéo": "Recording video",
+	"Publish": "Publish"
 }

@@ -88,7 +88,11 @@ jQuery(document).ready(function($) {
 			$("#" + val['name']).append("<h3 class='mediaTitre'>" +time+ "</h3>");
 		});
 
-		$(".media").on('mousedown',function(){
+		$(".media").on("mouseenter", function(){
+			$(this).css("cursor", 'pointer');
+		});
+
+		$(".media").on('click',function(){
 			var $mediaContent = $(this).children(".mediaContent");
 			var cloneMedia = $mediaContent.clone(true).addClass('clone-media');
 			var cloneHeight = $mediaContent.height();
@@ -96,10 +100,14 @@ jQuery(document).ready(function($) {
 			var clonePosX = $mediaContent.offset().left;
 			var clonePosY = $mediaContent.offset().top;
 
-			cloneMedia.css({"height": cloneHeight, "width": cloneWidth, "top":clonePosY, "left":clonePosX, "position":"absolute"});
+			if(cloneMedia.children().is("audio")){
+				cloneMedia.css({"height": 136, "width": cloneWidth, "top":clonePosY, "left":clonePosX, "position":"absolute", "border":"4px solid #48C2B5", "background-color":"#0038bb"});
+			}
+			else{
+				cloneMedia.css({"height": cloneHeight, "width": cloneWidth, "top":clonePosY, "left":clonePosX, "position":"absolute", "border":"4px solid #48C2B5"});
+			}
 			$(".buffer-media").css("z-index", 99);
 			$(".buffer-media").append(cloneMedia);
-
 			pepDrag(cloneMedia);
 		});
 	}
@@ -127,6 +135,7 @@ jQuery(document).ready(function($) {
 	function displayMontage(html){
 		$(".montage-content").html(html);
 		$(".montage-title input").focus();
+		$(".montage").scrollTop($(".block-content.active").offset().top);
 	}
 
 	function pepDrag(cloneMedia){
@@ -135,10 +144,11 @@ jQuery(document).ready(function($) {
 		  overlapFunction: false,
 		  useCSSTranslation: false,
 		  start: function(ev, obj){
+		  	obj.$el.css("cursor", "drag");
 		    obj.noCenter = false;
 		  },
 		  drag: function(ev, obj){
-
+		  	obj.$el.css("cursor", "drag");
 		  },
 		  stop: function(ev, obj){
 		  	var $parent = obj.activeDropRegions[0];
@@ -152,11 +162,12 @@ jQuery(document).ready(function($) {
 		  },
 		  rest: function(ev, obj){
 		  	handleCentering(ev, obj);
-		  	obj.$el.css({'position':'inherit', "top":"inherit", "left":"inherit"});
+		  	obj.$el.css({'position':'inherit', "top":"inherit", "left":"inherit", "border":"none"});
 		  	$(".block-content.active").removeClass('active');
 		  	$(".montage-medias").append("<div class='block-content active'></div>");
 		  	var montageContent = $(".montage-content").html();
 		  	socket.emit("saveMontage", montageContent, app.session);
+		  	//$(".montage").scrollTop($(".block-content.active").offset().top);
 		  }
 		});
 	}
@@ -222,6 +233,7 @@ jQuery(document).ready(function($) {
 
 	function sendPublication(event){
 		socket.emit("sendPublication", app.session);
+		//window.location.href = "https://localhost:8080/select/"+app.session+"/publi";
 	}
 
 
