@@ -6,8 +6,27 @@ jQuery(document).ready(function($) {
 	var sessionId = '';
 	var time;
 	/**
-	* Events
+	* Event
 	*/
+	initEvents();
+
+	function initEvents(){
+
+		$(".montage-title input").focus();
+		
+		$(document).on('click',function(event){
+			console.log($(event.target).parent().attr("class"));
+			if($(event.target).parent().attr("class") == 'remove-media'){
+				removeMedia($(event.target).parent());
+			}
+			if($(event.target).parent().attr("class") == 'montage-title'){
+				$(event.target).change(changeTitle);
+			}
+		});
+
+		$(".montage .publish").on("click", sendPublication);
+	}
+
 	/* sockets */
 	socket.on('connect', onSocketConnect);
 	socket.on('error', onSocketError);
@@ -16,17 +35,17 @@ jQuery(document).ready(function($) {
 	socket.on('displayNewStopMotion', displayNewStopMotion);
 	socket.on('displayNewVideo', displayNewVideo);
 	socket.on('displayNewAudio', displayNewAudio);
+	socket.on('displayMontage', displayMontage);
 
 	/**
 	* handlers
 	*/
 	/* sockets */
 
-
 	function onSocketConnect() {
 		sessionId = socket.io.engine.id;
 		console.log('Connected ' + sessionId);
-			socket.emit('newUserSelect', {id: sessionId, name: app.session});
+		socket.emit('newUserSelect', {id: sessionId, name: app.session});
 	};
 
 	function onSocketError(reason) {
@@ -68,6 +87,21 @@ jQuery(document).ready(function($) {
 			timestampToDate(val['name']);
 			$("#" + val['name']).append("<h3 class='mediaTitre'>" +time+ "</h3>");
 		});
+
+		$(".media").on('mousedown',function(){
+			var $mediaContent = $(this).children(".mediaContent");
+			var cloneMedia = $mediaContent.clone(true).addClass('clone-media');
+			var cloneHeight = $mediaContent.height();
+			var cloneWidth = $mediaContent.width();
+			var clonePosX = $mediaContent.offset().left;
+			var clonePosY = $mediaContent.offset().top;
+
+			cloneMedia.css({"height": cloneHeight, "width": cloneWidth, "top":clonePosY, "left":clonePosX, "position":"absolute"});
+			$(".buffer-media").css("z-index", 99);
+			$(".buffer-media").append(cloneMedia);
+
+			pepDrag(cloneMedia);
+		});
 	}
 
 	function displayNewImage(images){
@@ -90,6 +124,107 @@ jQuery(document).ready(function($) {
  	  $('.mediaContainer').append("<li class='media sons-bibli' id='"+ audio.title+"''><div class='mediaContent'><audio src='https://"+domainUrl + "/"+app.session + "/" + audio.file + "' preload='none' controls></div><h3 class='mediaTitre'>" +time+ "</h3></li>");
 	}
 
+	function displayMontage(html){
+		$(".montage-content").html(html);
+		$(".montage-title input").focus();
+	}
+
+	function pepDrag(cloneMedia){
+		cloneMedia.pep({
+		  droppable: '.block-content.active',
+		  overlapFunction: false,
+		  useCSSTranslation: false,
+		  start: function(ev, obj){
+		    obj.noCenter = false;
+		  },
+		  drag: function(ev, obj){
+
+		  },
+		  stop: function(ev, obj){
+		  	var $parent = obj.activeDropRegions[0];
+		  	var parentWidth = $parent.width();
+		  	var removeMedia = "<div class='remove-media'><img src='/images/clear.svg'></div>";
+		  	obj.$el.velocity({"width": parentWidth}, 'slow');
+				$parent.append(obj.el).append(removeMedia);
+				$(".buffer-media").children().remove();
+				$(".buffer-media").css("z-index", -1);
+				//$(".container-bibli .montage").scrollTop($parent.offset().top);
+		  },
+		  rest: function(ev, obj){
+		  	handleCentering(ev, obj);
+		  	obj.$el.css({'position':'inherit', "top":"inherit", "left":"inherit"});
+		  	$(".block-content.active").removeClass('active');
+		  	$(".montage-medias").append("<div class='block-content active'></div>");
+		  	var montageContent = $(".montage-content").html();
+		  	socket.emit("saveMontage", montageContent, app.session);
+		  }
+		});
+	}
+
+	function handleCentering(ev, obj){
+	  console.log(obj.activeDropRegions.length);
+	  if ( obj.activeDropRegions.length > 0 ) {
+	    centerWithin(obj);
+	  }
+	}
+
+	function centerWithin(obj){
+	  var $parent = obj.activeDropRegions[0];
+	  var pTop    = $parent.position().top;
+	  var pLeft   = $parent.position().left;
+	  var pHeight = $parent.outerHeight();
+	  var pWidth  = $parent.outerWidth();
+
+	  var oTop    = obj.$el.position().top;
+	  var oLeft   = obj.$el.position().left;
+	  var oHeight = obj.$el.outerHeight();
+	  var oWidth  = obj.$el.outerWidth();
+
+	  var pTop = $parent.position().top;
+	  var pLeft = $parent.position().left;
+
+	  var cTop    = pTop + (pHeight/2);
+	  var cLeft   = pLeft + (pWidth/2);
+
+	  if ( !obj.noCenter ) {
+	    if ( !obj.shouldUseCSSTranslation() ) {
+	      var moveTop = pTop;
+	      var moveLeft = pLeft;
+	      obj.$el.animate({ top: moveTop, left: moveLeft }, 50);
+	    } else{
+	      var moveTop   = pTop;
+	      var moveLeft  = pLeft;
+	      obj.moveToUsingTransforms( moveTop, moveLeft );
+	    }
+
+	    obj.noCenter = true;
+	    return;
+	  }
+
+	  obj.noCenter = false;
+	}
+
+	function removeMedia(obj){
+		console.log(obj.parent(".block-content"));
+		obj.parent(".block-content").remove();
+		var montageContent = $(".montage-content").html();
+		socket.emit("saveMontage", montageContent, app.session);
+	}
+
+	function changeTitle(event){
+
+		$(event.target).attr("value", $(event.target).val());
+		console.log($(event.target).attr("value", $(event.target).val()));
+
+		var montageContent = $(".montage-content").html();
+		socket.emit("saveMontage", montageContent, app.session);
+	}
+
+	function sendPublication(event){
+		socket.emit("sendPublication", app.session);
+	}
+
+
 	function timestampToDate(timestamp){
     var date = new Date(timestamp);
 		// hours part from the timestamp
@@ -100,7 +235,7 @@ jQuery(document).ready(function($) {
 		var seconds = "0" + date.getSeconds();
 
 		// will display time in 10:30:23 format
-		time = hours + 'h' + minutes.substr(minutes.length-2);
+		time = hours + ':' + minutes.substr(minutes.length-2);
 		//console.log(time);
 	}
 

@@ -15,17 +15,25 @@ html
           nav.titleAndActions
             div.buttons
               .button.sidebyside
-                a(href="/select/#{session}/capture" class="btn icon capture"  data-toggle="tooltip" data-placement="right" title="Interface de capture")
+                a(href="/select/#{session}/capture" class="btn icon capture"  data-toggle="tooltip" data-placement="right" title= __("Interface de capture"))
                   include templates/images/capture.svg
-              .title.centered Bibliothèque de médias
+              .title.centered= __('Bibliothèque de médias')
 
         .mediaContainer
 
       div.montage.demi 
+        div.publish
+          include templates/images/enregistre.svg
         div.montage-content
           div.montage-title
-            input(type="text" value="Big Titre")
-          div.block-content
+            input(type="text" value= __("Titre"))
+          div.montage-medias
+            div.block-content.active
+
+    div.buffer-media
+  
+    //- TO DO DOC
+    //- Pop hover media plein écran
 
     //- scripts
     include templates/footer.jade

@@ -1,6 +1,7 @@
 var _ = require("underscore");
 var url = require('url')
 var fs = require('fs-extra');
+var i18n = require('i18n');
 
 module.exports = function(app,io,m){
 
@@ -10,8 +11,14 @@ module.exports = function(app,io,m){
 
   app.get("/", getIndex);
   app.get("/select/:session", getSelect);
-  app.get("/select/:session/capture", getCapture)
-  app.get("/select/:session/flux", getFlux)
+  app.get("/select/:session/capture", getCapture);
+  app.get("/select/:session/flux", getFlux);
+  app.get("/select/:session/publi", getPubli);
+
+  // set a cookie to requested locale
+  app.get('/:locale', function (req, res) {
+    res.cookie('locale', req.params.locale);
+  });
 
   /**
   * routing functions
@@ -19,7 +26,7 @@ module.exports = function(app,io,m){
 
   // GET
   function getIndex(req, res) {
-    res.render("index", {title : "Opendoc"});
+    res.render("index", {title : "Do.Doc"});
   };
   function getSelect(req, res) {
     var session = req.param('session');
@@ -36,7 +43,7 @@ module.exports = function(app,io,m){
     var session = req.param('session');
 
     res.render("capture", {
-      title : "Prise de vue-Opendoc",
+      title : "Prise de vue",
       session : session,
     });
   };
@@ -49,6 +56,17 @@ module.exports = function(app,io,m){
 
     res.render("flux", {
       title : "Futur en Seine",
+      session : session,
+    });
+  };
+
+
+  function getPubli(req, res) {
+    var session = req.param('session');
+    var sessionPath = 'sessions/'+session;
+
+    res.render("publication", {
+      title : "Publication",
       session : session,
     });
   };

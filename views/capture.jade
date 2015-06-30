@@ -8,22 +8,22 @@ html
     nav.titleAndActions
       div.buttons.alignRight
         .button.sidebyside
-          a(href="/select/#{session}" class="btn icon bibli" data-toggle="tooltip" data-placement="left" title="Bibliothèque de médias")
+          a(href="/select/#{session}" class="btn icon bibli" data-toggle="tooltip" data-placement="left" title= __("Bibliothèque de médias"))
             include templates/images/icones-01.svg
 
         .sidebyside.count-add-media.plus-media +1
         .sidebyside.count-add-media.moins-media -1
 
-        .title.centered Interface de capture
+        .title.centered= __("Interface de capture")
 
     div.container
 
       div.media-choice
         div.btn-choice
-          button#photo Image
-          button#video-btn Vidéo
-          button#stopmotion Stop motion
-          button#audio Son
+          button#photo= __("Image")
+          button#video-btn= __("Vidéo")
+          button#stopmotion= __("Stop motion")
+          button#audio= __("Son")
 
       //- div.left
       div.captureLeft
@@ -34,11 +34,11 @@ html
 
         div.capture
           div.photo-capture
-            button#capture-btn(data-toggle="tooltip" data-placement="left" title="Enregistrer une photo")
+            button#capture-btn(data-toggle="tooltip" data-placement="left" title= __("Enregistrer une photo"))
               include templates/images/save.svg
           div.video-capture
             div.video-save
-              button(id='record-btn' data-toggle="tooltip" data-placement="left" title="Démarrer l\'enregistrement d\'une vidéo")
+              button(id='record-btn' data-toggle="tooltip" data-placement="left" title=__("Démarrer l\'enregistrement d\'une vidéo"))
                 include templates/images/save.svg
               button(id='stop-btn' disabled)
                 include templates/images/stop.svg
@@ -55,13 +55,13 @@ html
               include templates/images/stop.svg
         div.choice
           div.choices.image-choice 
-            .caption mode image
+            .caption= __("mode image")
           div.choices.video-choice 
-            .caption mode vidéo
+            .caption= __("mode vidéo")
           div.choices.stopmotion-choice 
-            .caption mode stop motion
+            .caption= __("mode stop motion")
           div.choices.audio-choice 
-            .caption mode audio
+            .caption= __("mode audio")
 
 
       div.captureRight

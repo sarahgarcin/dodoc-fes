@@ -35,6 +35,7 @@ jQuery(document).ready(function($) {
   events();
   main();
 
+
 	/**
 	* handlers
 	*/
@@ -223,7 +224,7 @@ jQuery(document).ready(function($) {
 
   // Prend des photos et des stop motion
   function main(){
-  //définition des variables pour la photo et le stop motion
+    //définition des variables pour la photo et le stop motion
     var streaming = false,
         video        = document.querySelector('#video'),
         canvas       = document.querySelector('#canvas'),
@@ -390,14 +391,14 @@ jQuery(document).ready(function($) {
               context.drawImage(imageObj, 0, 0);
             };
             imageObj.src = "https://" + host + "/" + app.session + "/01-stopmotion/" + countImage + ".png";
-            $(".screenshot .count-image").text("Image n°" + countImage);
+            $(".screenshot .count-image").text("Picture " + countImage);
           }
           else{
             startStopMotion();
           }
         });
         socket.emit('imageMotion', {data: data, id: sessionId, name: app.session, dir: dir, count: countImage});
-        $(".screenshot .count-image").text("Image n°" + countImage);
+        $(".screenshot .count-image").text("Picture " + countImage);
       }
 
       // Crée un nouveau stop motion + ajoute des images dedans + transforme le stop motion en vidéo
@@ -409,7 +410,7 @@ jQuery(document).ready(function($) {
           $(".form-meta.active").hide().removeClass('active');
         }
         $(".captureRight").css('display', 'block').addClass('active');
-        $('.screenshot').append('<div class="instructions-stopmotion"><div class="icone-stopmotion"><img src="/images/stopmotion.svg"></div><h4>Vous venez de créer un nouveau stop-motion.</br>Appuyez sur <b>enregistrer</b> pour prendre des photos</h4></div>');
+        $('.screenshot').append('<div class="instructions-stopmotion"><div class="icone-stopmotion"><img src="/images/stopmotion.svg"></div><h4>You have created a new stop motion.</br> Click on <b>save</b> to start taking pictures</h4></div>');
         $('.captureLeft').velocity({'left':'26%'}, 'slow');
         $('.captureRight').velocity({'left':'52%'}, 'slow');
         socket.emit('newStopMotion', {id: sessionId, name: app.session});
