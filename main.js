@@ -1,13 +1,14 @@
 var fs = require('fs-extra'),
-		glob = require("glob"),
-		path = require("path"),
-		gm = require('gm'),
-		markdown = require( "markdown" ).markdown,
-		exec = require('child_process').exec,
-		phantom = require('phantom'),
-		ffmpeg = require('fluent-ffmpeg'),
-		sprintf = require("sprintf-js").sprintf,
-    vsprintf = require("sprintf-js").vsprintf;
+	glob = require("glob"),
+	path = require("path"),
+	gm = require('gm'),
+	markdown = require( "markdown" ).markdown,
+	exec = require('child_process').exec,
+	phantom = require('phantom'),
+	ffmpeg = require('fluent-ffmpeg'),
+	sprintf = require("sprintf-js").sprintf,
+	vsprintf = require("sprintf-js").vsprintf;
+
 
 var uploadDir = '/uploads';
 
@@ -33,6 +34,9 @@ module.exports = function(app, io){
 		socket.on("audioCapture", onNewAudioCapture);
 		socket.on("deleteFile", deleteFile);
 		socket.on("deleteImageMotion", deleteImageMotion);
+		socket.on("saveMontage", saveMontage);
+		socket.on('sendPublication', onPublication);
+		socket.on('newUserPubli', displayPubli);
 	});
 
 	// events
@@ -44,7 +48,7 @@ module.exports = function(app, io){
 
 	//Ajoute le dossier de la session + l'ajouter à la liste des sessions
 	function addNewSession(session) {
-    var sessionPath = 'sessions/'+session.name;
+    	var sessionPath = 'sessions/'+session.name;
 		fs.ensureDirSync(sessionPath);
 
 		var jsonFile = 'sessions/' + session.name + '/' +session.name+'.json';
@@ -100,6 +104,17 @@ module.exports = function(app, io){
 			});
 			io.sockets.emit('listMedias', media,jsonObj);
 		});
+
+		//show montage 
+		var htmlFile = 'sessions/' + req.name + '/montage.html';
+		if(fs.existsSync(htmlFile)){
+			fs.readFile(htmlFile,"UTF-8", function (err, data) {
+		    if (err) {
+		       throw err;
+		    }
+		    io.sockets.emit('displayMontage', data);
+			});
+		}
 	}
 
 	//ajoute les images au dossier de session
@@ -164,7 +179,7 @@ module.exports = function(app, io){
 		//make sure you set the correct path to your video file
 		var proc = new ffmpeg({ source: req.dir + '/%d.png'})
 		  // using 12 fps
-		  .fps(6)
+		  .fps(3)
 		  // setup event handlers
 		  .on('end', function() {
 		    console.log('file has been converted succesfully');
@@ -186,7 +201,8 @@ module.exports = function(app, io){
 		//make sure you set the correct path to your video file
 		var proc = new ffmpeg({ source: req.dir + '/%d.png'})
 		  // using 12 fps
-		  .fps(6)
+		  .withFpsInput(5)
+		  .fps(5)
 		  // setup event handlers
 		  .on('end', function() {
 		    console.log('file has been converted succesfully');
@@ -229,59 +245,59 @@ module.exports = function(app, io){
 
 	function onNewAudioVideo(data){
 		var currentDate = Date.now();
-    var fileName = currentDate;
-    var VideoDirectory = 'sessions/' + data.name + '/00-audiovideo';
-    var sessionDirectory = 'sessions/' + data.name;
+	    var fileName = currentDate;
+	    var VideoDirectory = 'sessions/' + data.name + '/00-audiovideo';
+	    var sessionDirectory = 'sessions/' + data.name;
 
-    writeToDisk(data.files.video.dataURL, fileName + '.webm', data.name);
-    io.sockets.emit('merged', fileName + '.webm', data.name);
-    
-    //Write data to json
-    var jsonFile = 'sessions/' + data.name + '/' +data.name+'.json';
-		var jsonData = fs.readFileSync(jsonFile,"UTF-8");
-		var jsonObj = JSON.parse(jsonData);
-		var jsonAdd = { "name" : fileName};
-		jsonObj["files"]["videos"].push(jsonAdd);
-		fs.writeFile(jsonFile, JSON.stringify(jsonObj), function(err) {
-      if(err) {
-          console.log(err);
-      } else {
-          console.log("The file was saved!");
-      }
-    });
- 		var proc = ffmpeg(sessionDirectory + "/" + fileName + ".webm")
-	  // set the size of your thumbnails
-	  //.size('150x100')
-	  // setup event handlers
-	  .on('end', function(files) {
-	    console.log('screenshots were saved as ' + files);
-	  })
-	  .on('error', function(err) {
-	    console.log('an error happened: ' + err.message);
-	  })
-	  // take 2 screenshots at predefined timemarks
-	  .takeScreenshots({ count: 1, timemarks: [ '00:00:01'], filename: fileName + "-thumb.png"}, sessionDirectory);
-	  
-	  io.sockets.emit("displayNewVideo", {file: fileName + ".webm", extension:"webm", name:data.name, title: fileName});
+	    writeToDisk(data.files.video.dataURL, fileName + '.webm', data.name);
+	    io.sockets.emit('merged', fileName + '.webm', data.name);
+	    
+	    //Write data to json
+	    var jsonFile = 'sessions/' + data.name + '/' +data.name+'.json';
+			var jsonData = fs.readFileSync(jsonFile,"UTF-8");
+			var jsonObj = JSON.parse(jsonData);
+			var jsonAdd = { "name" : fileName};
+			jsonObj["files"]["videos"].push(jsonAdd);
+			fs.writeFile(jsonFile, JSON.stringify(jsonObj), function(err) {
+	      if(err) {
+	          console.log(err);
+	      } else {
+	          console.log("The file was saved!");
+	      }
+	    });
+	 		var proc = ffmpeg(sessionDirectory + "/" + fileName + ".webm")
+		  // set the size of your thumbnails
+		  //.size('150x100')
+		  // setup event handlers
+		  .on('end', function(files) {
+		    console.log('screenshots were saved as ' + files);
+		  })
+		  .on('error', function(err) {
+		    console.log('an error happened: ' + err.message);
+		  })
+		  // take 2 screenshots at predefined timemarks
+		  .takeScreenshots({ count: 1, timemarks: [ '00:00:01'], filename: fileName + "-thumb.png"}, sessionDirectory);
+		  
+		  io.sockets.emit("displayNewVideo", {file: fileName + ".webm", extension:"webm", name:data.name, title: fileName});
 	}
 
 	function writeToDisk(dataURL, fileName, session) {
-    var fileExtension = fileName.split('.').pop(),
-        fileRootNameWithBase = './sessions/' + session + '/' + fileName,
-        filePath = fileRootNameWithBase,
-        fileID = 2,
-        fileBuffer;
+	    var fileExtension = fileName.split('.').pop(),
+	        fileRootNameWithBase = './sessions/' + session + '/' + fileName,
+	        filePath = fileRootNameWithBase,
+	        fileID = 2,
+	        fileBuffer;
 
-    // @todo return the new filename to client
-    while (fs.existsSync(filePath)) {
-        filePath = fileRootNameWithBase + '(' + fileID + ').' + fileExtension;
-        fileID += 1;
-    }
+	    // @todo return the new filename to client
+	    while (fs.existsSync(filePath)) {
+	        filePath = fileRootNameWithBase + '(' + fileID + ').' + fileExtension;
+	        fileID += 1;
+	    }
 
-    dataURL = dataURL.split(',').pop();
-    fileBuffer = new Buffer(dataURL, 'base64');
-    fs.writeFileSync(filePath, fileBuffer);
-    // console.log('filePath', filePath);
+	    dataURL = dataURL.split(',').pop();
+	    fileBuffer = new Buffer(dataURL, 'base64');
+	    fs.writeFileSync(filePath, fileBuffer);
+	    // console.log('filePath', filePath);
 	}
 
 	//I don't use it because I only save video without audio
@@ -320,7 +336,7 @@ module.exports = function(app, io){
 		var filename = parseInt(file);
 
 		//save only video without audio
-    var video = fs.createReadStream(VideoDirectory + file +".webm");
+    	var video = fs.createReadStream(VideoDirectory + file +".webm");
 		var newVideo = fs.createWriteStream('sessions/' + req.name + '/' + file + ".webm" );
 		video.pipe(newVideo);
 
@@ -345,47 +361,84 @@ module.exports = function(app, io){
       } else {
           console.log("The file was saved!");
       }
-    });
+   		});
 
-    io.sockets.emit("displayNewVideo", {file: currentDate + ".webm", extension:"webm", name:req.name, title: currentDate});
+    	io.sockets.emit("displayNewVideo", {file: currentDate + ".webm", extension:"webm", name:req.name, title: currentDate});
 	}
 
 	function onNewAudioCapture(req){
 		//write audio to disk
 		var currentDate = Date.now();
 		var fileName = currentDate;
-  	var fileWithExt = fileName + '.wav';
-  	var fileExtension = fileWithExt.split('.').pop(),
-      fileRootNameWithBase = './sessions/' + req.name +'/'+ fileWithExt,
-      filePath = fileRootNameWithBase,
-      fileID = 2,
-      fileBuffer;
+	  	var fileWithExt = fileName + '.wav';
+	  	var fileExtension = fileWithExt.split('.').pop(),
+	      fileRootNameWithBase = './sessions/' + req.name +'/'+ fileWithExt,
+	      filePath = fileRootNameWithBase,
+	      fileID = 2,
+	      fileBuffer;
 
-    // @todo return the new filename to client
-    // while (fs.existsSync(filePath)) {
-    //     filePath = fileRootNameWithBase + '(' + fileID + ').' + fileExtension;
-    //     fileID += 1;
-    // }
+	    // @todo return the new filename to client
+	    // while (fs.existsSync(filePath)) {
+	    //     filePath = fileRootNameWithBase + '(' + fileID + ').' + fileExtension;
+	    //     fileID += 1;
+	    // }
 
-    dataURL = req.data.audio.dataURL.split(',').pop();
-    fileBuffer = new Buffer(dataURL, 'base64');
-    fs.writeFileSync(filePath, fileBuffer);
-    io.sockets.emit('AudioFile', fileWithExt, req.name);
+	    dataURL = req.data.audio.dataURL.split(',').pop();
+	    fileBuffer = new Buffer(dataURL, 'base64');
+	    fs.writeFileSync(filePath, fileBuffer);
+	    io.sockets.emit('AudioFile', fileWithExt, req.name);
 
-		//add data to json file
-		var jsonFile = 'sessions/' + req.name + '/' +req.name+'.json';
-		var data = fs.readFileSync(jsonFile,"UTF-8");
-		var jsonObj = JSON.parse(data);
-		var jsonAdd = { "name" : currentDate};
-		jsonObj["files"]["audio"].push(jsonAdd);
-		fs.writeFile(jsonFile, JSON.stringify(jsonObj), function(err) {
+			//add data to json file
+			var jsonFile = 'sessions/' + req.name + '/' +req.name+'.json';
+			var data = fs.readFileSync(jsonFile,"UTF-8");
+			var jsonObj = JSON.parse(data);
+			var jsonAdd = { "name" : currentDate};
+			jsonObj["files"]["audio"].push(jsonAdd);
+			fs.writeFile(jsonFile, JSON.stringify(jsonObj), function(err) {
+	      if(err) {
+	          console.log(err);
+	      } else {
+	          console.log("The file was saved!");
+	      }
+	    });
+	    io.sockets.emit("displayNewAudio", {file: fileName + ".wav", extension:"wav", name:req.name, title: fileName});
+	}
+
+	function saveMontage(html, session){
+		var directory = 'sessions/'+ session + "/";
+		var htmlFile = directory + "montage.html";
+		var objectHtml = html;
+		fs.writeFile(htmlFile, objectHtml, function(err) {
       if(err) {
           console.log(err);
       } else {
-          console.log("The file was saved!");
+          console.log("Montage HTML was saved");
       }
-    });
-    io.sockets.emit("displayNewAudio", {file: fileName + ".wav", extension:"wav", name:req.name, title: fileName});
+	  });
+	}
+
+	function onPublication(session){
+		var htmlFile = 'sessions/' + session + '/montage.html';
+		if(fs.existsSync(htmlFile)){
+			fs.readFile(htmlFile,"UTF-8", function (err, data) {
+		    if (err) {
+		       throw err;
+		    }
+		    io.sockets.emit('puclicationPage', data);
+			});
+		}
+	}
+
+	function displayPubli(session){
+		var htmlFile = 'sessions/' + session + '/montage.html';
+		if(fs.existsSync(htmlFile)){
+			fs.readFile(htmlFile,"UTF-8", function (err, data) {
+		    if (err) {
+		       throw err;
+		    }
+		    io.sockets.emit('puclicationPage', data);
+			});
+		}	
 	}
 
 

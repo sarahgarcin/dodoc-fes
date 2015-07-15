@@ -66,7 +66,7 @@ jQuery(document).ready(function($) {
 
 		}
 	}
-
+	console.log( "https://"+host + "/"+app.session);
 	function displayNewImage(req){
 		var identifiant = req.name;
 		timestampToDate(identifiant);

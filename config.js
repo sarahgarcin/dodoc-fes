@@ -1,3 +1,12 @@
+var i18n = require('i18n');
+
+i18n.configure({
+	locales: ['fr', 'en'],
+	defaultLocale: 'en',
+	cookie: 'locale',
+	directory: __dirname + '/locales'
+});
+
 module.exports = function(app,express){
 
   // app.set("ipaddr", "127.0.0.1"); //Server's IP address
@@ -8,5 +17,5 @@ module.exports = function(app,express){
   app.use(express.static(__dirname + "/sessions"));
   app.use('/static', express.static("sessions"));
   app.use(express.bodyParser()); //Tells server to support JSON, urlencoded, and multipart requests
-
+  app.use(i18n.init); // module de translation
 }

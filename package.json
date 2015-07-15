@@ -11,6 +11,7 @@
     "fs-extra": "^0.18.0",
     "glob": "*",
     "gm": "*",
+    "i18n": "^0.5.0",
     "jade": "*",
     "markdown": "*",
     "phantom": "*",

@@ -391,6 +391,19 @@ body.flux & .title {
 	}
 }
 
+.btn.publish {
+	//background-color: @bleuvert;
+	// tooltip
+	+ .tooltip {
+		.tooltip-arrow {
+	 	   border-left-color: @bleuvert;
+		}
+		.tooltip-inner {
+		    background-color: @bleuvert;
+		}
+	}
+}
+
 .btn-bibli{
 	// margin:0px auto 20px auto;
 	display: inline-block;
@@ -933,7 +946,7 @@ body.flux & .title {
 //CUSTOM AUDIO PLAYER
 
 audio {
-   opacity: 0;
+   opacity: 1;
 }
 
 .mejs-controls .mejs-button button{
@@ -985,11 +998,6 @@ audio {
 	width:100%;
 	height: 100vh;
 	margin: auto;
-
-
-	//font-family: 'share', sans-serif ; 
-
-
 	.buffer {
 		background-color:#e5e5e5;
 		.mediaContainer {
@@ -1006,6 +1014,7 @@ audio {
 				vertical-align: top;
 				padding: 15px;
 				margin:0px;
+				// .mediaContent{position:absolute; z-index:100;}
 
 				.mediaTitre {
 					margin: 0;
@@ -1087,25 +1096,71 @@ audio {
 	.montage {
 		overflow-y: scroll;
 
+		.montage-title{
+			width: 640px;
+			height: 72px;
+			position: fixed;
+			top:0;
+			z-index: 1000;
+			input{
+				border: none;
+				text-align: center;
+				font-size: 30px;
+				width:100%;
+				height:100%;
+				&:hover{
+					border: 2px solid @bleuvert;
+				}
+			}
 
-		input{
-			width: 100%;
-			border: none;
-			text-align: center;
-			font-size: 30px;
 		}
 
 	  -webkit-box-shadow: 0 1px 4px rgba(0, 0, 0, 0.1);
 	  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.1);
 
-		.block-content{
-			width: 100%;
-			height: 300px;
-			border-bottom: 4px dashed #CECECE;
+		.montage-medias{
+			margin-top: 72px;
+			.block-content{
+				width: 100%;
+				height: 480px;
+				border-bottom: 4px dashed #CECECE;
+				position: relative;
+				margin-bottom: 0px;
+				.mediaContent {
+					img{
+						//&:hover{border: 4px solid @bleuvert;}
+					}
+					audio{
+						position: relative;
+						bottom:0;
+						height: 100%;
+					}
+				}
+				.remove-media{
+				  width: 30px;
+				  position: absolute;
+				  top: 15px;
+				  right: 15px;
+				  z-index: 200;
+				  cursor: pointer;
+				}
 
+			}
 		}
 	}
 }
+
+.buffer-media {
+	width:100%;
+	height: 100vh;
+	margin: auto;
+	position: absolute;
+	top:0;
+	left:0;
+	z-index:-1;
+}
+
+.pep-dpa {background: @bleuvert; border-bottom: 4px dashed @bleumarine !important;}
 
 
 .container-flux {
@@ -1165,12 +1220,11 @@ audio {
 				list-style: none;
 				position: relative;;
 				margin: 0px 10px 60px 0px;
-				plop: none;
 
 				.videoButton {
 					width: 100%;
 					height: 100%;
-  					position: absolute;
+  				position: absolute;
 					z-index: 100;
 
 					
@@ -1266,6 +1320,15 @@ audio {
 		display: none;
 
 	}
+}
+
+.montage .publish{
+	width: 40px;
+	position: fixed;
+	z-index:1001;
+	top:10px;
+	right: 15px;
+	cursor: pointer;
 }
 
 
@@ -1421,6 +1484,34 @@ audio {
     transform: scale(1.0);
     -webkit-transform: scale(1.0);
   }
+}
+
+
+//Publication Page
+
+.publication{
+	.container-publi{
+		.content{
+			width: 50%;
+			margin: 30px auto;
+			.montage-title{
+				text-align: center;
+				margin-bottom: 3rem;
+				h2{
+					font-size: 2em;
+				}
+			}
+			.montage-medias{
+				margin-bottom: 100px;
+				.block-content{
+					.mediaContent{
+						width:100%;
+						margin-bottom: 4rem;
+					}
+				}
+			}
+		}
+	}
 }
 
 

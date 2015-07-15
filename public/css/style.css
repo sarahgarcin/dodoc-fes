@@ -7502,6 +7502,12 @@ body.flux  .title {
 .btn.bibli + .tooltip .tooltip-inner {
   background-color: #FFB520;
 }
+.btn.publish + .tooltip .tooltip-arrow {
+  border-left-color: #48c2b5;
+}
+.btn.publish + .tooltip .tooltip-inner {
+  background-color: #48c2b5;
+}
 .btn-bibli {
   display: inline-block;
   float: right;
@@ -7983,7 +7989,7 @@ body[data-mode="photo"] .captureRight .flash {
   text-align: center;
 }
 audio {
-  opacity: 0;
+  opacity: 1;
 }
 .mejs-controls .mejs-button button {
   transform: scale(1.6);
@@ -8097,16 +8103,58 @@ audio {
   -webkit-box-shadow: 0 1px 4px rgba(0, 0, 0, 0.1);
   box-shadow: 0 1px 4px rgba(0, 0, 0, 0.1);
 }
-.container-bibli .montage input {
-  width: 100%;
+.container-bibli .montage .montage-title {
+  width: 640px;
+  height: 72px;
+  position: fixed;
+  top: 0;
+  z-index: 1000;
+}
+.container-bibli .montage .montage-title input {
   border: none;
   text-align: center;
   font-size: 30px;
-}
-.container-bibli .montage .block-content {
   width: 100%;
-  height: 300px;
+  height: 100%;
+}
+.container-bibli .montage .montage-title input:hover {
+  border: 2px solid #48c2b5;
+}
+.container-bibli .montage .montage-medias {
+  margin-top: 72px;
+}
+.container-bibli .montage .montage-medias .block-content {
+  width: 100%;
+  height: 480px;
   border-bottom: 4px dashed #CECECE;
+  position: relative;
+  margin-bottom: 0px;
+}
+.container-bibli .montage .montage-medias .block-content .mediaContent audio {
+  position: relative;
+  bottom: 0;
+  height: 100%;
+}
+.container-bibli .montage .montage-medias .block-content .remove-media {
+  width: 30px;
+  position: absolute;
+  top: 15px;
+  right: 15px;
+  z-index: 200;
+  cursor: pointer;
+}
+.buffer-media {
+  width: 100%;
+  height: 100vh;
+  margin: auto;
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: -1;
+}
+.pep-dpa {
+  background: #48c2b5;
+  border-bottom: 4px dashed #0038bb !important;
 }
 .container-flux {
   width: 100%;
@@ -8151,15 +8199,14 @@ audio {
   list-style: none;
   position: relative;
   margin: 0px 10px 60px 0px;
-  plop: none;
 }
 .container-flux .content ul .media .videoButton {
-  width: 740px;
-  height: 370px;
+  width: 100%;
+  height: 100%;
   position: absolute;
   z-index: 100;
   background-image: url("/images/icones-04.svg");
-  opacity: .4;
+  opacity: .8;
   background-position: center center;
   background-repeat: no-repeat;
   transition: opacity 0.8s ease-out;
@@ -8216,6 +8263,14 @@ audio {
   top: 0;
   left: 0;
   display: none;
+}
+.montage .publish {
+  width: 40px;
+  position: fixed;
+  z-index: 1001;
+  top: 10px;
+  right: 15px;
+  cursor: pointer;
 }
 /****************
 	 POPOVER !
@@ -8341,4 +8396,22 @@ audio {
     transform: scale(1);
     -webkit-transform: scale(1);
   }
+}
+.publication .container-publi .content {
+  width: 50%;
+  margin: 30px auto;
+}
+.publication .container-publi .content .montage-title {
+  text-align: center;
+  margin-bottom: 3rem;
+}
+.publication .container-publi .content .montage-title h2 {
+  font-size: 2em;
+}
+.publication .container-publi .content .montage-medias {
+  margin-bottom: 100px;
+}
+.publication .container-publi .content .montage-medias .block-content .mediaContent {
+  width: 100%;
+  margin-bottom: 4rem;
 }
