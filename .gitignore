@@ -39,7 +39,7 @@ Thumbs.db
 # Content Files #
 ###############
 archive
-#sessions/*
+sessions/*
 node_modules
 
 # https files #
