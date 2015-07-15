@@ -36,5 +36,5 @@ Run the server in the terminal
 ```node server.js```
 
 Go to browser and go to the url
-http://localhost:8080
+https://localhost:8080
 
