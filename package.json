@@ -1,4 +1,7 @@
 {
+  "name": "dodoc",
+  "version": "0.8.2",
+  "description": "Dodoc is a documentation tool for children",
   "repository": {
     "type": "git",
     "url": "git://github.com//sarahgarcin/opendoc-tangible.git"
