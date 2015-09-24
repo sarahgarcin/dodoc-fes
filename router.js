@@ -11,9 +11,10 @@ module.exports = function(app,io,m){
 
   app.get("/", getIndex);
   app.get("/select/:session", getSelect);
-  app.get("/select/:session/capture", getCapture);
-  app.get("/select/:session/flux", getFlux);
-  app.get("/select/:session/publi", getPubli);
+  app.get("/select/:session/:projet", getProjet);
+  app.get("/select/:session/:projet/capture", getCapture);
+  app.get("/select/:session/:projet/flux", getFlux);
+  app.get("/select/:session/:projet/publi", getPubli);
 
   // set a cookie to requested locale
   app.get('/:locale', function (req, res) {
@@ -34,9 +35,22 @@ module.exports = function(app,io,m){
 
     fs.ensureDirSync(sessionPath);
 
+    res.render("session", {
+      title : "Projets",
+      session : session,
+    });
+  };
+  function getProjet(req, res) {
+    var session = req.param('session');
+    var projet = req.param('projet');
+    var sessionPath = 'sessions/'+session + '/' + projet;
+
+    fs.ensureDirSync(sessionPath);
+
     res.render("select", {
       title : "Bibliotheque de media",
       session : session,
+      projet : projet,
     });
   };
   function getCapture(req, res) {
@@ -55,7 +69,7 @@ module.exports = function(app,io,m){
     fs.ensureDirSync(sessionPath);
 
     res.render("flux", {
-      title : "Futur en Seine",
+      title : "Dodoc Flux",
       session : session,
     });
   };

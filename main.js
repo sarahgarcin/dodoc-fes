@@ -37,6 +37,7 @@ module.exports = function(app, io){
 		socket.on("saveMontage", saveMontage);
 		socket.on('sendPublication', onPublication);
 		socket.on('newUserPubli', displayPubli);
+
 	});
 
 	// events
@@ -48,11 +49,21 @@ module.exports = function(app, io){
 
 	//Ajoute le dossier de la session + l'ajouter à la liste des sessions
 	function addNewSession(session) {
-    	var sessionPath = 'sessions/'+session.name;
+    var sessionPath = 'sessions/'+session.name;
 		fs.ensureDirSync(sessionPath);
 
+		var thumbName = session.name + "-thumb";
+    var filePath = sessionPath + "/" + thumbName + ".jpg";
+
+    var imageBuffer = decodeBase64Image(session.file);
+
+    fs.writeFile(filePath, imageBuffer.data, function (err) {
+        console.info("write new file to " + filePath);
+    });
+
 		var jsonFile = 'sessions/' + session.name + '/' +session.name+'.json';
-		var objectJson = {"files": {"images":[], "videos":[], "stopmotion":[], "audio":[]}};
+		var objectJson = {"name":session.name, "description":session.description}
+		//var objectJson = {"files": {"images":[], "videos":[], "stopmotion":[], "audio":[]}};
 		var jsonString = JSON.stringify(objectJson);
 		fs.appendFile(jsonFile, jsonString, function(err) {
       if(err) {
@@ -61,7 +72,7 @@ module.exports = function(app, io){
           console.log("Session was created!");
       }
     });
-    io.sockets.emit("displayNewSession", {name: session.name});
+    io.sockets.emit("displayNewSession", {name: session.name, description: session.description});
 	}
 
 	//Liste les dossiers dans sessions/
@@ -73,7 +84,10 @@ module.exports = function(app, io){
 		    if(file == ".DS_Store"){
 		    	fs.unlink(dir+'.DS_Store');
 		    }
-		    io.sockets.emit('listSessions', file);
+		    var jsonFile = dir + '/' + file + '/' +file+'.json';
+				var data = fs.readFileSync(jsonFile,"UTF-8");
+				var jsonObj = JSON.parse(data);
+		    io.sockets.emit('listSessions', {name:file, description: jsonObj.description});
 		  });
 		});
 	}

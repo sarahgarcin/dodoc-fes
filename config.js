@@ -1,4 +1,5 @@
 var i18n = require('i18n');
+var siofu = require("socketio-file-upload");
 
 i18n.configure({
 	locales: ['fr', 'en'],

@@ -31,31 +31,39 @@ jQuery(document).ready(function($) {
 	};
 
 	// Affiche la liste des sessions
-	function onlistSessions(session) {
-		$(".session .list-session ul").append('<li class="session-project"><a href="'+domainUrl+'select/'+session+'">'+session+'</a></li>')
+	function onlistSessions(req) {
+		$(".session .list-session ul").append('<li class="session-project"><a href="'+domainUrl+'select/'+req.name+'"><h2>'+req.name+'</h2><p class="description">'+req.description+'</p><img src="' + domainUrl + '/' +req.name+'/'+ req.name +'-thumb.jpg"></a></li>')
 	}
 
 	//Ajouter une session
 	function addSession(){
 		$("#add-session").on('click', function(){
-
-			console.log("CLICK");
-
-			var newContentToAdd = "<h3 class='popoverTitle'>Add a session</h3><p>Enter a name</p><form onsubmit='return false;' class='add-project'><input class='new-session' placeholder='Session name'></input><input type='submit' class='submit-session'></input></form>";
+			var newContentToAdd = "<h3 class='popoverTitle'>Ajouter une nouvelle session</h3><form onsubmit='return false;' class='add-project'><input class='new-session' placeholder='Nom'></input><input class='description-session' placeholder='Description'></input><input type='file' id='thumbfile' accept='image/*'></input><input type='submit' class='submit-session'></input></form>";
 			
 			var closeAddProjectFunction = function() {
 			};
 
 			fillPopOver( newContentToAdd, $(this), 300, 300, closeAddProjectFunction);
-
+			var imageData;
+			
+			$('#thumbfile').bind('change', function(e){
+		  	//upload(e.originalEvent.target.files);
+		  	imageData = e.originalEvent.target.files;
+			});
+			
 			$('input.submit-session').on('click', function(){
 				var newSession = $('input.new-session').val();
+				var description = $('input.description-session').val();
+				var f = imageData[0];
+				var reader = new FileReader();
 				session = {
         			name: newSession 
     			}
-    			sessionList.push(session);
-				socket.emit('newSession', {name: newSession});
-				
+    		sessionList.push(session);
+    		reader.onload = function(evt){
+					socket.emit('newSession', {name: newSession, description:description , file:evt.target.result});
+				};
+				reader.readAsDataURL(f);
 				closePopover(closeAddProjectFunction);
 
 			})
@@ -63,7 +71,7 @@ jQuery(document).ready(function($) {
 	}
 
 	function displayNewSession(req){
-		$(".session .list-session ul").prepend('<li class="session-project"><a href="'+domainUrl+'select/'+req.name+'">'+req.name+'</a></li>');
+		$(".session .list-session ul").prepend('<li class="session-project"><a href="'+domainUrl+'select/'+req.name+'"><h2>'+req.name+'</h2><p class="description">'+req.description+'</p><img src="' + domainUrl + '/' +req.name+'/'+ req.name +'-thumb.jpg"></a></li>');
 	}
 
 });
