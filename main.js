@@ -24,8 +24,10 @@ module.exports = function(app, io){
 
 	io.on("connection", function(socket){
 		socket.on("newUser", onNewUser);
+		socket.on("displayPage", onDisplayPage);
 		socket.on("newUserSelect", listMedias);
 		socket.on("newSession", addNewSession);
+		socket.on("newProjet", addNewProjet);
 		socket.on("imageCapture", onNewImage);
 		socket.on("newStopMotion", onNewStopMotion);
 		socket.on("imageMotion", onNewImageMotion);
@@ -45,6 +47,9 @@ module.exports = function(app, io){
 	function onNewUser(req){
 		console.log(req);
 		listSessions();		
+	};
+	function onDisplayPage(req){
+		listProjets(req);	
 	};
 
 	//Ajoute le dossier de la session + l'ajouter à la liste des sessions
@@ -75,6 +80,33 @@ module.exports = function(app, io){
     io.sockets.emit("displayNewSession", {name: session.name, description: session.description});
 	}
 
+	function addNewProjet(projet) {
+    var projetPath = 'sessions/'+projet.session+"/"+projet.name;
+		fs.ensureDirSync(projetPath);
+
+		var thumbName = projet.name + "-thumb";
+    var filePath = projetPath + "/" + thumbName + ".jpg";
+
+    var imageBuffer = decodeBase64Image(projet.file);
+
+    fs.writeFile(filePath, imageBuffer.data, function (err) {
+        console.info("write new file to " + filePath);
+    });
+
+		var jsonFile = projetPath+ "/" +projet.name+'.json';
+		var objectJson = {"session":projet.session, "name":projet.name, "description":projet.description, "files": {"images":[], "videos":[], "stopmotion":[], "audio":[]}}
+		//var objectJson = {"files": {"images":[], "videos":[], "stopmotion":[], "audio":[]}};
+		var jsonString = JSON.stringify(objectJson);
+		fs.appendFile(jsonFile, jsonString, function(err) {
+      if(err) {
+          console.log(err);
+      } else {
+          console.log("Session was created!");
+      }
+    });
+    io.sockets.emit("displayNewProjet", {session: projet.session, name: projet.name, description: projet.description});
+	}
+
 	//Liste les dossiers dans sessions/
 	function listSessions() {
 		var dir = "sessions/";
@@ -84,12 +116,26 @@ module.exports = function(app, io){
 		    if(file == ".DS_Store"){
 		    	fs.unlink(dir+'.DS_Store');
 		    }
-		    var jsonFile = dir + '/' + file + '/' +file+'.json';
+		    var jsonFile = dir + file + '/' +file+'.json';
 				var data = fs.readFileSync(jsonFile,"UTF-8");
 				var jsonObj = JSON.parse(data);
 		    io.sockets.emit('listSessions', {name:file, description: jsonObj.description});
 		  });
 		});
+	}
+
+	//Liste les dossiers projets dans sessions/nomdelasession/
+	function listProjets(session) {
+		var sessionPath = 'sessions/'+ session +"/";
+		fs.readdirSync(sessionPath).filter(function(file) {
+			if(fs.statSync(path.join(sessionPath, file)).isDirectory()){
+				console.log(file);
+				var jsonFile = sessionPath + file + '/' +file+'.json';
+				var data = fs.readFileSync(jsonFile,"UTF-8");
+				var jsonObj = JSON.parse(data);
+		    io.sockets.emit('listProjets', {session: session, name:file, description: jsonObj.description});
+			}
+  	});
 	}
 
 	function deleteFile(req){

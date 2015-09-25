@@ -32,7 +32,7 @@ jQuery(document).ready(function($) {
 
 	// Affiche la liste des sessions
 	function onlistSessions(req) {
-		$(".session .list-session ul").append('<li class="session-project"><a href="'+domainUrl+'select/'+req.name+'"><h2>'+req.name+'</h2><p class="description">'+req.description+'</p><img src="' + domainUrl + '/' +req.name+'/'+ req.name +'-thumb.jpg"></a></li>')
+		$(".session .list-session ul").append('<li class="session-project"><a href="'+domainUrl+'select/'+req.name+'"><h2>'+req.name+'</h2><p class="description">'+req.description+'</p><img src="' + domainUrl +req.name+'/'+ req.name +'-thumb.jpg"></a></li>')
 	}
 
 	//Ajouter une session
@@ -71,7 +71,7 @@ jQuery(document).ready(function($) {
 	}
 
 	function displayNewSession(req){
-		$(".session .list-session ul").prepend('<li class="session-project"><a href="'+domainUrl+'select/'+req.name+'"><h2>'+req.name+'</h2><p class="description">'+req.description+'</p><img src="' + domainUrl + '/' +req.name+'/'+ req.name +'-thumb.jpg"></a></li>');
+		$(".session .list-session ul").prepend('<li class="session-project"><a href="'+domainUrl+'select/'+req.name+'"><h2>'+req.name+'</h2><p class="description">'+req.description+'</p><img src="' + domainUrl +req.name+'/'+ req.name +'-thumb.jpg"></a></li>');
 	}
 
 });

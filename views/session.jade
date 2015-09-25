@@ -2,12 +2,13 @@ doctype html
 html
   head
     include templates/head.jade
-  body.index
+  body.projets
 
     include templates/header.jade
 
     div.thumb-background
-    div.projets
+        img(src="" atl="background")
+    div.projets-block
       div.list-projets
         ul
         button#add-projet 
@@ -16,4 +17,4 @@ html
     //- scripts
     include templates/footer.jade
 
-    script(src='/js/index.js')
+    script(src='/js/session.js')

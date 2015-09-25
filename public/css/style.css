@@ -7609,6 +7609,18 @@ body.flux  .title {
 .index .session .list-session #add-session a {
   color: #fff;
 }
+.projets .thumb-background {
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  top: 0;
+  left: 0;
+  opacity: 0.5;
+  z-index: -3;
+}
+.projets .thumb-background img {
+  width: 100%;
+}
 /* CAPTURE PAGE
 ---------------------------------*/
 .container {
