@@ -22,7 +22,8 @@ jQuery(document).ready(function($) {
 
 	// active fonctions
 	addProjet();
-	$(".thumb-background img").attr('src',  originUrl+ "/" +currentSession + '/'+ currentSession +'-thumb.jpg');
+	//$('body').css({'background':"url("+originUrl+ "/" +currentSession + "/"+ currentSession +"-thumb.jpg) no-repeat fixed", "background-size":"cover"});
+	$(".thumb-background img").attr("src", originUrl+ "/" +currentSession + "/"+ currentSession +"-thumb.jpg");
 
 	/* sockets */
 	function onSocketConnect() {
@@ -37,13 +38,13 @@ jQuery(document).ready(function($) {
 
 	// Affiche la liste des sessions
 	function onlistProjets(projet) {
-		$(".projets-block .list-projets ul").append('<li class="item-project"><a href="'+domainUrl +'/'+ projet.name+'"><h2>'+projet.name+'</h2><p class="description">'+projet.description+'</p><img src="' + originUrl + '/'+projet.session+ '/'+projet.name+'/'+projet.name +'-thumb.jpg"></a></li>');
+		$(".projets-block .list-projets ul").append('<li class="item-project vignette"><a href="'+domainUrl +'/'+ projet.name+'"><h2>'+projet.name+'</h2><p class="description">'+projet.description+'</p><img src="' + originUrl + '/'+projet.session+ '/'+projet.name+'/'+projet.name +'-thumb.jpg"></a></li>');
 	}
 
 	//Ajouter une session
 	function addProjet(){
 		$("#add-projet").on('click', function(){
-			var newContentToAdd = "<h3 class='popoverTitle'>Ajouter un nouveau projet</h3><form onsubmit='return false;' class='add-project'><input class='new-projet' placeholder='Nom'></input><input class='description-projet' placeholder='Description'></input><input type='file' id='thumbfile' accept='image/*'></input><input type='submit' class='submit-projet'></input></form>";
+			var newContentToAdd = "<h3 class='popoverTitle'>Ajouter un nouveau projet</h3><form onsubmit='return false;' class='add-project'><input class='new-projet' placeholder='Nom'></input><input class='description-projet' placeholder='Description'></input><input type='file' id='thumbfile' accept='image/*' placeholder='Ajouter une image'></input><label for='thumbfile'>Ajouter une image</label><input type='submit' class='submit-projet'></input></form>";
 			
 			var closeAddProjectFunction = function() {
 			};
@@ -54,6 +55,14 @@ jQuery(document).ready(function($) {
 			$('#thumbfile').bind('change', function(e){
 		  	//upload(e.originalEvent.target.files);
 		  	imageData = e.originalEvent.target.files;
+		  	//change the label of the button in the name of the image
+		  	var file = this.files[0].name;
+			  var dflt = $(this).attr("placeholder");
+			  if($(this).val()!=""){
+			    $(this).next().text(file);
+			  } else {
+			    $(this).next().text(dflt);
+			  }
 			});
 			
 			$('input.submit-projet').on('click', function(){
@@ -76,7 +85,7 @@ jQuery(document).ready(function($) {
 	}
 
 	function displayNewProjet(projet){
-		$(".projets-block .list-projets ul").prepend('<li class="item-project"><a href="'+domainUrl +'/'+ projet.name+'"><h2>'+projet.name+'</h2><p class="description">'+projet.description+'</p><img src="' + originUrl + '/'+projet.session+ '/'+projet.name+'/'+projet.name +'-thumb.jpg"></a></li>');
+		$(".projets-block .list-projets ul").prepend('<li class="item-project vignette"><a href="'+domainUrl +'/'+ projet.name+'"><h2>'+projet.name+'</h2><p class="description">'+projet.description+'</p><img src="' + originUrl + '/'+projet.session+ '/'+projet.name+'/'+projet.name +'-thumb.jpg"></a></li>');
 	}
 
 });

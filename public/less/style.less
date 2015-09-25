@@ -432,88 +432,122 @@ body.flux & .title {
 /* PAGE D'ACCUEIL INDEX
 ---------------------------------*/
 .index {
-	.session {
-		width:40%;
-		margin:auto;
+	// .session {
+	// 	width:40%;
+	// 	margin:auto;
 
-		display: flex;
-		  -webkit-box-align: center;
-		  -webkit-align-items: center;
-		  -ms-flex-align: center;
-		  align-items: center;
-		  height: 80vh;
-		  -webkit-box-pack: center;
-		  -webkit-justify-content: center;
-		  -ms-flex-pack: center;
-		  justify-content: center;
+	// 	display: flex;
+	//   -webkit-box-align: center;
+	//   -webkit-align-items: center;
+	//   -ms-flex-align: center;
+	//   align-items: center;
+	//   height: 80vh;
+	//   -webkit-box-pack: center;
+	//   -webkit-justify-content: center;
+	//   -ms-flex-pack: center;
+	//   justify-content: center;
 
-		.list-session {
-			-webkit-box-flex: 0;
-			  -webkit-flex: none;
-			  -ms-flex: none;
-			  flex: none;
-			  max-width: 100%;
+	// 	.list-session {
+	// 		-webkit-box-flex: 0;
+	// 	  -webkit-flex: none;
+	// 	  -ms-flex: none;
+	// 	  flex: none;
+	// 	  max-width: 100%;
 
-			  .vignetteProjet {
-			  	background-color: #fff;
-			  	color: #333;
-			  	margin:5px;
-			  	padding:0;
+	// 	  .vignetteProjet {
+	// 	  	background-color: #fff;
+	// 	  	color: #333;
+	// 	  	margin:5px;
+	// 	  	padding:0;
 
-			  	transition: background-color .4s ease-out;
-			  	a {
-				  	color: #333;
-			  		padding:10px;
-			  		padding-left: 14px;
-			  		padding-right: 14px;
-			  		display: block;
+	// 	  	transition: background-color .4s ease-out;
+	// 	  	a {
+	// 		  	color: #333;
+	// 	  		padding:10px;
+	// 	  		padding-left: 14px;
+	// 	  		padding-right: 14px;
+	// 	  		display: block;
 
-			  		&:hover {
-			  			color: #fff;
-			  			background-color: #333;
-					  	transition: background-color 0s ease-out;
-			  		}
-			  	}
-			}
+	// 	  		&:hover {
+	// 	  			color: #fff;
+	// 	  			background-color: #333;
+	// 			  	transition: background-color 0s ease-out;
+	// 	  		}
+	// 	  	}
+	// 		}
 
-			  ul {
-			  	display: inline;
-			  	padding: 0;
-
-
-				.session-project {
-
-					.vignetteProjet;
-					display: inline-block;
-
-					transform: translate(0,0,0);
+	// 		  ul {
+	// 		  	display: inline;
+	// 		  	padding: 0;
 
 
-				}			  	
-			  }
+	// 				.session-project {
 
-			  #add-session {
-					.vignetteProjet;			  	
-					display: inline-block;
-					background-color: @bleuvert;
-					a {
-											color:#fff;
+	// 					.vignetteProjet;
+	// 					display: inline-block;
+	// 					transform: translate(0,0,0);
+	// 				}			  	
+	// 		  }
 
+	// 		  #add-session {
+	// 				.vignetteProjet;			  	
+	// 				display: inline-block;
+	// 				background-color: @bleuvert;
+	// 				a {
+	// 										color:#fff;
+
+	// 				}
+	// 		  }
+
+
+	// 	}
+	// }
+
+}
+/* DESIGN DES VIGNETTES PAGE INDEX & PAGE PROJETS*/
+.col-wrapper{
+	width:98%;
+	margin:auto;
+	.list-wrapper{
+		margin-top:20px;
+		margin-bottom: 20px;
+		ul{
+			padding:0;
+			.vignette{
+				width:31.5%;
+				display: inline-block;
+				background-color: #FFF;
+				padding: 10px 24px 20px 24px;
+				margin:10px;
+				a{
+					&:active{
+						color:#000;
+						text-decoration: none;
 					}
-			  }
-
-
+				}
+			}
 		}
+		.add-button {		  	
+			background-color: @bleuvert;
+			padding: 10px 15px;
+			margin-left: 5px;
+			margin-bottom: 20px;
+			a {
+				color:#fff;
+
+			}
+	  }
 	}
 
 }
 
-// PAGE LISTE DES PROJETS (SESSION)
+/* PAGE LISTE DES PROJETS (SESSION) 
+----------------------------------------*/
 .projets{
 	.thumb-background{
 		width:100%;
 		height:100%;
-		position:absolute;
+		position:fixed;
 		top:0;
 		left:0;
 		opacity: 0.5;
@@ -1422,11 +1456,9 @@ audio {
 		display: block !important;
 	}
 
-
-
 	.popoverTitle {
 		margin: 0;
-		margin-bottom: 1em;		
+		margin-bottom: .6em;		
 		padding: 0;
 		padding-bottom: .5em;
 
@@ -1434,21 +1466,62 @@ audio {
 
 	}
 
-	input.new-session {
+	input.new-session, input.description-session,
+	input.new-projet, input.description-session {
 		-webkit-appearance: none;
 		text-indent: 2%;
 		background-color: #fff;
 		border:none;
 		width: 100%;
-		margin-bottom: .5em;
-
-		  padding: .4em;
+		padding: .4em;
 	}
 
-	.submit-session {
+	//CUSTOM INPUT FILE
+	label, input {
+	  color: #333;
+	  font-size: 16px;
+	}
+	label {
+	  display: inline-block;
+	  width: 5em;
+	  padding: 0 1em;
+	  text-align: right;
+	}
+	[type=file] {
+    position: absolute;
+    filter: alpha(opacity=0);
+    opacity: 0;
+	}
+	input, [type=file] + label {
+	  border: 1px solid #CCC;
+	  border-radius: 3px;
+	  text-align: left;
+	  padding: 10px;
+	  width: 100%;
+	  margin-bottom: .7em;
+	  left: 0;
+	  position: relative;
+	}
+	[type=file] + label {
+	  text-align: center;
+	  /* Decorative */
+	  font-weight: normal;
+	  background: #333;
+	  color: #fff;
 	  border: none;
-	  background: none;
+	  cursor: pointer;
+	}
+	[type=file] + label:hover {
+	  background: @bleuvert;
+	}
+	//END OF CUSTOM INPUT FILE
+
+	.submit-session, .submit-projet {
+		width:40%;
+		margin: .5em 0;
+	  border: none;
 	  float: right;
+	  text-align: center;
 		background-color: @bleuvert;
 	}
 }

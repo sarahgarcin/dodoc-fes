@@ -8,11 +8,11 @@ html
 
     div.thumb-background
         img(src="" atl="background")
-    div.projets-block
-      div.list-projets
+    div.projets-block.col-wrapper
+      div.list-projets.list-wrapper
+        button#add-projet.add-button
+          a Ajouter un projet
         ul
-        button#add-projet 
-          a= __("Ajouter un projet")
 
     //- scripts
     include templates/footer.jade

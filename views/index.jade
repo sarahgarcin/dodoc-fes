@@ -6,11 +6,11 @@ html
 
     include templates/header.jade
 
-    div.session
-      div.list-session
+    div.session.col-wrapper
+      div.list-session.list-wrapper
+        button#add-session.add-button
+          a Ajouter un compte
         ul
-        button#add-session 
-          a= __("Ajouter un compte")
 
     //- scripts
     include templates/footer.jade

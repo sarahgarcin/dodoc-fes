@@ -32,13 +32,13 @@ jQuery(document).ready(function($) {
 
 	// Affiche la liste des sessions
 	function onlistSessions(req) {
-		$(".session .list-session ul").append('<li class="session-project"><a href="'+domainUrl+'select/'+req.name+'"><h2>'+req.name+'</h2><p class="description">'+req.description+'</p><img src="' + domainUrl +req.name+'/'+ req.name +'-thumb.jpg"></a></li>')
+		$(".session .list-session ul").append('<li class="session-project vignette"><a href="'+domainUrl+'select/'+req.name+'"><h2>'+req.name+'</h2><p class="description">'+req.description+'</p><img src="' + domainUrl +req.name+'/'+ req.name +'-thumb.jpg"></a></li>')
 	}
 
 	//Ajouter une session
 	function addSession(){
 		$("#add-session").on('click', function(){
-			var newContentToAdd = "<h3 class='popoverTitle'>Ajouter une nouvelle session</h3><form onsubmit='return false;' class='add-project'><input class='new-session' placeholder='Nom'></input><input class='description-session' placeholder='Description'></input><input type='file' id='thumbfile' accept='image/*'></input><input type='submit' class='submit-session'></input></form>";
+			var newContentToAdd = "<h3 class='popoverTitle'>Ajouter une nouvelle session</h3><form onsubmit='return false;' class='add-project'><input class='new-session' placeholder='Nom'></input><input class='description-session' placeholder='Description'></input><input type='file' id='thumbfile' accept='image/*' placeholder='Ajouter une image'></input>  <label for='thumbfile'>Ajouter une image</label><input type='submit' class='submit-session'></input></form>";
 			
 			var closeAddProjectFunction = function() {
 			};
@@ -49,6 +49,14 @@ jQuery(document).ready(function($) {
 			$('#thumbfile').bind('change', function(e){
 		  	//upload(e.originalEvent.target.files);
 		  	imageData = e.originalEvent.target.files;
+		  	//change the label of the button in the name of the image
+		  	var file = this.files[0].name;
+			  var dflt = $(this).attr("placeholder");
+			  if($(this).val()!=""){
+			    $(this).next().text(file);
+			  } else {
+			    $(this).next().text(dflt);
+			  }
 			});
 			
 			$('input.submit-session').on('click', function(){
@@ -71,7 +79,7 @@ jQuery(document).ready(function($) {
 	}
 
 	function displayNewSession(req){
-		$(".session .list-session ul").prepend('<li class="session-project"><a href="'+domainUrl+'select/'+req.name+'"><h2>'+req.name+'</h2><p class="description">'+req.description+'</p><img src="' + domainUrl +req.name+'/'+ req.name +'-thumb.jpg"></a></li>');
+		$(".session .list-session ul").prepend('<li class="session-project vignette"><a href="'+domainUrl+'select/'+req.name+'"><h2>'+req.name+'</h2><p class="description">'+req.description+'</p><img src="' + domainUrl +req.name+'/'+ req.name +'-thumb.jpg"></a></li>');
 	}
 
 });
