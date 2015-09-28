@@ -7538,10 +7538,20 @@ body.flux  .title {
   background-color: #FFF;
   padding: 10px 24px 20px 24px;
   margin: 10px;
+  position: relative;
 }
 .col-wrapper .list-wrapper ul .vignette a:active {
   color: #000;
   text-decoration: none;
+}
+.col-wrapper .list-wrapper ul .vignette .delete {
+  width: 32px;
+  position: absolute;
+  top: 5px;
+  right: 5px;
+}
+.col-wrapper .list-wrapper ul .vignette .delete img {
+  width: 100%;
 }
 .col-wrapper .list-wrapper .add-button {
   background-color: #48c2b5;
