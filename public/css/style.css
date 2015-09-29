@@ -7544,15 +7544,22 @@ body.flux  .title {
   color: #000;
   text-decoration: none;
 }
-.col-wrapper .list-wrapper ul .vignette .delete {
+.col-wrapper .list-wrapper ul .vignette .delete,
+.col-wrapper .list-wrapper ul .vignette .modify {
   width: 32px;
   position: absolute;
   top: 5px;
-  right: 5px;
   cursor: pointer;
 }
-.col-wrapper .list-wrapper ul .vignette .delete img {
+.col-wrapper .list-wrapper ul .vignette .delete img,
+.col-wrapper .list-wrapper ul .vignette .modify img {
   width: 100%;
+}
+.col-wrapper .list-wrapper ul .vignette .delete {
+  right: 5px;
+}
+.col-wrapper .list-wrapper ul .vignette .modify {
+  right: 45px;
 }
 .col-wrapper .list-wrapper .add-button {
   background-color: #48c2b5;

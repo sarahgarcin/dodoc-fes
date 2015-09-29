@@ -31,7 +31,7 @@ jQuery(document).ready(function($) {
 
 	// Affiche la liste des sessions
 	function onlistSessions(req) {
-		$(".session .list-session ul").prepend('<li class="session-project vignette"><a href="'+domainUrl+'select/'+req.name+'"><h2>'+req.name+'</h2><p class="description">'+req.description+'</p><img src="' + domainUrl +req.name+'/'+ req.name +'-thumb.jpg"></a><div class="delete"><img src="/images/clear.svg"></div></li>')
+		$(".session .list-session ul").prepend('<li class="session-project vignette"><a href="'+domainUrl+'select/'+req.name+'"><h2>'+req.name+'</h2><p class="description">'+req.description+'</p><img src="' + domainUrl +req.name+'/'+ req.name +'-thumb.jpg"></a><div class="modify"><img src="/images/save.svg"></div><div class="delete"><img src="/images/clear.svg"></div></li>')
 		deleteSession();
 	}
 
@@ -79,7 +79,7 @@ jQuery(document).ready(function($) {
 	}
 
 	function displayNewSession(req){
-		$(".session .list-session ul").prepend('<li class="session-project vignette"><a href="'+domainUrl+'select/'+req.name+'"><h2>'+req.name+'</h2><p class="description">'+req.description+'</p><img src="' + domainUrl +req.name+'/'+ req.name +'-thumb.jpg"></a><div class="delete"><img src="/images/clear.svg"></div></li>');
+		$(".session .list-session ul").prepend('<li class="session-project vignette"><a href="'+domainUrl+'select/'+req.name+'"><h2>'+req.name+'</h2><p class="description">'+req.description+'</p><img src="' + domainUrl +req.name+'/'+ req.name +'-thumb.jpg"></a><div class="modify"><img src="/images/save.svg"></div><div class="delete"><img src="/images/clear.svg"></div></li>');
 		deleteSession();
 	}
 
@@ -93,6 +93,14 @@ jQuery(document).ready(function($) {
 	    }
 	    return false;
 		}); 
+	}
+
+	function modifySession(){
+		var modButton = $(".vignette .modify");
+		$modButton.click(function(){
+			var $session = $(this).parent().children("a").attr('href').split("/select/").pop();
+			socket.emit("modifySession", $session);
+		});
 	}
 
 });

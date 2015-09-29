@@ -28,6 +28,7 @@ module.exports = function(app, io){
 		socket.on("newUserSelect", listMedias);
 		socket.on("newSession", addNewSession);
 		socket.on("deleteSession", deleteSession);
+		soket.on("modifySession", modifySession);
 		socket.on("newProjet", addNewProjet);
 		socket.on("imageCapture", onNewImage);
 		socket.on("newStopMotion", onNewStopMotion);
@@ -84,6 +85,10 @@ module.exports = function(app, io){
 	function deleteSession(session){
 		var sessionPath = 'sessions/'+session;
 		rmDir(sessionPath);
+	}
+
+	function modifySession(session){
+		var sessionPath = 'sessions/'+session;
 	}
 
 	function addNewProjet(projet) {
