@@ -16,7 +16,6 @@ var config  = require('./config');
 var router  = require('./router');
 
 
-
 var m = new main(app, io);
 
 /*
@@ -29,9 +28,10 @@ config(app, express);
 */
 router(app, io, m);
 
+
 /**
 * Start the http server at port and IP defined before
 */
 httpsServer.listen(app.get("port"), /*app.get("ipaddr"),*/ function() {
-  console.log("Server up and running. Go to https://" + app.get("ipaddr") + ":" + app.get("port"));
+  console.log("Server up and running. Go to https://localhost:" + app.get("port"));
 });

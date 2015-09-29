@@ -8,12 +8,12 @@ module.exports = function(app,io,m){
   /**
   * routing event
   */
-
   app.get("/", getIndex);
-  app.get("/select/:session", getSelect);
-  app.get("/select/:session/capture", getCapture);
-  app.get("/select/:session/flux", getFlux);
-  app.get("/select/:session/publi", getPubli);
+  app.get("/:session", getSelect);
+  app.get("/:session/:projet", getProject);
+  app.get("/:session/capture", getCapture);
+  app.get("/:session/flux", getFlux);
+  app.get("/:session/publi", getPubli);
 
   // set a cookie to requested locale
   app.get('/:locale', function (req, res) {
@@ -37,6 +37,20 @@ module.exports = function(app,io,m){
     res.render("select", {
       title : "Bibliotheque de media",
       session : session,
+    });
+  };
+
+  function getProject(req, res) {
+    var session = req.param('session');
+    var projet = req.param('projet');
+    var projetPath = 'sessions/'+session+"/"+projet;
+
+    fs.ensureDirSync(projetPath);
+
+    res.render("projet", {
+      title : "Projet",
+      session : session,
+      projet : projet
     });
   };
   function getCapture(req, res) {

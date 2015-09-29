@@ -1,0 +1,18 @@
+doctype html
+html
+  head
+    include templates/head.jade
+  body.index
+
+    include templates/header.jade
+
+    div.projet
+      div.list-projet
+        ul
+        button#add-projet 
+          a= __("Ajouter un projet")
+
+    //- scripts
+    include templates/footer.jade
+
+    script(src='/js/index.js')
