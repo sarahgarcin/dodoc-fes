@@ -31,7 +31,8 @@ jQuery(document).ready(function($) {
 
 	// Affiche la liste des sessions
 	function onlistSessions(req) {
-		$(".session .list-session ul").append('<li class="session-project vignette"><a href="'+domainUrl+'select/'+req.name+'"><h2>'+req.name+'</h2><p class="description">'+req.description+'</p><img src="' + domainUrl +req.name+'/'+ req.name +'-thumb.jpg"></a><div class="delete"><img src="/images/clear.svg"></div></li>')
+		$(".session .list-session ul").prepend('<li class="session-project vignette"><a href="'+domainUrl+'select/'+req.name+'"><h2>'+req.name+'</h2><p class="description">'+req.description+'</p><img src="' + domainUrl +req.name+'/'+ req.name +'-thumb.jpg"></a><div class="delete"><img src="/images/clear.svg"></div></li>')
+		deleteSession();
 	}
 
 	//Ajouter une session
@@ -79,6 +80,19 @@ jQuery(document).ready(function($) {
 
 	function displayNewSession(req){
 		$(".session .list-session ul").prepend('<li class="session-project vignette"><a href="'+domainUrl+'select/'+req.name+'"><h2>'+req.name+'</h2><p class="description">'+req.description+'</p><img src="' + domainUrl +req.name+'/'+ req.name +'-thumb.jpg"></a><div class="delete"><img src="/images/clear.svg"></div></li>');
+		deleteSession();
+	}
+
+	function deleteSession(){
+		var $delButton = $(".vignette .delete");
+		$delButton.click(function(){
+			var $session = $(this).parent().children("a").attr('href').split("/select/").pop();
+			if (confirm("Êtes-vous sûr de vouloir supprimer cette session ?")) {
+				socket.emit("deleteSession", $session);
+				$(this).parent(".vignette").remove();
+	    }
+	    return false;
+		}); 
 	}
 
 });
