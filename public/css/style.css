@@ -7520,94 +7520,61 @@ body.flux  .title {
 }
 /* PAGE D'ACCUEIL INDEX
 ---------------------------------*/
-.index .session {
-  width: 40%;
+/* DESIGN DES VIGNETTES PAGE INDEX & PAGE PROJETS*/
+.col-wrapper {
+  width: 98%;
   margin: auto;
-  display: flex;
-  -webkit-box-align: center;
-  -webkit-align-items: center;
-  -ms-flex-align: center;
-  align-items: center;
-  height: 80vh;
-  -webkit-box-pack: center;
-  -webkit-justify-content: center;
-  -ms-flex-pack: center;
-  justify-content: center;
 }
-.index .session .list-session {
-  -webkit-box-flex: 0;
-  -webkit-flex: none;
-  -ms-flex: none;
-  flex: none;
-  max-width: 100%;
+.col-wrapper .list-wrapper {
+  margin-top: 20px;
+  margin-bottom: 20px;
 }
-.index .session .list-session .vignetteProjet {
-  background-color: #fff;
-  color: #333;
-  margin: 5px;
-  padding: 0;
-  transition: background-color 0.4s ease-out;
-}
-.index .session .list-session .vignetteProjet a {
-  color: #333;
-  padding: 10px;
-  padding-left: 14px;
-  padding-right: 14px;
-  display: block;
-}
-.index .session .list-session .vignetteProjet a:hover {
-  color: #fff;
-  background-color: #333;
-  transition: background-color 0s ease-out;
-}
-.index .session .list-session ul {
-  display: inline;
+.col-wrapper .list-wrapper ul {
   padding: 0;
 }
-.index .session .list-session ul .session-project {
-  background-color: #fff;
-  color: #333;
-  margin: 5px;
-  padding: 0;
-  transition: background-color 0.4s ease-out;
+.col-wrapper .list-wrapper ul .vignette {
+  width: 31.5%;
   display: inline-block;
-  transform: translate(0, 0, 0);
+  background-color: #FFF;
+  padding: 10px 24px 20px 24px;
+  margin: 10px;
+  position: relative;
 }
-.index .session .list-session ul .session-project a {
-  color: #333;
-  padding: 10px;
-  padding-left: 14px;
-  padding-right: 14px;
-  display: block;
+.col-wrapper .list-wrapper ul .vignette a:active {
+  color: #000;
+  text-decoration: none;
 }
-.index .session .list-session ul .session-project a:hover {
-  color: #fff;
-  background-color: #333;
-  transition: background-color 0s ease-out;
+.col-wrapper .list-wrapper ul .vignette .delete {
+  width: 32px;
+  position: absolute;
+  top: 5px;
+  right: 5px;
 }
-.index .session .list-session #add-session {
-  background-color: #fff;
-  color: #333;
-  margin: 5px;
-  padding: 0;
-  transition: background-color 0.4s ease-out;
-  display: inline-block;
+.col-wrapper .list-wrapper ul .vignette .delete img {
+  width: 100%;
+}
+.col-wrapper .list-wrapper .add-button {
   background-color: #48c2b5;
+  padding: 10px 15px;
+  margin-left: 5px;
+  margin-bottom: 20px;
 }
-.index .session .list-session #add-session a {
-  color: #333;
-  padding: 10px;
-  padding-left: 14px;
-  padding-right: 14px;
-  display: block;
-}
-.index .session .list-session #add-session a:hover {
+.col-wrapper .list-wrapper .add-button a {
   color: #fff;
-  background-color: #333;
-  transition: background-color 0s ease-out;
 }
-.index .session .list-session #add-session a {
-  color: #fff;
+/* PAGE LISTE DES PROJETS (SESSION) 
+----------------------------------------*/
+.projets .thumb-background {
+  width: 100%;
+  height: 100%;
+  position: fixed;
+  top: 0;
+  left: 0;
+  opacity: 0.5;
+  z-index: -3;
+}
+.projets .thumb-background img {
+  width: 100%;
 }
 /* CAPTURE PAGE
 ---------------------------------*/
@@ -8331,24 +8298,68 @@ audio {
 }
 .popover .popoverTitle {
   margin: 0;
-  margin-bottom: 1em;
+  margin-bottom: .6em;
   padding: 0;
   padding-bottom: .5em;
   border-bottom: 1px solid #eee;
 }
-.popover input.new-session {
+.popover input.new-session,
+.popover input.description-session,
+.popover input.new-projet,
+.popover input.description-session {
   -webkit-appearance: none;
   text-indent: 2%;
   background-color: #fff;
   border: none;
   width: 100%;
-  margin-bottom: .5em;
   padding: .4em;
 }
-.popover .submit-session {
+.popover label,
+.popover input {
+  color: #333;
+  font-size: 16px;
+}
+.popover label {
+  display: inline-block;
+  width: 5em;
+  padding: 0 1em;
+  text-align: right;
+}
+.popover [type=file] {
+  position: absolute;
+  filter: alpha(opacity=0);
+  opacity: 0;
+}
+.popover input,
+.popover [type=file] + label {
+  border: 1px solid #CCC;
+  border-radius: 3px;
+  text-align: left;
+  padding: 10px;
+  width: 100%;
+  margin-bottom: .7em;
+  left: 0;
+  position: relative;
+}
+.popover [type=file] + label {
+  text-align: center;
+  /* Decorative */
+  font-weight: normal;
+  background: #333;
+  color: #fff;
   border: none;
-  background: none;
+  cursor: pointer;
+}
+.popover [type=file] + label:hover {
+  background: #48c2b5;
+}
+.popover .submit-session,
+.popover .submit-projet {
+  width: 40%;
+  margin: .5em 0;
+  border: none;
   float: right;
+  text-align: center;
   background-color: #48c2b5;
 }
 .spinner {

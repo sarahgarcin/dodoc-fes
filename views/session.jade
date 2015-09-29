@@ -1,0 +1,20 @@
+doctype html
+html
+  head
+    include templates/head.jade
+  body.projets
+
+    include templates/header.jade
+
+    div.thumb-background
+        img(src="" atl="background")
+    div.projets-block.col-wrapper
+      div.list-projets.list-wrapper
+        button#add-projet.add-button
+          a Ajouter un projet
+        ul
+
+    //- scripts
+    include templates/footer.jade
+
+    script(src='/js/session.js')

@@ -1,4 +1,6 @@
 var i18n = require('i18n');
+var favicon = require('serve-favicon');
+
 
 i18n.configure({
 	locales: ['fr', 'en'],
@@ -18,4 +20,5 @@ module.exports = function(app,express){
   app.use('/static', express.static("sessions"));
   app.use(express.bodyParser()); //Tells server to support JSON, urlencoded, and multipart requests
   app.use(i18n.init); // module de translation
+  app.use(favicon(__dirname + '/public/images/favicon.ico'));
 }
