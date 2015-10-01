@@ -5,6 +5,7 @@ jQuery(document).ready(function($) {
 	var socket = io.connect();
 	var sessionId = '';
 	var time;
+	var projet = app.projet;
 	/**
 	* Event
 	*/
@@ -45,7 +46,7 @@ jQuery(document).ready(function($) {
 	function onSocketConnect() {
 		sessionId = socket.io.engine.id;
 		console.log('Connected ' + sessionId);
-		socket.emit('newUserSelect', {id: sessionId, name: app.session});
+		socket.emit('newUserSelect', {id: sessionId, name: app.session, projet:projet});
 	};
 
 	function onSocketError(reason) {
@@ -58,16 +59,16 @@ jQuery(document).ready(function($) {
     	var extension = array[i].split('.').pop();
     	var identifiant =  array[i].replace("." + extension, "");
 			if(extension == "jpg"){
-				$('.mediaContainer').append("<li class='media images-bibli' id='"+ identifiant+"'><div class='mediaContent'><img src='https://"+domainUrl + "/" +app.session + "/"+ array[i] + "' preload='none'></div></li>");
+				$('.mediaContainer').append("<li class='media images-bibli' id='"+ identifiant+"'><div class='mediaContent'><img src='https://"+domainUrl + "/" +app.session + "/"+ app.projet+"/"+array[i] + "' preload='none'></div></li>");
 			}
 			if(extension == "webm"){
-				$('.mediaContainer').append("<li class='media videos-bibli' id='"+ identifiant+"'><div class='mediaContent'><video preload='none' controls poster='https://"+domainUrl + "/"+app.session + "/"+identifiant +"-thumb.png'><source src='https://"+domainUrl + "/"+app.session + "/" + array[i] + "'></video></div></li>");
+				$('.mediaContainer').append("<li class='media videos-bibli' id='"+ identifiant+"'><div class='mediaContent'><video preload='none' controls poster='https://"+domainUrl + "/"+app.session + "/"+ app.projet+ "/"+identifiant +"-thumb.png'><source src='https://"+domainUrl + "/"+app.session +"/"+ app.projet+ "/" + array[i] + "'></video></div></li>");
 			}
 			if(extension == "mp4"){
-				$('.mediaContainer').append("<li class='media stopmotion-bibli' id='"+ identifiant+"'><div class='mediaContent'><video preload='none' controls poster='https://"+domainUrl + "/"+app.session + "/"+identifiant +"-thumb.png'><source src='https://"+domainUrl + "/"+app.session + "/" + array[i] + "'></video></div></li>");
+				$('.mediaContainer').append("<li class='media stopmotion-bibli' id='"+ identifiant+"'><div class='mediaContent'><video preload='none' controls poster='https://"+domainUrl + "/"+app.session +"/"+ app.projet+ "/"+identifiant +"-thumb.png'><source src='https://"+domainUrl + "/"+app.session +"/"+ app.projet+ "/" + array[i] + "'></video></div></li>");
 			}
 			if(extension == "wav"){
-				$('.mediaContainer').append("<li class='media sons-bibli' id='"+ identifiant+"'><div class='mediaContent'><audio src='https://"+domainUrl + "/"+app.session + "/" + array[i] + "' preload='none' controls></div></li>");
+				$('.mediaContainer').append("<li class='media sons-bibli' id='"+ identifiant+"'><div class='mediaContent'><audio src='https://"+domainUrl + "/"+app.session +"/"+ app.projet+ "/" + array[i] + "' preload='none' controls></div></li>");
 			}
 		}
 		var matchID = $(".mediaContainer .media").attr("id");
@@ -114,22 +115,22 @@ jQuery(document).ready(function($) {
 
 	function displayNewImage(images){
 		timestampToDate(images.title);
-	   $('.mediaContainer').append("<li class='media images-bibli' id='"+ images.title+"'><div class='mediaContent'><img src='https://"+domainUrl + "/" +app.session + "/"+ images.file + "' preload='none'></div><h3 class='mediaTitre'>" +time+ "</h3></li>");
+	   $('.mediaContainer').append("<li class='media images-bibli' id='"+ images.title+"'><div class='mediaContent'><img src='https://"+domainUrl + "/" +app.session +"/"+ app.projet+ "/"+ images.file + "' preload='none'></div><h3 class='mediaTitre'>" +time+ "</h3></li>");
 	}
 
 	function displayNewStopMotion(stopmotion){
 		timestampToDate(stopmotion.title);
-	  $('.mediaContainer').append("<li class='media stopmotion-bibli' id='"+ stopmotion.title+"'><div class='mediaContent'><video controls preload='none' poster='https://"+domainUrl + "/"+app.session + "/"+stopmotion.title +"-thumb.png'><source src='https://"+domainUrl + "/"+app.session + "/" + stopmotion.file + "' type='video/webm'></video></div><h3 class='mediaTitre'>" +time+ "</h3></li>");
+	  $('.mediaContainer').append("<li class='media stopmotion-bibli' id='"+ stopmotion.title+"'><div class='mediaContent'><video controls preload='none' poster='https://"+domainUrl + "/"+app.session +"/"+ app.projet+ "/"+stopmotion.title +"-thumb.png'><source src='https://"+domainUrl + "/"+app.session +"/"+ app.projet+ "/" + stopmotion.file + "' type='video/webm'></video></div><h3 class='mediaTitre'>" +time+ "</h3></li>");
 	}
 
 	function displayNewVideo(videos){
 		timestampToDate(videos.title);
-	  $('.mediaContainer').append("<li class='media videos-bibli' id='"+ videos.title+"'><div class='mediaContent'><video controls preload='none' poster='https://"+domainUrl + "/"+app.session + "/"+videos.title +"-thumb.png'><source src='https://"+domainUrl + "/"+app.session + "/" + videos.file + "' type='video/webm'></video></div><h3 class='mediaTitre'>" +time+ "</h3></li>");
+	  $('.mediaContainer').append("<li class='media videos-bibli' id='"+ videos.title+"'><div class='mediaContent'><video controls preload='none' poster='https://"+domainUrl + "/"+app.session +"/"+ app.projet+ "/"+videos.title +"-thumb.png'><source src='https://"+domainUrl + "/"+app.session +"/"+ app.projet+ "/" + videos.file + "' type='video/webm'></video></div><h3 class='mediaTitre'>" +time+ "</h3></li>");
 	}
 
 	function displayNewAudio(audio){
 		timestampToDate(audio.title);
- 	  $('.mediaContainer').append("<li class='media sons-bibli' id='"+ audio.title+"''><div class='mediaContent'><audio src='https://"+domainUrl + "/"+app.session + "/" + audio.file + "' preload='none' controls></div><h3 class='mediaTitre'>" +time+ "</h3></li>");
+ 	  $('.mediaContainer').append("<li class='media sons-bibli' id='"+ audio.title+"''><div class='mediaContent'><audio src='https://"+domainUrl + "/"+app.session +"/"+ app.projet+ "/" + audio.file + "' preload='none' controls></div><h3 class='mediaTitre'>" +time+ "</h3></li>");
 	}
 
 	function displayMontage(html){

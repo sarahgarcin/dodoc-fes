@@ -15,7 +15,7 @@ html
           nav.titleAndActions
             div.buttons
               .button.sidebyside
-                a(href="/select/#{session}/capture" class="btn icon capture"  data-toggle="tooltip" data-placement="right" title= __("Interface de capture"))
+                a(href="/select/#{session}/#{projet}/capture" class="btn icon capture"  data-toggle="tooltip" data-placement="right" title= __("Interface de capture"))
                   include templates/images/capture.svg
               .title.centered= __('Bibliothèque de médias')
 
@@ -23,7 +23,7 @@ html
 
       div.montage.demi 
         div.publish
-          a(href="/select/#{session}/publi" class="btn icon publish"  data-toggle="tooltip" data-placement="left" title= __("Publish"))
+          a(href="/select/#{session}/#{projet}/publi" class="btn icon publish"  data-toggle="tooltip" data-placement="left" title= __("Publish"))
             include templates/images/enregistre.svg
         div.montage-content
           div.montage-title

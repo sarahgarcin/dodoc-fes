@@ -46,7 +46,6 @@ module.exports = function(app,io,m){
     var sessionPath = 'sessions/'+session + '/' + projet;
 
     fs.ensureDirSync(sessionPath);
-
     res.render("select", {
       title : "Bibliotheque de media",
       session : session,
@@ -54,30 +53,19 @@ module.exports = function(app,io,m){
     });
   };
 
-  function getProject(req, res) {
-    var session = req.param('session');
-    var projet = req.param('projet');
-    var projetPath = 'sessions/'+session+"/"+projet;
-
-    fs.ensureDirSync(projetPath);
-
-    res.render("projet", {
-      title : "Projet",
-      session : session,
-      projet : projet
-    });
-  };
   function getCapture(req, res) {
     var session = req.param('session');
-
+    var projet = req.param('projet');
     res.render("capture", {
       title : "Prise de vue",
       session : session,
+      projet: projet,
     });
   };
 
   function getFlux(req, res) {
     var session = req.param('session');
+    var projet = req.param('projet');
     var sessionPath = 'sessions/'+session;
 
     fs.ensureDirSync(sessionPath);
@@ -85,17 +73,20 @@ module.exports = function(app,io,m){
     res.render("flux", {
       title : "Dodoc Flux",
       session : session,
+      projet: projet,
     });
   };
 
 
   function getPubli(req, res) {
     var session = req.param('session');
+    var projet = req.param('projet');
     var sessionPath = 'sessions/'+session;
 
     res.render("publication", {
       title : "Publication",
       session : session,
+      projet: projet,
     });
   };
 

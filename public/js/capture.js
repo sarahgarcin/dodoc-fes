@@ -23,6 +23,8 @@ jQuery(document).ready(function($) {
   var fadeOutModeTimer = 1600;
   var sarahCouleur = "gray";
 
+  console.log(app.projet);
+
 
 	/**
 	* Events
@@ -44,7 +46,7 @@ jQuery(document).ready(function($) {
 	function onSocketConnect() {
 		sessionId = socket.io.engine.id;
 		console.log('Connected ' + sessionId);
-		socket.emit('newUser', {id: sessionId, name: app.session});
+		socket.emit('newUser', {id: sessionId, name: app.session, projet:app.projet});
 	};
 	
   function onSocketError(reason) {
@@ -390,14 +392,14 @@ jQuery(document).ready(function($) {
             imageObj.onload = function() {
               context.drawImage(imageObj, 0, 0);
             };
-            imageObj.src = "https://" + host + "/" + app.session + "/01-stopmotion/" + countImage + ".png";
+            imageObj.src = "https://" + host + "/" + app.session +"/"+ app.projet+"/01-stopmotion/" + countImage + ".png";
             $(".screenshot .count-image").text("Picture " + countImage);
           }
           else{
             startStopMotion();
           }
         });
-        socket.emit('imageMotion', {data: data, id: sessionId, name: app.session, dir: dir, count: countImage});
+        socket.emit('imageMotion', {data: data, id: sessionId, name: app.session, projet:app.projet, dir: dir, count: countImage});
         $(".screenshot .count-image").text("Picture " + countImage);
       }
 
@@ -413,13 +415,13 @@ jQuery(document).ready(function($) {
         $('.screenshot').append('<div class="instructions-stopmotion"><div class="icone-stopmotion"><img src="/images/stopmotion.svg"></div><h4>You have created a new stop motion.</br> Click on the <b>record button</b> to start taking pictures</h4></div>');
         $('.captureLeft').velocity({'left':'26%'}, 'slow');
         $('.captureRight').velocity({'left':'52%'}, 'slow');
-        socket.emit('newStopMotion', {id: sessionId, name: app.session});
+        socket.emit('newStopMotion', {id: sessionId, name: app.session, projet:app.projet});
         $(".screenshot").append("<div class='meta-stopmotion'><div class='delete-image'><img src='/images/clear.svg'></div><p class='count-image'></p></div>");
         $(".screenshot .meta-stopmotion").hide();
       }
              
       function onStopMotionDirectory(){
-        var dir = "sessions/" + app.session + "/01-stopmotion";
+        var dir = "sessions/" + app.session + "/"+app.projet+"/01-stopmotion";
         $("#stop-sm").show();
         $('.screenshot .canvas-view').show();
         $('.screenshot .instructions-stopmotion').remove(); 
@@ -428,7 +430,7 @@ jQuery(document).ready(function($) {
       }
 
       function stopStopMotion(){
-        var dir = "sessions/" + app.session + "/01-stopmotion";
+        var dir = "sessions/" + app.session + "/"+ app.projet+"/01-stopmotion";
         $("#stop-sm").hide();
         $("#start-sm").show();
         $("#capture-sm").hide();
@@ -437,10 +439,10 @@ jQuery(document).ready(function($) {
         $('.screenshot .meta-stopmotion').remove();
         saveFeedback("/images/icone-dodoc_anim.png");
         //socket.emit('StopMotion', {id: sessionId, name: app.session, dir: dir});
-        socket.emit('stopmotionCapture', {id: sessionId, name: app.session, dir: dir});
+        socket.emit('stopmotionCapture', {id: sessionId, name: app.session, projet: app.projet, dir: dir});
         socket.on('newStopMotionCreated', function(req){
           $('.screenshot .canvas-view').hide();
-          $('#camera-preview').attr('src', 'https://'+host+'/' + app.session + '/'+req.fileName+'')
+          $('#camera-preview').attr('src', 'https://'+host+'/' + app.session + '/'+'/'+app.projet+'/'+req.fileName+'')
           $('#camera-preview').show();
           $(".form-meta").slideDown( "slow" ).addClass('active'); 
         });
@@ -499,8 +501,8 @@ jQuery(document).ready(function($) {
         countPress = 0;
       }
 
-      socket.on('AudioFile', function(fileName, sessionName) {
-        href = 'https://'+ host +'/static/' + sessionName + '/' + fileName;
+      socket.on('AudioFile', function(fileName, sessionName, projetName) {
+        href = 'https://'+ host +'/static/' + sessionName + '/' + projetName + '/' + fileName;
         console.log('got file ' + href);
         cameraPreview.src = href;
         cameraPreview.play();
@@ -651,8 +653,8 @@ jQuery(document).ready(function($) {
         console.log("stop recording video");
       }
 
-      socket.on('merged', function(fileName, sessionName) {
-        href = 'https://localhost:8080/static/' + sessionName + '/' + fileName;
+      socket.on('merged', function(fileName, sessionName, projetName) {
+        href = 'https://localhost:8080/static/' + sessionName + '/' + projetName + '/' + fileName;
         console.log('got file ' + href);
         cameraPreview.src = href;
         cameraPreview.play();
@@ -768,7 +770,7 @@ jQuery(document).ready(function($) {
                     dataURL: videoDataURL
                 }
             };
-            socket.emit('audioVideo', {files: files, id: sessionId, name: app.session});
+            socket.emit('audioVideo', {files: files, id: sessionId, name: app.session, projet:app.projet});
             if (mediaStream) mediaStream.stop();
           });
           cameraPreview.src = '';
@@ -937,7 +939,7 @@ jQuery(document).ready(function($) {
       $('.right').velocity({'left':'52%'}, 'slow');
       $('.captureLeft').velocity({'left':'26%'}, 'slow');
       $('.captureRight').velocity({'left':'52%'}, 'slow', function(){
-        socket.emit(capture, {data: data, id: sessionId, name: app.session});  
+        socket.emit(capture, {data: data, id: sessionId, name: app.session, projet:app.projet});  
       });
     }
     else{
