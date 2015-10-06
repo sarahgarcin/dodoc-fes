@@ -7264,58 +7264,58 @@ button {
   opacity: 0;
   transition: opacity 1s ease-out;
 }
-.js body .container-bibli .buffer .mediaContainer .media:nth-child(1) {
+.js body .container-bibli .buffer .mediaContainer .media:nth-child( 1) {
   transition-delay: 0.05s;
 }
-.js body .container-bibli .buffer .mediaContainer .media:nth-child(2) {
+.js body .container-bibli .buffer .mediaContainer .media:nth-child( 2) {
   transition-delay: 0.1s;
 }
-.js body .container-bibli .buffer .mediaContainer .media:nth-child(3) {
+.js body .container-bibli .buffer .mediaContainer .media:nth-child( 3) {
   transition-delay: 0.15s;
 }
-.js body .container-bibli .buffer .mediaContainer .media:nth-child(4) {
+.js body .container-bibli .buffer .mediaContainer .media:nth-child( 4) {
   transition-delay: 0.2s;
 }
-.js body .container-bibli .buffer .mediaContainer .media:nth-child(5) {
+.js body .container-bibli .buffer .mediaContainer .media:nth-child( 5) {
   transition-delay: 0.25s;
 }
-.js body .container-bibli .buffer .mediaContainer .media:nth-child(6) {
+.js body .container-bibli .buffer .mediaContainer .media:nth-child( 6) {
   transition-delay: 0.3s;
 }
-.js body .container-bibli .buffer .mediaContainer .media:nth-child(7) {
+.js body .container-bibli .buffer .mediaContainer .media:nth-child( 7) {
   transition-delay: 0.35s;
 }
-.js body .container-bibli .buffer .mediaContainer .media:nth-child(8) {
+.js body .container-bibli .buffer .mediaContainer .media:nth-child( 8) {
   transition-delay: 0.4s;
 }
-.js body .container-bibli .buffer .mediaContainer .media:nth-child(9) {
+.js body .container-bibli .buffer .mediaContainer .media:nth-child( 9) {
   transition-delay: 0.45s;
 }
-.js body .container-bibli .buffer .mediaContainer .media:nth-child(10) {
+.js body .container-bibli .buffer .mediaContainer .media:nth-child( 10) {
   transition-delay: 0.5s;
 }
-.js body .container-bibli .buffer .mediaContainer .media:nth-child(11) {
+.js body .container-bibli .buffer .mediaContainer .media:nth-child( 11) {
   transition-delay: 0.55s;
 }
-.js body .container-bibli .buffer .mediaContainer .media:nth-child(12) {
+.js body .container-bibli .buffer .mediaContainer .media:nth-child( 12) {
   transition-delay: 0.6s;
 }
-.js body .container-bibli .buffer .mediaContainer .media:nth-child(13) {
+.js body .container-bibli .buffer .mediaContainer .media:nth-child( 13) {
   transition-delay: 0.65s;
 }
-.js body .container-bibli .buffer .mediaContainer .media:nth-child(14) {
+.js body .container-bibli .buffer .mediaContainer .media:nth-child( 14) {
   transition-delay: 0.7s;
 }
-.js body .container-bibli .buffer .mediaContainer .media:nth-child(15) {
+.js body .container-bibli .buffer .mediaContainer .media:nth-child( 15) {
   transition-delay: 0.75s;
 }
-.js body .container-bibli .buffer .mediaContainer .media:nth-child(16) {
+.js body .container-bibli .buffer .mediaContainer .media:nth-child( 16) {
   transition-delay: 0.8s;
 }
-.js body .container-bibli .buffer .mediaContainer .media:nth-child(17) {
+.js body .container-bibli .buffer .mediaContainer .media:nth-child( 17) {
   transition-delay: 0.85s;
 }
-.js body .container-bibli .buffer .mediaContainer .media:nth-child(18) {
+.js body .container-bibli .buffer .mediaContainer .media:nth-child( 18) {
   transition-delay: 0.9s;
 }
 .js body.is-loaded .media {
@@ -8007,6 +8007,14 @@ audio {
 }
 .container-bibli .buffer {
   background-color: #e5e5e5;
+}
+.container-bibli .buffer .button-add-media {
+  display: inline-block;
+  position: relative;
+  width: 60px;
+  height: 60px;
+  float: right;
+  vertical-align: top;
 }
 .container-bibli .buffer .mediaContainer {
   height: auto;

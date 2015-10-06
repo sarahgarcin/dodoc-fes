@@ -12,11 +12,11 @@ jQuery(document).ready(function($) {
 	initEvents();
 
 	function initEvents(){
-
+		addMedia();
 		$(".montage-title input").focus();
 		
 		$(document).on('click',function(event){
-			console.log($(event.target).parent().attr("class"));
+			// console.log($(event.target).parent().attr("class"));
 			if($(event.target).parent().attr("class") == 'remove-media'){
 				removeMedia($(event.target).parent());
 			}
@@ -52,6 +52,23 @@ jQuery(document).ready(function($) {
 	function onSocketError(reason) {
 		console.log('Unable to connect to server', reason);
 	};
+
+	function addMedia(){
+		$(".button-add-media").on("click", function(){;
+			var newContentToAdd = "<h3 class='popoverTitle'>Ajouter un média externe</h3><div class='choix-media'><div class='choix-texte'>TEXTE</div><div class='choix-local'>FICHIER LOCAL</div><div class='choix-url'>URL</div></div>";
+			var closeAddProjectFunction = function() {
+			};
+			fillPopOver(newContentToAdd, $(this), 500, 200, closeAddProjectFunction);
+			$(".choix-texte").on("click", function(){
+				console.log("caca");
+				var newContentToAdd = "<h3 class='popoverTitle'>Ajouter un média externe</h3><div class='choix-media'><div class='choix-texte'>TEXTE</div><div class='choix-local'>FICHIER LOCAL</div><div class='choix-url'>URL</div></div><div class='add-text'><input class='add-text-titre' placeholder='Écris ton titre ici'></input><textarea class='add-text-content' placeholder='Écris ton texte ici'></textarea></div>";
+				var closeAddProjectFunction = function() {
+				};
+				closePopover(closeAddProjectFunction);
+				fillPopOver(newContentToAdd, $(this), 500, 500, closeAddProjectFunction);
+			});	
+		});
+	}
 
 	function ondisplayMedias(array, json){
 		$(".mediaContainer li").remove();

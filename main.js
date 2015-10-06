@@ -29,6 +29,7 @@ module.exports = function(app, io){
 		socket.on("newSession", addNewSession);
 		socket.on("deleteSession", deleteSession);
 		socket.on("modifySession", modifySession);
+		socket.on("sessionIsModify", onSessionModify);
 		socket.on("newProjet", addNewProjet);
 		socket.on("imageCapture", onNewImage);
 		socket.on("newStopMotion", onNewStopMotion);
@@ -69,7 +70,7 @@ module.exports = function(app, io){
     });
 
 		var jsonFile = 'sessions/' + session.name + '/' +session.name+'.json';
-		var objectJson = {"name":session.name, "description":session.description}
+		var objectJson = {"name":session.name, "description":session.description, "fileName":session.fileName}
 		//var objectJson = {"files": {"images":[], "videos":[], "stopmotion":[], "audio":[]}};
 		var jsonString = JSON.stringify(objectJson);
 		fs.appendFile(jsonFile, jsonString, function(err) {
@@ -88,7 +89,35 @@ module.exports = function(app, io){
 	}
 
 	function modifySession(session){
-		var sessionPath = 'sessions/'+session;
+		var sessionPath = 'sessions/' + session;
+		var data = fs.readFileSync(sessionPath + "/" + session + ".json", "UTF-8");
+		var jsonObj = JSON.parse(data);
+    io.sockets.emit('changeSession', {session: session, name:jsonObj.name, description: jsonObj.description, file:jsonObj.fileName});
+	}
+
+ 	function onSessionModify(data){
+ 		var oldFolder = 'sessions/' + data.old; 
+ 		var newFolder = 'sessions/' + data.name;
+ 		fs.renameSync(oldFolder, newFolder);
+ 		var oldFileName = 'sessions/' + data.name + "/" + data.old+".json"; 
+ 		var fileName = 'sessions/' + data.name + '/'+data.name+'.json'; 
+ 		fs.renameSync(oldFileName, fileName);
+		var jsonContent = fs.readFileSync(fileName,"UTF-8");
+		var jsonObj = JSON.parse(jsonContent);
+		jsonContent.name = data.name;
+		jsonContent.description = data.description;
+		jsonContent.file = data.fileName;
+		fs.writeFileSync(fileName, JSON.stringify(jsonContent));
+
+		//write image file
+		var thumbName = data.name + "-thumb";
+    var filePath = 'sessions/'+ newFolder + "/" + thumbName + ".jpg";
+
+    var imageBuffer = decodeBase64Image(data.file);
+
+    fs.writeFile(filePath, imageBuffer.data, function (err) {
+        console.info("write new file to " + filePath);
+    });
 	}
 
 	function addNewProjet(projet) {

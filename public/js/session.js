@@ -7,7 +7,7 @@ jQuery(document).ready(function($) {
 	var sessionId = '';
 	var session = {};
 	var sessionList = [];
-	var currentSession = window.location.pathname.split("/select/").pop();
+	var currentSession = app.session;
 
 	/**
 	* Events
@@ -38,7 +38,7 @@ jQuery(document).ready(function($) {
 
 	// Affiche la liste des sessions
 	function onlistProjets(projet) {
-		$(".projets-block .list-projets ul").append('<li class="item-project vignette"><a href="'+domainUrl +'/'+ projet.name+'"><h2>'+projet.name+'</h2><p class="description">'+projet.description+'</p><img src="' + originUrl + '/'+projet.session+ '/'+projet.name+'/'+projet.name +'-thumb.jpg"></a></li>');
+		$(".projets-block .list-projets ul").append('<li class="item-project vignette"><a href="'+domainUrl +'/'+ projet.name+'/publi"><h2>'+projet.name+'</h2><p class="description">'+projet.description+'</p><img src="' + originUrl + '/'+projet.session+ '/'+projet.name+'/'+projet.name +'-thumb.jpg"></a></li>');
 	}
 
 	//Ajouter une session
@@ -85,7 +85,7 @@ jQuery(document).ready(function($) {
 	}
 
 	function displayNewProjet(projet){
-		$(".projets-block .list-projets ul").prepend('<li class="item-project vignette"><a href="'+domainUrl +'/'+ projet.name+'"><h2>'+projet.name+'</h2><p class="description">'+projet.description+'</p><img src="' + originUrl + '/'+projet.session+ '/'+projet.name+'/'+projet.name +'-thumb.jpg"></a></li>');
+		$(".projets-block .list-projets ul").prepend('<li class="item-project vignette"><a href="'+domainUrl +'/'+ projet.name+'/publi"><h2>'+projet.name+'</h2><p class="description">'+projet.description+'</p><img src="' + originUrl + '/'+projet.session+ '/'+projet.name+'/'+projet.name +'-thumb.jpg"></a></li>');
 	}
 
 });
