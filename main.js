@@ -49,7 +49,7 @@ module.exports = function(app, io){
 
 	function onNewUser(req){
 		console.log(req);
-		listSessions();		
+		listSessions();
 	};
 	function onDisplayPage(req){
 		listProjets(req);	
@@ -61,27 +61,35 @@ module.exports = function(app, io){
     var sessionPath = 'sessions/'+sessionName;
 		fs.ensureDirSync(sessionPath);
 
-		var thumbName = sessionName + "-thumb";
-    var filePath = sessionPath + "/" + thumbName + ".jpg";
+		if(session.file){
+			var thumbName = sessionName + "-thumb";
+	    var filePath = sessionPath + "/" + thumbName + ".jpg";
 
-    var imageBuffer = decodeBase64Image(session.file);
+	    var imageBuffer = decodeBase64Image(session.file);
 
-    fs.writeFile(filePath, imageBuffer.data, function (err) {
-        console.info("write new file to " + filePath);
-    });
+	    fs.writeFile(filePath, imageBuffer.data, function (err) {
+	        console.info("write new file to " + filePath);
+	    });
+	    writeJsonFile(session.fileName);
+	    io.sockets.emit("displayNewSession", {name: session.name, description: session.description, format: sessionName, thumb:session.fileName});
+	  }
+	  else{
+	  	writeJsonFile("none");
+	  	io.sockets.emit("displayNewSession", {name: session.name, description: session.description, format: sessionName, thumb:"none"});
+	  }
 
-		var jsonFile = 'sessions/' + sessionName + '/' +sessionName+'.json';
-		var objectJson = {"name":session.name, "description":session.description, "fileName":session.fileName}
-		//var objectJson = {"files": {"images":[], "videos":[], "stopmotion":[], "audio":[]}};
-		var jsonString = JSON.stringify(objectJson);
-		fs.appendFile(jsonFile, jsonString, function(err) {
-      if(err) {
-          console.log(err);
-      } else {
-          console.log("Session was created!");
-      }
-    });
-    io.sockets.emit("displayNewSession", {name: session.name, description: session.description, format: sessionName});
+	  function writeJsonFile(fichier){
+	  	var jsonFile = 'sessions/' + sessionName + '/' +sessionName+'.json';
+			var objectJson = {"name":session.name, "description":session.description, "fileName":fichier}
+			var jsonString = JSON.stringify(objectJson);
+			fs.appendFile(jsonFile, jsonString, function(err) {
+	      if(err) {
+	          console.log(err);
+	      } else {
+	          console.log("Session was created!");
+	      }
+	    });
+	  }
 	}
 
 	function deleteSession(session){
@@ -90,18 +98,20 @@ module.exports = function(app, io){
 	}
 
 	function modifySession(session){
-		var sessionPath = 'sessions/' + session;
-		var data = fs.readFileSync(sessionPath + "/" + session + ".json", "UTF-8");
+		var sessionName = session.replace(/ /g,"_");
+		var sessionPath = 'sessions/' + sessionName;
+		var data = fs.readFileSync(sessionPath + "/" + sessionName + ".json", "UTF-8");
 		var jsonObj = JSON.parse(data);
-    io.sockets.emit('changeSession', {session: session, name:jsonObj.name, description: jsonObj.description, file:jsonObj.fileName});
+    io.sockets.emit('changeSession', {session: sessionName, name:jsonObj.name, description: jsonObj.description, file:jsonObj.fileName});
 	}
 
  	function onSessionModify(data){
+ 		var sessionName = data.name.replace(/ /g,"_");
  		var oldFolder = 'sessions/' + data.old; 
- 		var newFolder = 'sessions/' + data.name;
+ 		var newFolder = 'sessions/' + sessionName;
  		fs.renameSync(oldFolder, newFolder);
- 		var oldFileName = 'sessions/' + data.name + "/" + data.old+".json"; 
- 		var fileName = 'sessions/' + data.name + '/'+data.name+'.json'; 
+ 		var oldFileName = 'sessions/' + sessionName + "/" + data.old+".json"; 
+ 		var fileName = 'sessions/' + sessionName + '/'+sessionName+'.json'; 
  		fs.renameSync(oldFileName, fileName);
 		var jsonContent = fs.readFileSync(fileName,"UTF-8");
 		var jsonObj = JSON.parse(jsonContent);
@@ -111,7 +121,7 @@ module.exports = function(app, io){
 		fs.writeFileSync(fileName, JSON.stringify(jsonContent));
 
 		//write image file
-		var thumbName = data.name + "-thumb";
+		var thumbName = sessionName + "-thumb";
     var filePath = 'sessions/'+ newFolder + "/" + thumbName + ".jpg";
 
     var imageBuffer = decodeBase64Image(data.file);
@@ -151,6 +161,7 @@ module.exports = function(app, io){
 	//Liste les dossiers dans sessions/
 	function listSessions() {
 		var dir = "sessions/";
+		var sessionList = [];
 		fs.readdir(dir, function (err, files) { if (err) throw err;
 		  files.forEach( function (file) {
 		    files.push(file);
@@ -160,7 +171,9 @@ module.exports = function(app, io){
 		    var jsonFile = dir + file + '/' +file+'.json';
 				var data = fs.readFileSync(jsonFile,"UTF-8");
 				var jsonObj = JSON.parse(data);
-		    io.sockets.emit('listSessions', {name:file, description: jsonObj.description});
+				var Obj = {name:file, description: jsonObj.description, thumb: jsonObj.fileName};
+		    io.sockets.emit('listSessions', {name:file, description: jsonObj.description, thumb: jsonObj.fileName});
+		    session_list.push(Obj);
 		  });
 		});
 	}

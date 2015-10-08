@@ -2,7 +2,6 @@ var serverBaseUrl = document.domain;
 var domainUrl = window.location.href;
 var socket = io.connect();
 var sessionId = '';
-var session = {};
 var sessionList = [];
 
 jQuery(document).ready(function($) {
@@ -34,7 +33,12 @@ function onSocketError(reason) {
 // Affiche la liste des sessions
 function onlistSessions(req) {
 	var sessionName = req.name.replace(/_/g," ");
-	$(".session .list-session ul").prepend('<li class="session-project vignette"><a href="'+domainUrl+'select/'+req.name+'"><h2>'+sessionName+'</h2><p class="description">'+req.description+'</p><img src="' + domainUrl +req.name+'/'+ req.name +'-thumb.jpg"></a><div class="modify"><img src="/images/save.svg"></div><div class="delete"><img src="/images/clear.svg"></div></li>')
+	if(req.thumb != "none"){
+		$(".session .list-session ul").prepend('<li class="session-project vignette"><a href="'+domainUrl+'select/'+req.name+'"><h2>'+sessionName+'</h2><p class="description">'+req.description+'</p><img src="' + domainUrl +req.name+'/'+ req.name +'-thumb.jpg"></a><div class="modify"><img src="/images/save.svg"></div><div class="delete"><img src="/images/clear.svg"></div></li>');
+	}
+	else{
+		$(".session .list-session ul").prepend('<li class="session-project vignette"><a href="'+domainUrl+'select/'+req.name+'"><h2>'+sessionName+'</h2><p class="description">'+req.description+'</p></a><div class="modify"><img src="/images/save.svg"></div><div class="delete"><img src="/images/clear.svg"></div></li>')
+	}
 	deleteSession();
 	modifySession();
 }
@@ -47,7 +51,7 @@ function addSession(){
 		};
 
 		fillPopOver( newContentToAdd, $(this), 300, 300, closeAddProjectFunction);
-		var imageData;
+		imageData = null;
 		var fileName;
 
 		uploadImage($("#thumbfile"));
@@ -57,7 +61,13 @@ function addSession(){
 }
 
 function displayNewSession(req){
-	$(".session .list-session ul").prepend('<li class="session-project vignette"><a href="'+domainUrl+'select/'+req.format+'"><h2>'+req.name+'</h2><p class="description">'+req.description+'</p><img src="' + domainUrl +req.format+'/'+ req.format +'-thumb.jpg"></a><div class="modify"><img src="/images/save.svg"></div><div class="delete"><img src="/images/clear.svg"></div></li>');
+	console.log(req);
+	if(req.thumb != "none"){
+		$(".session .list-session ul").prepend('<li class="session-project vignette"><a href="'+domainUrl+'select/'+req.format+'"><h2>'+req.name+'</h2><p class="description">'+req.description+'</p><img src="' + domainUrl +req.format+'/'+ req.format +'-thumb.jpg"></a><div class="modify"><img src="/images/save.svg"></div><div class="delete"><img src="/images/clear.svg"></div></li>');
+	}
+	else{
+		$(".session .list-session ul").prepend('<li class="session-project vignette"><a href="'+domainUrl+'select/'+req.format+'"><h2>'+req.name+'</h2><p class="description">'+req.description+'</p></a><div class="modify"><img src="/images/save.svg"></div><div class="delete"><img src="/images/clear.svg"></div></li>');
+		}
 	deleteSession();
 	modifySession();
 }
@@ -93,7 +103,6 @@ function modifySession(){
 			submitSession($('input.submit-session'), 'sessionIsModify', closeAddProjectFunction, $session);
 		});	
 	});
-
 }
 
 function uploadImage($button){
@@ -105,27 +114,31 @@ function uploadImage($button){
 	  var dflt = $(this).attr("placeholder");
 	  if($(this).val()!=""){
 	    $(this).next().text(fileName);
-	    console.log($(this).next());
 	  } else {
 	    $(this).next().text(dflt);
 	  }
 	});
+
 }
 
 function submitSession($button, send, closeAddProjectFunction, oldSession){
 	$button.on('click', function(){
 		var newSession = $('input.new-session').val();
 		var description = $('input.description-session').val();
-		var f = imageData[0];
-		var reader = new FileReader();
-		session = {
-    			name: newSession 
-			}
-		sessionList.push(session);
-		reader.onload = function(evt){
-			socket.emit(send, {name: newSession, old: oldSession, description:description , file:evt.target.result, fileName:fileName});
-		};
-		reader.readAsDataURL(f);
+
+		if(imageData != null){
+			console.log('Une image a été ajoutée');
+			var f = imageData[0];
+			var reader = new FileReader();
+			reader.onload = function(evt){
+				socket.emit(send, {name: newSession, old: oldSession, description:description , file:evt.target.result, fileName:fileName});
+			};
+			reader.readAsDataURL(f);
+		}
+		else{
+			console.log("Pas d'image chargé");
+			socket.emit(send, {name: newSession, old: oldSession, description:description});
+		}
 		closePopover(closeAddProjectFunction);
 	})
 }
