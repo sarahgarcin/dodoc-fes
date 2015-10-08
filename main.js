@@ -57,10 +57,11 @@ module.exports = function(app, io){
 
 	//Ajoute le dossier de la session + l'ajouter à la liste des sessions
 	function addNewSession(session) {
-    var sessionPath = 'sessions/'+session.name;
+		var sessionName = session.name.replace(/ /g,"_");
+    var sessionPath = 'sessions/'+sessionName;
 		fs.ensureDirSync(sessionPath);
 
-		var thumbName = session.name + "-thumb";
+		var thumbName = sessionName + "-thumb";
     var filePath = sessionPath + "/" + thumbName + ".jpg";
 
     var imageBuffer = decodeBase64Image(session.file);
@@ -69,7 +70,7 @@ module.exports = function(app, io){
         console.info("write new file to " + filePath);
     });
 
-		var jsonFile = 'sessions/' + session.name + '/' +session.name+'.json';
+		var jsonFile = 'sessions/' + sessionName + '/' +sessionName+'.json';
 		var objectJson = {"name":session.name, "description":session.description, "fileName":session.fileName}
 		//var objectJson = {"files": {"images":[], "videos":[], "stopmotion":[], "audio":[]}};
 		var jsonString = JSON.stringify(objectJson);
@@ -80,7 +81,7 @@ module.exports = function(app, io){
           console.log("Session was created!");
       }
     });
-    io.sockets.emit("displayNewSession", {name: session.name, description: session.description});
+    io.sockets.emit("displayNewSession", {name: session.name, description: session.description, format: sessionName});
 	}
 
 	function deleteSession(session){
