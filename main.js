@@ -166,15 +166,17 @@ module.exports = function(app, io){
 		fs.readdir(dir, function (err, files) { if (err) throw err;
 		  files.forEach( function (file) {
 		    files.push(file);
-		    if(file == ".DS_Store"){
-		    	fs.unlink(dir+'.DS_Store');
-		    }
-		    var jsonFile = dir + file + '/' +file+'.json';
-				var data = fs.readFileSync(jsonFile,"UTF-8");
-				var jsonObj = JSON.parse(data);
-				var Obj = {name:file, description: jsonObj.description, thumb: jsonObj.fileName};
-		    io.sockets.emit('listSessions', {name:file, description: jsonObj.description, thumb: jsonObj.fileName});
-		    session_list.push(Obj);
+		    // if(file == ".DS_Store"){
+		    // 	fs.unlink(dir+'.DS_Store');
+		    // }
+		    if(! /^\..*/.test(file)){
+			    var jsonFile = dir + file + '/' +file+'.json';
+					var data = fs.readFileSync(jsonFile,"UTF-8");
+					var jsonObj = JSON.parse(data);
+					var Obj = {name:file, description: jsonObj.description, thumb: jsonObj.fileName};
+			    io.sockets.emit('listSessions', {name:file, description: jsonObj.description, thumb: jsonObj.fileName});
+			    session_list.push(Obj);
+			  }
 		  });
 		});
 	}
@@ -234,6 +236,7 @@ module.exports = function(app, io){
 
 	//ajoute les images au dossier de session
 	function onNewImage(req) {
+		console.log(req);
 		var imageBuffer = decodeBase64Image(req.data);
 		currentDate = Date.now();
 		filename = 'sessions/' + req.name + '/' +req.projet+"/"+ currentDate + '.jpg';
