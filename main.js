@@ -132,10 +132,11 @@ module.exports = function(app, io){
 	}
 
 	function addNewProjet(projet) {
-    var projetPath = 'sessions/'+projet.session+"/"+projet.name;
+		var projectName = projet.name.replace(/ /g,"_");
+    var projetPath = 'sessions/'+projet.session+"/"+projectName;
 		fs.ensureDirSync(projetPath);
 
-		var thumbName = projet.name + "-thumb";
+		var thumbName = projectName + "-thumb";
     var filePath = projetPath + "/" + thumbName + ".jpg";
 
     var imageBuffer = decodeBase64Image(projet.file);
@@ -144,7 +145,7 @@ module.exports = function(app, io){
         console.info("write new file to " + filePath);
     });
 
-		var jsonFile = projetPath+ "/" +projet.name+'.json';
+		var jsonFile = projetPath+ "/" +projectName+'.json';
 		var objectJson = {"session":projet.session, "name":projet.name, "description":projet.description, "files": {"images":[], "videos":[], "stopmotion":[], "audio":[]}}
 		//var objectJson = {"files": {"images":[], "videos":[], "stopmotion":[], "audio":[]}};
 		var jsonString = JSON.stringify(objectJson);
@@ -155,7 +156,7 @@ module.exports = function(app, io){
           console.log("Session was created!");
       }
     });
-    io.sockets.emit("displayNewProjet", {session: projet.session, name: projet.name, description: projet.description});
+    io.sockets.emit("displayNewProjet", {session: projet.session, name: projet.name, format: projectName, description: projet.description});
 	}
 
 	//Liste les dossiers dans sessions/
