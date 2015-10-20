@@ -42,8 +42,8 @@ module.exports = function(app, io){
 		socket.on("saveMontage", saveMontage);
 		socket.on("titleMontage", titleMontage);
 		socket.on('sendPublication', onPublication);
+		socket.on('sendMetaData', onMetaData);
 		// receive a new text media
-		//socket.on()
 		socket.on('newUserPubli', displayPubli);
 
 	});
@@ -539,6 +539,34 @@ module.exports = function(app, io){
 
 	function titleMontage(title, session){
 		io.sockets.emit("titreMontage", title);
+	}
+
+	function onMetaData(data){
+		var imageTitle = data.imageTitre;
+		var imageDesc = data.imagedescription;
+		var imageId = data.imageId;
+		var session = data.session;
+		var projet = data.projet;
+
+		var jsonFile = 'sessions/' + session + '/'+ projet+"/" +projet+'.json';
+		var data = fs.readFileSync(jsonFile,"UTF-8");
+		var jsonObj = JSON.parse(data);
+		for(var i in jsonObj["files"]["images"]){
+			console.log("image titre: " + jsonObj["files"]["images"][i].name + " - image id: " + imageId);
+			if(jsonObj["files"]["images"][i].name == imageId){
+				console.log(jsonObj["files"]["images"][i]);
+				jsonObj["files"]["images"][i]["titre"] = imageTitle;
+				jsonObj["files"]["images"][i]["description"] = imageDesc;
+				fs.writeFile(jsonFile, JSON.stringify(jsonObj), function(err) {
+			    if(err) {
+			        console.log(err);
+			    } else {
+			        console.log("The file was saved!");
+			    }
+			  });
+			}
+		}
+
 	}
 
 	function onPublication(session){

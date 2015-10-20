@@ -85,6 +85,7 @@ jQuery(document).ready(function($) {
 
 	function ondisplayMedias(array, json){
 		$(".mediaContainer li").remove();
+		var matchID = $(".mediaContainer .media").attr("id");
 		for (var i = 0; i < array.length; i++) {
     	var extension = array[i].split('.').pop();
     	var identifiant =  array[i].replace("." + extension, "");
@@ -101,7 +102,7 @@ jQuery(document).ready(function($) {
 				$('.mediaContainer').append("<li class='media sons-bibli' id='"+ identifiant+"'><div class='mediaContent'><audio src='https://"+domainUrl + "/"+app.session +"/"+ app.projet+ "/" + array[i] + "' preload='none' controls></div></li>");
 			}
 		}
-		var matchID = $(".mediaContainer .media").attr("id");
+
 		$.each(json["files"]["images"], function(i, val) {
 			timestampToDate(val['name']);
 			$("#" + val['name']).append("<h3 class='mediaTitre'>" +time+ "</h3>");
@@ -123,28 +124,40 @@ jQuery(document).ready(function($) {
 			$(this).css("cursor", 'pointer');
 		});
 
-		// $(".media").on('click',function(){
-		// 	var $mediaContent = $(this).children(".mediaContent");
-		// 	var cloneMedia = $mediaContent.clone(true).addClass('clone-media');
-		// 	var cloneHeight = $mediaContent.height();
-		// 	var cloneWidth = $mediaContent.width();
-		// 	var clonePosX = $mediaContent.offset().left;
-		// 	var clonePosY = $mediaContent.offset().top;
+		$.each(json["files"]["images"], function(i, val) {
+			if(val["titre"]){
+				$("#" + val['name']).attr("data-image-titre", val['titre']);
+			}
+			if(val["description"]){
+				$("#" + val['name']).attr("data-image-caption", val['description']);
+			}
+		});
 
-		// 	if(cloneMedia.children().is("audio")){
-		// 		cloneMedia.css({"height": 136, "width": cloneWidth, "top":clonePosY, "left":clonePosX, "position":"absolute", "border":"4px solid #48C2B5", "background-color":"#0038bb"});
-		// 	}
-		// 	else{
-		// 		cloneMedia.css({"height": cloneHeight, "width": cloneWidth, "top":clonePosY, "left":clonePosX, "position":"absolute", "border":"4px solid #48C2B5"});
-		// 	}
-		// 	$(".buffer-media").css("z-index", 99);
-		// 	$(".buffer-media").append(cloneMedia);
-		// 	pepDrag(cloneMedia);
-		// });
-		// $(".media").each(function(){
-		// 	pepDrag($(this));
-		// });
-		dragMedia()
+		dragMedia();
+		metaData();
+	}
+
+	function metaData(){
+		$(".media").on("click", function(){
+			var $this = $(this);
+			var idImage = $this.attr("id");
+			var imgURL = $(this).find("img").attr("src");
+			var imageTitre = $(this).attr("data-image-titre");
+			var imageDesc = $(this).attr("data-image-caption");
+			var newContentToAdd = '<img src ="'+imgURL+'" alt="media"><input class="image-text" placeholder="Titre de l\'image"><input class="image-caption" placeholder="Légende de l\'image"><button class="saveCaption">Enregistrer</button>';
+			var closeAddProjectFunction = function() {
+			};
+			fillPopOver(newContentToAdd, $(this), 700, 700, closeAddProjectFunction);
+			$("input.image-text").val(imageTitre);
+			$(".image-caption").val(imageDesc);
+			$(".popoverContainer .saveCaption").on("click", function(){
+				var titleImage = $(this).parent().children(".image-text").val();
+				var descriptionImage = $(this).parent().children(".image-caption").val();
+				$this.attr("data-image-titre", titleImage).attr("data-image-caption", descriptionImage);
+				socket.emit("sendMetaData", {imageTitre : titleImage, imagedescription: descriptionImage, imageId:idImage, session:app.session, projet:app.projet});
+				closePopover(closeAddProjectFunction);
+			});
+		})
 	}
 
 	function displayNewImage(images){
