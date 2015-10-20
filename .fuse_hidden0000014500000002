@@ -40,10 +40,7 @@ module.exports = function(app, io){
 		socket.on("deleteFile", deleteFile);
 		socket.on("deleteImageMotion", deleteImageMotion);
 		socket.on("saveMontage", saveMontage);
-		socket.on("titleMontage", titleMontage);
 		socket.on('sendPublication', onPublication);
-		// receive a new text media
-		//socket.on()
 		socket.on('newUserPubli', displayPubli);
 
 	});
@@ -135,11 +132,10 @@ module.exports = function(app, io){
 	}
 
 	function addNewProjet(projet) {
-		var projectName = projet.name.replace(/ /g,"_");
-    var projetPath = 'sessions/'+projet.session+"/"+projectName;
+    var projetPath = 'sessions/'+projet.session+"/"+projet.name;
 		fs.ensureDirSync(projetPath);
 
-		var thumbName = projectName + "-thumb";
+		var thumbName = projet.name + "-thumb";
     var filePath = projetPath + "/" + thumbName + ".jpg";
 
     var imageBuffer = decodeBase64Image(projet.file);
@@ -148,7 +144,7 @@ module.exports = function(app, io){
         console.info("write new file to " + filePath);
     });
 
-		var jsonFile = projetPath+ "/" +projectName+'.json';
+		var jsonFile = projetPath+ "/" +projet.name+'.json';
 		var objectJson = {"session":projet.session, "name":projet.name, "description":projet.description, "files": {"images":[], "videos":[], "stopmotion":[], "audio":[]}}
 		//var objectJson = {"files": {"images":[], "videos":[], "stopmotion":[], "audio":[]}};
 		var jsonString = JSON.stringify(objectJson);
@@ -159,7 +155,7 @@ module.exports = function(app, io){
           console.log("Session was created!");
       }
     });
-    io.sockets.emit("displayNewProjet", {session: projet.session, name: projet.name, format: projectName, description: projet.description});
+    io.sockets.emit("displayNewProjet", {session: projet.session, name: projet.name, description: projet.description});
 	}
 
 	//Liste les dossiers dans sessions/
@@ -169,17 +165,15 @@ module.exports = function(app, io){
 		fs.readdir(dir, function (err, files) { if (err) throw err;
 		  files.forEach( function (file) {
 		    files.push(file);
-		    // if(file == ".DS_Store"){
-		    // 	fs.unlink(dir+'.DS_Store');
-		    // }
-		    if(! /^\..*/.test(file)){
-			    var jsonFile = dir + file + '/' +file+'.json';
-					var data = fs.readFileSync(jsonFile,"UTF-8");
-					var jsonObj = JSON.parse(data);
-					var Obj = {name:file, description: jsonObj.description, thumb: jsonObj.fileName};
-			    io.sockets.emit('listSessions', {name:file, description: jsonObj.description, thumb: jsonObj.fileName});
-			    session_list.push(Obj);
-			  }
+		    if(file == ".DS_Store"){
+		    	fs.unlink(dir+'.DS_Store');
+		    }
+		    var jsonFile = dir + file + '/' +file+'.json';
+				var data = fs.readFileSync(jsonFile,"UTF-8");
+				var jsonObj = JSON.parse(data);
+				var Obj = {name:file, description: jsonObj.description, thumb: jsonObj.fileName};
+		    io.sockets.emit('listSessions', {name:file, description: jsonObj.description, thumb: jsonObj.fileName});
+		    session_list.push(Obj);
 		  });
 		});
 	}
@@ -319,7 +313,7 @@ module.exports = function(app, io){
 		//SAVE VIDEO
 		var videoPath = 'sessions/' + req.name + '/' +req.projet+'/'+ fileName + '.mp4';
 		//make sure you set the correct path to your video file
-		var proc = new ffmpeg({ source: req.dir + '/%d.png'})
+		var proc = new ffmpeeg({ source: req.dir + '/%d.png'})
 		  // using 12 fps
 		  .withFpsInput(5)
 		  .fps(5)
@@ -535,10 +529,6 @@ module.exports = function(app, io){
           console.log("Montage HTML was saved");
       }
 	  });
-	}
-
-	function titleMontage(title, session){
-		io.sockets.emit("titreMontage", title);
 	}
 
 	function onPublication(session){
