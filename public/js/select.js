@@ -242,7 +242,10 @@ jQuery(document).ready(function($) {
 		    sort: function () {},
 		    placeholder: 'ui-state-highlight',
 		    receive: function () {},
-		    update: function (event, ui) {}
+		    update: function (event, ui) {
+		    	var montageContent = $(".montage-medias").html();
+					socket.emit("saveMontage", montageContent, app.session);
+		    }
 		});
 
 		$(".montage-medias").droppable({
