@@ -16,7 +16,6 @@ jQuery(document).ready(function($) {
 		$(".montage-title input").focus();
 		
 		$(document).on('click',function(event){
-			// console.log($(event.target).parent().attr("class"));
 			if($(event.target).parent().attr("class") == 'remove-media'){
 				removeMedia($(event.target).parent());
 			}
@@ -60,14 +59,26 @@ jQuery(document).ready(function($) {
 			};
 			fillPopOver(newContentToAdd, $(this), 500, 200, closeAddProjectFunction);
 			$(".choix-texte").on("click", function(){
-				console.log("caca");
-				var newContentToAdd = "<h3 class='popoverTitle'>Ajouter un média externe</h3><div class='choix-media'><div class='choix-texte'>TEXTE</div><div class='choix-local'>FICHIER LOCAL</div><div class='choix-url'>URL</div></div><div class='add-text'><input class='add-text-titre' placeholder='Écris ton titre ici'></input><textarea class='add-text-content' placeholder='Écris ton texte ici'></textarea></div>";
+				var newContentToAdd = "<h3 class='popoverTitle'>Ajouter un média externe</h3><div class='choix-media'><div class='choix-texte'>TEXTE</div><div class='choix-local'>FICHIER LOCAL</div><div class='choix-url'>URL</div></div><div class='add-text'><input class='add-text-titre' placeholder='Écris ton titre ici'></input><textarea class='add-text-content' placeholder='Écris ton texte ici'></textarea><input type='submit' class='submit-text'></input></div>";
 				var closeAddProjectFunction = function() {
 				};
 				closePopover(closeAddProjectFunction);
 				fillPopOver(newContentToAdd, $(this), 500, 500, closeAddProjectFunction);
+				submitNewMedia($('input.submit-text'), 'newTextMedia', closeAddProjectFunction);
 			});	
 		});
+
+	}
+
+	function submitNewMedia($button, send, closeAddProjectFunction, oldSession){
+		$button.on('click', function(){
+			var newTitreMedia = $('input.add-text-titre').val();
+			var newTextMedia = $('input.add-text-content').val();
+
+			socket.emit(send, {session:app.session, projet:app.projet, titreText: newTitreMedia, textMedia: newTextMedia});
+
+			closePopover(closeAddProjectFunction);
+		})
 	}
 
 	function ondisplayMedias(array, json){

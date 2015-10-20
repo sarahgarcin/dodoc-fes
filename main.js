@@ -41,6 +41,8 @@ module.exports = function(app, io){
 		socket.on("deleteImageMotion", deleteImageMotion);
 		socket.on("saveMontage", saveMontage);
 		socket.on('sendPublication', onPublication);
+		// receive a new text media
+		//socket.on()
 		socket.on('newUserPubli', displayPubli);
 
 	});
@@ -236,7 +238,6 @@ module.exports = function(app, io){
 
 	//ajoute les images au dossier de session
 	function onNewImage(req) {
-		console.log(req);
 		var imageBuffer = decodeBase64Image(req.data);
 		currentDate = Date.now();
 		filename = 'sessions/' + req.name + '/' +req.projet+"/"+ currentDate + '.jpg';
@@ -317,7 +318,7 @@ module.exports = function(app, io){
 		//SAVE VIDEO
 		var videoPath = 'sessions/' + req.name + '/' +req.projet+'/'+ fileName + '.mp4';
 		//make sure you set the correct path to your video file
-		var proc = new ffmpeeg({ source: req.dir + '/%d.png'})
+		var proc = new ffmpeg({ source: req.dir + '/%d.png'})
 		  // using 12 fps
 		  .withFpsInput(5)
 		  .fps(5)

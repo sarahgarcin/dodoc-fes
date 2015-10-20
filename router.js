@@ -38,6 +38,7 @@ module.exports = function(app,io,m){
     res.render("session", {
       title : "Projets",
       session : session,
+      sessionFormat : session.replace(/_/g," "),
     });
   };
   function getProjet(req, res) {
@@ -49,7 +50,9 @@ module.exports = function(app,io,m){
     res.render("select", {
       title : "Bibliotheque de media",
       session : session,
+      sessionFormat : session.replace(/_/g," "),
       projet : projet,
+      projetFormat : projet.replace(/_/g," "),
     });
   };
 
@@ -59,7 +62,9 @@ module.exports = function(app,io,m){
     res.render("capture", {
       title : "Prise de vue",
       session : session,
-      projet: projet,
+      sessionFormat : session.replace(/_/g," "),
+      projet : projet,
+      projetFormat : projet.replace(/_/g," "),
     });
   };
 
@@ -73,7 +78,9 @@ module.exports = function(app,io,m){
     res.render("flux", {
       title : "Dodoc Flux",
       session : session,
-      projet: projet,
+      sessionFormat : session.replace(/_/g," "),
+      projet : projet,
+      projetFormat : projet.replace(/_/g," "),
     });
   };
 
@@ -86,7 +93,9 @@ module.exports = function(app,io,m){
     res.render("publication", {
       title : "Publication",
       session : session,
-      projet: projet,
+      sessionFormat : session.replace(/_/g," "),
+      projet : projet,
+      projetFormat : projet.replace(/_/g," "),
     });
   };
 

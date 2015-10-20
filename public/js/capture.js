@@ -944,7 +944,7 @@ jQuery(document).ready(function($) {
     }
     else{
       //console.log('right NOT class active')
-      socket.emit(capture, {data: data, id: sessionId, name: app.session});
+      socket.emit(capture, {data: data, id: sessionId, name: app.session, projet:app.projet});
     }
   }
 
