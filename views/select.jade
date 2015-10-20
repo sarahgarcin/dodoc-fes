@@ -25,11 +25,13 @@ html
 
       div.montage.demi 
         div.publish
-          a(href="/select/#{session}/#{projet}/publi" class="btn icon publish"  data-toggle="tooltip" data-placement="left" title= __("Publish"))
+          a(href="/select/#{session}/#{projet}/publi" class="btn icon publish"  data-toggle="tooltip" data-placement="left" title="Publier")
             include templates/images/enregistre.svg
         div.montage-content
           div.montage-title
             input(type="text" value= "Titre")
+          div(class="add-text-montage btn icon publish"  data-toggle="tooltip" data-placement="right" title="Ajouter du texte")
+            include templates/images/save.svg
           ul.montage-medias
 
 

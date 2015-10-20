@@ -1163,7 +1163,7 @@ audio {
 
 	.montage {
 		overflow-y: scroll;
-
+		position: relative;
 		.montage-title{
 			width: 50%;
 			height: 72px;
@@ -1181,6 +1181,12 @@ audio {
 				}
 			}
 
+		}
+		.add-text-montage{
+			position: fixed;
+			top:80px;
+			left:51%;
+			cursor: pointer;
 		}
 
 	  -webkit-box-shadow: 0 1px 4px rgba(0, 0, 0, 0.1);
@@ -1204,6 +1210,28 @@ audio {
 				  cursor: pointer;
 				}
 
+			}
+			.text-media{
+				width:60%;
+				margin:auto;
+				position: relative;
+				textarea{
+					width: 100%;
+					height:15	0px;
+					background-color:#EFEFEF;
+					border:none;
+					border-top: 1px solid #898989 ;
+					border-bottom: 1px solid #898989 ;
+					padding: 4px 5px;
+				}
+				.remove-media{
+				  width: 30px;
+				  position: absolute;
+				  top: 0px;
+				  right: 0px;
+				  z-index: 200;
+				  cursor: pointer;
+				}
 			}
 		}
 	}
