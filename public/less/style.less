@@ -1065,6 +1065,12 @@ audio {
 	margin: auto;
 	.buffer {
 		background-color:#e5e5e5;
+		position: relative;
+		.buffer-header{
+			position: fixed;
+			width:49%;
+			z-index:300;
+		}
 		.button-add-media{
 	    position: relative;
 	    float: right;
@@ -1073,7 +1079,7 @@ audio {
 		.mediaContainer {
 			height: auto;
 			overflow-y: scroll;
-			padding: 20px 10px 80px;
+			padding: 100px 10px 80px;
 
 			.media{
 				list-style: none;
@@ -1162,7 +1168,7 @@ audio {
 				&.texte-bibli{
 					.mediaContent{
 						border: 1px solid #000;											
-						height: 225px;
+						max-height: 225px;
 						overflow-y: scroll;
 						padding: 10px;
 						h2{
@@ -1174,6 +1180,9 @@ audio {
 							line-height: 1.2em;
 						}
 					}
+					.mediaTitre {
+						border-left-color: #000;
+					}
 				}
 			}
 		}
@@ -1183,7 +1192,7 @@ audio {
 		overflow-y: scroll;
 		position: relative;
 		.montage-title{
-			width: 50%;
+			width: 49%;
 			height: 72px;
 			position: fixed;
 			background-color: #FFF;
@@ -1230,14 +1239,17 @@ audio {
 			.media{
 				position: relative;
 				list-style: none;
-				margin: 30px auto;
+				margin: 50px auto;
 				// width: 50% !important;
     // 		height: 100% !important;
+   			&:last-child{
+   				margin-bottom: 100px;
+   			}
 				.remove-media{
 				  width: 30px;
 				  position: absolute;
-				  top: 15px;
-				  right: 15px;
+				  top: 0px;
+				  right: 0px;
 				  z-index: 200;
 				  cursor: pointer;
 				}

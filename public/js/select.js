@@ -171,7 +171,6 @@ jQuery(document).ready(function($) {
 		$.each(json["files"]["texte"], function(i, val) {
 			timestampToDate(val['name']);
 			$('.mediaContainer').append("<li class='media texte-bibli' id='"+ val['name']+"' data-type='texte'><div class='mediaContent'><h2>"+val['titre']+"</h2><p>"+val['contenu']+"</p></div><h3 class='mediaTitre'>" +time+ "</h3></li>");
-			$("#" + val['name']).append("<h3 class='mediaTitre'>" +time+ "</h3>");
 			if(val["meta-titre"]){
 				$("#" + val['name']).attr("data-image-titre", val['titre']);
 			}
@@ -313,7 +312,6 @@ jQuery(document).ready(function($) {
 	}
 
 	function displayNewText(text){
-		console.log(text);
 		timestampToDate(text.title);
  	  $('.mediaContainer').append("<li class='media texte-bibli' id='"+ text.title+"' data-type='texte'><div class='mediaContent'><h2>"+text.textTitre+"</h2><p>"+text.textContent+"</p></div><h3 class='mediaTitre'>" +time+ "</h3></li>");
 	}
@@ -380,7 +378,10 @@ jQuery(document).ready(function($) {
 		    sort: function () {},
 		    placeholder: 'ui-state-highlight',
 		    receive: function (event, ui) {
-		    	console.log($(ui.helper));
+		     $(ui.helper).css({
+            width: "70%",
+            height:"auto",
+          });
 			    $(ui.helper).children("h3").remove();
 		    	$(ui.helper).append("<div class='remove-media'><img src='/images/clear.svg'></div>");
 		    	var montageContent = $(".montage-medias").html();

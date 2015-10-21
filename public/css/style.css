@@ -8014,6 +8014,12 @@ audio {
 }
 .container-bibli .buffer {
   background-color: #e5e5e5;
+  position: relative;
+}
+.container-bibli .buffer .buffer-header {
+  position: fixed;
+  width: 49%;
+  z-index: 300;
 }
 .container-bibli .buffer .button-add-media {
   position: relative;
@@ -8023,7 +8029,7 @@ audio {
 .container-bibli .buffer .mediaContainer {
   height: auto;
   overflow-y: scroll;
-  padding: 20px 10px 80px;
+  padding: 100px 10px 80px;
 }
 .container-bibli .buffer .mediaContainer .media {
   list-style: none;
@@ -8087,7 +8093,7 @@ audio {
 }
 .container-bibli .buffer .mediaContainer .media.texte-bibli .mediaContent {
   border: 1px solid #000;
-  height: 225px;
+  max-height: 225px;
   overflow-y: scroll;
   padding: 10px;
 }
@@ -8099,6 +8105,9 @@ audio {
   font-size: 0.7em;
   line-height: 1.2em;
 }
+.container-bibli .buffer .mediaContainer .media.texte-bibli .mediaTitre {
+  border-left-color: #000;
+}
 .container-bibli .montage {
   overflow-y: scroll;
   position: relative;
@@ -8106,7 +8115,7 @@ audio {
   box-shadow: 0 1px 4px rgba(0, 0, 0, 0.1);
 }
 .container-bibli .montage .montage-title {
-  width: 50%;
+  width: 49%;
   height: 72px;
   position: fixed;
   background-color: #FFF;
@@ -8139,13 +8148,16 @@ audio {
 .container-bibli .montage .montage-medias .media {
   position: relative;
   list-style: none;
-  margin: 30px auto;
+  margin: 50px auto;
+}
+.container-bibli .montage .montage-medias .media:last-child {
+  margin-bottom: 100px;
 }
 .container-bibli .montage .montage-medias .media .remove-media {
   width: 30px;
   position: absolute;
-  top: 15px;
-  right: 15px;
+  top: 0px;
+  right: 0px;
   z-index: 200;
   cursor: pointer;
 }
