@@ -34,13 +34,13 @@ function onSocketError(reason) {
 function onlistSessions(req) {
 	var sessionName = req.name.replace(/_/g," ");
 	if(req.thumb != "none"){
-		$(".session .list-session ul").prepend('<li class="session-project vignette"><a href="'+domainUrl+'select/'+req.name+'"><h2>'+sessionName+'</h2><p class="description">'+req.description+'</p><img src="' + domainUrl +req.name+'/'+ req.name +'-thumb.jpg"></a><div class="modify"><img src="/images/save.svg"></div><div class="delete"><img src="/images/clear.svg"></div></li>');
+		$(".session .list-session ul").prepend('<li class="session-project vignette"><a href="'+domainUrl+'select/'+req.name+'"><h2>'+sessionName+'</h2><p class="description">'+req.description+'</p><img src="' + domainUrl +req.name+'/'+ req.name +'-thumb.jpg"></a><div class="delete"><img src="/images/clear.svg"></div></li>');
 	}
 	else{
-		$(".session .list-session ul").prepend('<li class="session-project vignette"><a href="'+domainUrl+'select/'+req.name+'"><h2>'+sessionName+'</h2><p class="description">'+req.description+'</p></a><div class="modify"><img src="/images/save.svg"></div><div class="delete"><img src="/images/clear.svg"></div></li>')
+		$(".session .list-session ul").prepend('<li class="session-project vignette"><a href="'+domainUrl+'select/'+req.name+'"><h2>'+sessionName+'</h2><p class="description">'+req.description+'</p></a><div class="delete"><img src="/images/clear.svg"></div></li>')
 	}
 	deleteSession();
-	modifySession();
+	//modifySession();
 }
 
 //Ajouter une session
@@ -63,13 +63,13 @@ function addSession(){
 function displayNewSession(req){
 	console.log(req);
 	if(req.thumb != "none"){
-		$(".session .list-session ul").prepend('<li class="session-project vignette"><a href="'+domainUrl+'select/'+req.format+'"><h2>'+req.name+'</h2><p class="description">'+req.description+'</p><img src="' + domainUrl +req.format+'/'+ req.format +'-thumb.jpg"></a><div class="modify"><img src="/images/save.svg"></div><div class="delete"><img src="/images/clear.svg"></div></li>');
+		$(".session .list-session ul").prepend('<li class="session-project vignette"><a href="'+domainUrl+'select/'+req.format+'"><h2>'+req.name+'</h2><p class="description">'+req.description+'</p><img src="' + domainUrl +req.format+'/'+ req.format +'-thumb.jpg"></a><div class="delete"><img src="/images/clear.svg"></div></li>');
 	}
 	else{
-		$(".session .list-session ul").prepend('<li class="session-project vignette"><a href="'+domainUrl+'select/'+req.format+'"><h2>'+req.name+'</h2><p class="description">'+req.description+'</p></a><div class="modify"><img src="/images/save.svg"></div><div class="delete"><img src="/images/clear.svg"></div></li>');
+		$(".session .list-session ul").prepend('<li class="session-project vignette"><a href="'+domainUrl+'select/'+req.format+'"><h2>'+req.name+'</h2><p class="description">'+req.description+'</p></a><div class="delete"><img src="/images/clear.svg"></div></li>');
 		}
 	deleteSession();
-	modifySession();
+	//modifySession();
 }
 
 function deleteSession(){
@@ -118,7 +118,6 @@ function uploadImage($button){
 	    $(this).next().text(dflt);
 	  }
 	});
-
 }
 
 function submitSession($button, send, closeAddProjectFunction, oldSession){

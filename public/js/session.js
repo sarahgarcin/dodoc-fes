@@ -22,9 +22,10 @@ jQuery(document).ready(function($) {
 
 	// active fonctions
 	addProjet();
-	//$('body').css({'background':"url("+originUrl+ "/" +currentSession + "/"+ currentSession +"-thumb.jpg) no-repeat fixed", "background-size":"cover"});
-	$(".thumb-background img").attr("src", originUrl+ "/" +currentSession + "/"+ currentSession +"-thumb.jpg");
-
+	
+	// Affiche le thum en arrière plan, il faut d'abord vérifier si ce thumb existe
+	//$(".thumb-background img").attr("src", originUrl+ "/" +currentSession + "/"+ currentSession +"-thumb.jpg");
+	
 	/* sockets */
 	function onSocketConnect() {
 		sessionId = socket.io.engine.id;
@@ -39,55 +40,93 @@ jQuery(document).ready(function($) {
 	// Affiche la liste des sessions
 	function onlistProjets(projet) {
 		var projectName = projet.name.replace(/_/g," ");
-		$(".projets-block .list-projets ul").append('<li class="item-project vignette"><a href="'+domainUrl +'/'+ projet.name+'/publi"><h2>'+projectName+'</h2><p class="description">'+projet.description+'</p><img src="' + originUrl + '/'+projet.session+ '/'+projet.name+'/'+projet.name +'-thumb.jpg"></a></li>');
+		if(projet.thumb != "none"){
+			$(".projets-block .list-projets ul").append('<li class="item-project vignette"><a href="'+domainUrl +'/'+ projet.name+'/publi"><h2>'+projectName+'</h2><p class="description">'+projet.description+'</p><img src="' + originUrl + '/'+projet.session+ '/'+projet.name+'/'+projet.name +'-thumb.jpg"></a><div class="delete"><img src="/images/clear.svg"></div></li>');
+		}
+		else{
+			$(".projets-block .list-projets ul").append('<li class="item-project vignette"><a href="'+domainUrl +'/'+ projet.name+'/publi"><h2>'+projectName+'</h2><p class="description">'+projet.description+'</p></a><div class="delete"><img src="/images/clear.svg"></div></li>');
+		}
+		deleteProjet();
 	}
 
-	//Ajouter une session
+	//Ajouter un projet
 	function addProjet(){
 		$("#add-projet").on('click', function(){
 			var newContentToAdd = "<h3 class='popoverTitle'>Ajouter un nouveau projet</h3><form onsubmit='return false;' class='add-project'><input class='new-projet' placeholder='Nom'></input><input class='description-projet' placeholder='Description'></input><input type='file' id='thumbfile' accept='image/*' placeholder='Ajouter une image'></input><label for='thumbfile'>Ajouter une image</label><input type='submit' class='submit-projet'></input></form>";
-			
 			var closeAddProjectFunction = function() {
 			};
 
 			fillPopOver( newContentToAdd, $(this), 300, 300, closeAddProjectFunction);
-			var imageData;
+			imageData = null;
+			var fileName;
 			
-			$('#thumbfile').bind('change', function(e){
-		  	//upload(e.originalEvent.target.files);
-		  	imageData = e.originalEvent.target.files;
-		  	//change the label of the button in the name of the image
-		  	var file = this.files[0].name;
-			  var dflt = $(this).attr("placeholder");
-			  if($(this).val()!=""){
-			    $(this).next().text(file);
-			  } else {
-			    $(this).next().text(dflt);
-			  }
-			});
+			uploadImage($("#thumbfile"));
+			submitProjet($('input.submit-projet'), 'newProjet', closeAddProjectFunction);
 			
-			$('input.submit-projet').on('click', function(){
-				var newProjet = $('input.new-projet').val();
-				var description = $('input.description-projet').val();
-				var f = imageData[0];
-				var reader = new FileReader();
-				// session = {
-    //     			name: newSession 
-    // 			}
-    // 		sessionList.push(session);
-    		reader.onload = function(evt){
-					socket.emit('newProjet', {session: currentSession, name: newProjet, description:description , file:evt.target.result});
-				};
-				reader.readAsDataURL(f);
-				closePopover(closeAddProjectFunction);
-
-			})
-		})
+		});
 	}
 
 	function displayNewProjet(projet){
 		var projectName = projet.format;
-		$(".projets-block .list-projets ul").prepend('<li class="item-project vignette"><a href="'+domainUrl +'/'+ projectName+'/publi"><h2>'+projet.name+'</h2><p class="description">'+projet.description+'</p><img src="' + originUrl + '/'+projet.session+ '/'+projectName+'/'+projectName +'-thumb.jpg"></a></li>');
+		if(projet.thumb != "none"){
+			$(".projets-block .list-projets ul").prepend('<li class="item-project vignette"><a href="'+domainUrl +'/'+ projectName+'/publi"><h2>'+projet.name+'</h2><p class="description">'+projet.description+'</p><img src="' + originUrl + '/'+projet.session+ '/'+projectName+'/'+projectName +'-thumb.jpg"></a><div class="delete"><img src="/images/clear.svg"></div></li>');
+		}
+		else{
+			$(".projets-block .list-projets ul").prepend('<li class="item-project vignette"><a href="'+domainUrl +'/'+ projectName+'/publi"><h2>'+projet.name+'</h2><p class="description">'+projet.description+'</p></a><div class="delete"><img src="/images/clear.svg"></div></li>');
+		}
+		deleteProjet();
+		
+	}
+
+	function uploadImage($button){
+		$button.bind('change', function(e){
+	  	//upload(e.originalEvent.target.files);
+	  	imageData = e.originalEvent.target.files;
+	  	//change the label of the button in the name of the image
+	  	fileName = this.files[0].name;
+		  var dflt = $(this).attr("placeholder");
+		  if($(this).val()!=""){
+		    $(this).next().text(fileName);
+		  } else {
+		    $(this).next().text(dflt);
+		  }
+		});
+	}
+
+	function submitProjet($button, send, closeAddProjectFunction, oldSession){
+		$button.on('click', function(){
+			var newProjet = $('input.new-projet').val();
+			var description = $('input.description-projet').val();
+
+			if(imageData != null){
+				console.log('Une image a été ajoutée');
+				var f = imageData[0];
+				var reader = new FileReader();
+				reader.onload = function(evt){
+					socket.emit(send, {session: currentSession, name: newProjet, description:description , file:evt.target.result, fileName:fileName});
+				};
+				reader.readAsDataURL(f);
+			}
+			else{
+				console.log("Pas d'image chargé");
+				socket.emit(send, {session: currentSession, name: newProjet, description:description});
+			}
+			closePopover(closeAddProjectFunction);
+		})
+	}
+
+	function deleteProjet(){
+		var $delButton = $(".vignette .delete");
+		$delButton.click(function(){
+			var projetName = $(this).parent().children("a").attr('href').split("/select/" + app.session +"/").pop();
+			var projetNameClean = projetName.replace("/publi", "");
+			console.log(projetNameClean);
+			if (confirm("Êtes-vous sûr de vouloir supprimer cette session ?")) {
+				socket.emit("deleteProjet", app.session, projetNameClean);
+				$(this).parent(".vignette").remove();
+	    }
+	    return false;
+		}); 
 	}
 
 });

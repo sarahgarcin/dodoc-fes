@@ -31,6 +31,7 @@ module.exports = function(app, io){
 		socket.on("modifySession", modifySession);
 		socket.on("sessionIsModify", onSessionModify);
 		socket.on("newProjet", addNewProjet);
+		socket.on("deleteProjet", deleteProjet);
 		socket.on("imageCapture", onNewImage);
 		socket.on("newStopMotion", onNewStopMotion);
 		socket.on("imageMotion", onNewImageMotion);
@@ -44,6 +45,9 @@ module.exports = function(app, io){
 		socket.on('sendPublication', onPublication);
 		socket.on('sendMetaData', onMetaData);
 		// receive a new text media
+		socket.on("newTextMedia", onNewTextMedia);
+		// receive a new local media
+		socket.on("newLocalMedia", onNewLocalMedia);
 		socket.on('newUserPubli', displayPubli);
 
 	});
@@ -139,27 +143,41 @@ module.exports = function(app, io){
     var projetPath = 'sessions/'+projet.session+"/"+projectName;
 		fs.ensureDirSync(projetPath);
 
-		var thumbName = projectName + "-thumb";
-    var filePath = projetPath + "/" + thumbName + ".jpg";
+		if(projet.file){
+			var thumbName = projectName + "-thumb";
+	    var filePath = projetPath + "/" + thumbName + ".jpg";
+	    var imageBuffer = decodeBase64Image(projet.file);
+	    fs.writeFile(filePath, imageBuffer.data, function (err) {
+	        console.info("write new file to " + filePath);
+	    });
+			var jsonFile = projetPath+ "/" +projectName+'.json';
+			var objectJson = {"session":projet.session, "name":projet.name, "description":projet.description, "fileName":projet.fileName, "files": {"images":[], "videos":[], "stopmotion":[], "audio":[], "texte":[]}}
+			var jsonString = JSON.stringify(objectJson);
+			fs.appendFile(jsonFile, jsonString, function(err) {
+	      if(err) {
+	          console.log(err);
+	      } else {
+	        console.log("Session was created!");
+	      }
+	    });
+	    io.sockets.emit("displayNewProjet", {session: projet.session, name: projet.name, format: projectName, description: projet.description, thumb:projet.fileName});
+	  }
+	  else{
+	  	var jsonFile = projetPath+ "/" +projectName+'.json';
+			var objectJson = {"session":projet.session, "name":projet.name, "description":projet.description, "fileName":"none", "files": {"images":[], "videos":[], "stopmotion":[], "audio":[], "texte":[]}}
+			var jsonString = JSON.stringify(objectJson);
+			fs.appendFile(jsonFile, jsonString, function(err) {
+	      if(err) {console.log(err);} 
+	      else {console.log("Session was created!");}
+	    });
+	  	io.sockets.emit("displayNewProjet", {session: projet.session, name: projet.name, format: projectName, description: projet.description, thumb:"none"});
+	  }
+	}
 
-    var imageBuffer = decodeBase64Image(projet.file);
-
-    fs.writeFile(filePath, imageBuffer.data, function (err) {
-        console.info("write new file to " + filePath);
-    });
-
-		var jsonFile = projetPath+ "/" +projectName+'.json';
-		var objectJson = {"session":projet.session, "name":projet.name, "description":projet.description, "files": {"images":[], "videos":[], "stopmotion":[], "audio":[]}}
-		//var objectJson = {"files": {"images":[], "videos":[], "stopmotion":[], "audio":[]}};
-		var jsonString = JSON.stringify(objectJson);
-		fs.appendFile(jsonFile, jsonString, function(err) {
-      if(err) {
-          console.log(err);
-      } else {
-          console.log("Session was created!");
-      }
-    });
-    io.sockets.emit("displayNewProjet", {session: projet.session, name: projet.name, format: projectName, description: projet.description});
+	function deleteProjet(session, projet){
+		var projetPath = 'sessions/'+session+'/'+projet;
+		console.log(projetPath);
+		rmDir(projetPath);
 	}
 
 	//Liste les dossiers dans sessions/
@@ -190,10 +208,12 @@ module.exports = function(app, io){
 		fs.readdirSync(sessionPath).filter(function(file) {
 			if(fs.statSync(path.join(sessionPath, file)).isDirectory()){
 				console.log(file);
-				var jsonFile = sessionPath + file + '/' +file+'.json';
-				var data = fs.readFileSync(jsonFile,"UTF-8");
-				var jsonObj = JSON.parse(data);
-		    io.sockets.emit('listProjets', {session: session, name:file, description: jsonObj.description});
+				if(! /^\..*/.test(file)){
+					var jsonFile = sessionPath + file + '/' +file+'.json';
+					var data = fs.readFileSync(jsonFile,"UTF-8");
+					var jsonObj = JSON.parse(data);
+			    io.sockets.emit('listProjets', {session: session, name:file, description: jsonObj.description, thumb: jsonObj.fileName});
+		  	}
 			}
   	});
 	}
@@ -618,9 +638,66 @@ module.exports = function(app, io){
 					}
 				}
 				break;
+			case 'texte':
+				for(var i in jsonObj["files"]["texte"]){
+					if(jsonObj["files"]["texte"][i].name == imageId){
+						console.log(jsonObj["files"]["texte"][i]);
+						jsonObj["files"]["texte"][i]["meta-titre"] = imageTitle;
+						jsonObj["files"]["texte"][i]["description"] = imageDesc;
+						fs.writeFile(jsonFile, JSON.stringify(jsonObj), function(err) {
+					    if(err) {
+					        console.log(err);
+					    } else {
+					        console.log("The file was saved!");
+					    }
+					  });
+					}
+				}
+				break;
 		}
-		
+	}
 
+	function onNewTextMedia(text){
+		var session = text.session;
+		var projet =text.projet;
+		var date = Date.now();
+
+		var jsonFile = 'sessions/' + session + '/'+ projet+"/" +projet+'.json';
+		var data = fs.readFileSync(jsonFile,"UTF-8");
+		var jsonObj = JSON.parse(data);
+		var jsonAdd = { "name" : date, "titre":text.titre, "contenu":text.texte};
+		jsonObj["files"]["texte"].push(jsonAdd);
+		fs.writeFile(jsonFile, JSON.stringify(jsonObj), function(err) {
+      if(err) {
+          console.log(err);
+      } else {
+          console.log("The file was saved!");
+      }
+    });
+    io.sockets.emit("displayNewText", {title:date, projet:projet, session: session, textTitre: text.titre, textContent: text.texte});
+	}
+
+	function onNewLocalMedia(data){
+		var imageBuffer = decodeBase64Image(data.file);
+		var date = Date.now();
+		filename = 'sessions/' + data.session + '/' +data.projet+"/"+ date + '.jpg';
+		fs.writeFile(filename , imageBuffer.data, function(err) { 
+			console.log(err);
+		});
+
+		var jsonFile = 'sessions/' + data.session + '/'+ data.projet+"/" +data.projet+'.json';
+		var data = fs.readFileSync(jsonFile,"UTF-8");
+		var jsonObj = JSON.parse(data);
+		var jsonAdd = { "name" : currentDate};
+		jsonObj["files"]["images"].push(jsonAdd);
+		fs.writeFile(jsonFile, JSON.stringify(jsonObj), function(err) {
+      if(err) {
+          console.log(err);
+      } else {
+          console.log("The file was saved!");
+      }
+    });
+    io.sockets.emit("displayNewImage", {file: date + ".jpg", extension:"jpg", name:data.session, projet:data.projet, title: date});
 	}
 
 	function onPublication(session){

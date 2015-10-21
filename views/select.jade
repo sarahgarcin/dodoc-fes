@@ -29,7 +29,8 @@ html
             include templates/images/enregistre.svg
         div.montage-content
           div.montage-title
-            input(type="text" value= "Titre")
+            h1 #{projet}
+            //input(type="text" value= "Titre")
           div(class="add-text-montage btn icon publish"  data-toggle="tooltip" data-placement="right" title="Ajouter du texte")
             include templates/images/pen.svg
           ul.montage-medias

@@ -38,6 +38,7 @@ jQuery(document).ready(function($) {
 	socket.on('displayNewStopMotion', displayNewStopMotion);
 	socket.on('displayNewVideo', displayNewVideo);
 	socket.on('displayNewAudio', displayNewAudio);
+	socket.on('displayNewText', displayNewText);
 	socket.on('displayMontage', displayMontage);
 
 	/**
@@ -57,28 +58,51 @@ jQuery(document).ready(function($) {
 
 	function addMedia(){
 		$(".button-add-media").on("click", function(){;
-			var newContentToAdd = "<h3 class='popoverTitle'>Ajouter un média externe</h3><div class='choix-media'><div class='choix-texte'>TEXTE</div><div class='choix-local'>FICHIER LOCAL</div><div class='choix-url'>URL</div></div>";
+			var newContentToAdd = "<h3 class='popoverTitle'>Ajouter un média externe</h3><div class='choix-media'><div class='choix-texte'>TEXTE</div><div class='choix-local'>FICHIER LOCAL</div></div>";
 			var closeAddProjectFunction = function() {
 			};
 			fillPopOver(newContentToAdd, $(this), 500, 200, closeAddProjectFunction);
+			imageData = null;
 			$(".choix-texte").on("click", function(){
-				var newContentToAdd = "<h3 class='popoverTitle'>Ajouter un média externe</h3><div class='choix-media'><div class='choix-texte'>TEXTE</div><div class='choix-local'>FICHIER LOCAL</div><div class='choix-url'>URL</div></div><div class='add-text'><input class='add-text-titre' placeholder='Écris ton titre ici'></input><textarea class='add-text-content' placeholder='Écris ton texte ici'></textarea><input type='submit' class='submit-text'></input></div>";
+				var newContentToAdd = "<h3 class='popoverTitle'>Ajouter un média externe</h3><div class='choix-media'><div class='choix-texte'>TEXTE</div><div class='choix-local'>FICHIER LOCAL</div></div><div class='add-text'><input class='add-text-titre' placeholder='Écris ton titre ici'></input><textarea class='add-text-content' placeholder='Écris ton texte ici'></textarea><input type='submit' class='submit-text'></input></div>";
 				var closeAddProjectFunction = function() {
 				};
 				closePopover(closeAddProjectFunction);
 				fillPopOver(newContentToAdd, $(this), 500, 500, closeAddProjectFunction);
 				submitNewMedia($('input.submit-text'), 'newTextMedia', closeAddProjectFunction);
 			});	
-		});
+			$(".choix-local").on("click", function(){
+				var newContentToAdd = "<h3 class='popoverTitle'>Ajouter une image</h3><form onsubmit='return false;' class='add-image-local'><input type='file' id='localfile' accept='image/*' placeholder='Ajouter une image'></input><label for='localfile'>Ajouter une image</label><input type='submit' class='submit-local-image'></input></form>";
+				var closeAddProjectFunction = function() {
+				};
+				closePopover(closeAddProjectFunction);
+				fillPopOver(newContentToAdd, $(this), 500, 500, closeAddProjectFunction);
+				var fileName;
 
+				uploadImage($("#localfile"));
+				submitNewMedia($('input.submit-local-image'), 'newLocalMedia', closeAddProjectFunction);
+			});
+		});
 	}
 
 	function submitNewMedia($button, send, closeAddProjectFunction, oldSession){
 		$button.on('click', function(){
 			var newTitreMedia = $('input.add-text-titre').val();
-			var newTextMedia = $('input.add-text-content').val();
+			var newTextMedia = $('textarea.add-text-content').val();
 
-			socket.emit(send, {session:app.session, projet:app.projet, titreText: newTitreMedia, textMedia: newTextMedia});
+			if(imageData != null){
+				console.log('Une image a été ajoutée');
+				var f = imageData[0];
+				var reader = new FileReader();
+				reader.onload = function(evt){
+					socket.emit(send, {session:app.session, projet:app.projet, file:evt.target.result, fileName:fileName});
+				};
+				reader.readAsDataURL(f);
+			}
+			else{
+				console.log("Pas d'image chargé");
+				socket.emit(send, {session:app.session, projet:app.projet, titre: newTitreMedia, texte: newTextMedia});
+			}
 
 			closePopover(closeAddProjectFunction);
 		})
@@ -138,6 +162,18 @@ jQuery(document).ready(function($) {
 			timestampToDate(val['name']);
 			$("#" + val['name']).append("<h3 class='mediaTitre'>" +time+ "</h3>");
 			if(val["titre"]){
+				$("#" + val['name']).attr("data-image-titre", val['titre']);
+			}
+			if(val["description"]){
+				$("#" + val['name']).attr("data-image-caption", val['description']);
+			}
+		});
+
+		$.each(json["files"]["texte"], function(i, val) {
+			timestampToDate(val['name']);
+			$('.mediaContainer').append("<li class='media texte-bibli' id='"+ val['name']+"' data-type='texte'><div class='mediaContent'><h2>"+val['titre']+"</h2><p>"+val['contenu']+"</p></div><h3 class='mediaTitre'>" +time+ "</h3></li>");
+			$("#" + val['name']).append("<h3 class='mediaTitre'>" +time+ "</h3>");
+			if(val["meta-titre"]){
 				$("#" + val['name']).attr("data-image-titre", val['titre']);
 			}
 			if(val["description"]){
@@ -234,6 +270,25 @@ jQuery(document).ready(function($) {
 							closePopover(closeAddProjectFunction);
 						});
 						break;
+					case "texte":
+						var textTitre = $(this).find("h2").html();
+						var textContent = $(this).find("p").html();
+						var imageTitre = $(this).attr("data-image-titre");
+						var imageDesc = $(this).attr("data-image-caption");
+						var newContentToAdd = '<h2>'+textTitre+'</h2><p>'+textContent+'</p><input class="image-text" placeholder="Titre de l\'image"><input class="image-caption" placeholder="Légende de l\'image"><button class="saveCaption">Enregistrer</button>';
+						var closeAddProjectFunction = function() {
+						};
+						fillPopOver(newContentToAdd, $(this), 700, 700, closeAddProjectFunction);
+						$("input.image-text").val(imageTitre);
+						$(".image-caption").val(imageDesc);
+						$(".popoverContainer .saveCaption").on("click", function(){
+							var titleImage = $(this).parent().children(".image-text").val();
+							var descriptionImage = $(this).parent().children(".image-caption").val();
+							$this.attr("data-image-titre", titleImage).attr("data-image-caption", descriptionImage);
+							socket.emit("sendMetaData", {type:typeMedia, imageTitre : titleImage, imagedescription: descriptionImage, imageId:idImage, session:app.session, projet:app.projet});
+							closePopover(closeAddProjectFunction);
+						});
+						break;
 			}
 		});
 	}
@@ -256,6 +311,12 @@ jQuery(document).ready(function($) {
 	function displayNewAudio(audio){
 		timestampToDate(audio.title);
  	  $('.mediaContainer').append("<li class='media sons-bibli' id='"+ audio.title+"' data-type='son'><div class='mediaContent'><audio src='https://"+domainUrl + "/"+app.session +"/"+ app.projet+ "/" + audio.file + "' preload='none' controls></div><h3 class='mediaTitre'>" +time+ "</h3></li>");
+	}
+
+	function displayNewText(text){
+		console.log(text);
+		timestampToDate(text.title);
+ 	  $('.mediaContainer').append("<li class='media texte-bibli' id='"+ text.title+"' data-type='texte'><div class='mediaContent'><h2>"+text.textTitre+"</h2><p>"+text.textContent+"</p></div><h3 class='mediaTitre'>" +time+ "</h3></li>");
 	}
 
 	function displayMontage(html){
@@ -427,5 +488,20 @@ jQuery(document).ready(function($) {
 		time = hours + ':' + minutes.substr(minutes.length-2);
 		//console.log(time);
 	}
+
+	function uploadImage($button){
+		$button.bind('change', function(e){
+	  	//upload(e.originalEvent.target.files);
+	  	imageData = e.originalEvent.target.files;
+	  	//change the label of the button in the name of the image
+	  	fileName = this.files[0].name;
+		  var dflt = $(this).attr("placeholder");
+		  if($(this).val()!=""){
+		    $(this).next().text(fileName);
+		  } else {
+		    $(this).next().text(dflt);
+		  }
+		});
+	}	
 
 });
