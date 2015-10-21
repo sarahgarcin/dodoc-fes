@@ -8162,13 +8162,13 @@ audio {
   cursor: pointer;
 }
 .container-bibli .montage .montage-medias .text-media {
-  width: 60%;
-  margin: auto;
+  width: 70%;
+  margin: 0px auto 70px auto;
   position: relative;
 }
 .container-bibli .montage .montage-medias .text-media textarea {
   width: 100%;
-  height: 15	0px;
+  height: 150px;
   background-color: #EFEFEF;
   border: none;
   border-top: 1px solid #898989 ;
@@ -8182,6 +8182,15 @@ audio {
   right: 0px;
   z-index: 200;
   cursor: pointer;
+}
+.container-bibli .montage .montage-medias .text-media button {
+  float: right;
+  margin-left: 10px;
+  padding: 5px 10px;
+  border: 1px solid #cecece;
+}
+.container-bibli .montage .montage-medias .text-media button.submit-text-montage {
+  background-color: #48c2b5;
 }
 .popoverContainer .choix-media {
   margin: auto;
@@ -8531,21 +8540,31 @@ audio {
     -webkit-transform: scale(1);
   }
 }
+.publication .capture {
+  float: left;
+  z-index: 3;
+}
+.publication .container-publi .montage-title {
+  text-align: center;
+  margin-bottom: 3rem;
+}
+.publication .container-publi .montage-title h2 {
+  font-size: 2em;
+}
 .publication .container-publi .content {
   width: 50%;
   margin: 30px auto;
 }
-.publication .container-publi .content .montage-title {
-  text-align: center;
-  margin-bottom: 3rem;
-}
-.publication .container-publi .content .montage-title h2 {
-  font-size: 2em;
-}
-.publication .container-publi .content .montage-medias {
+.publication .container-publi .content .publi-medias {
   margin-bottom: 100px;
 }
-.publication .container-publi .content .montage-medias .block-content .mediaContent {
+.publication .container-publi .content .publi-medias li {
+  margin: auto;
+}
+.publication .container-publi .content .publi-medias li.text-media {
+  width: 70%;
+}
+.publication .container-publi .content .publi-medias li .mediaContent {
   width: 100%;
   margin-bottom: 4rem;
 }

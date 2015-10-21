@@ -37,13 +37,13 @@ jQuery(document).ready(function($) {
 
 	function onPublicationPage(html){
 		var htmlContent = html;
-		$(".container-publi .content").html(htmlContent);
-		$(".container-publi .content").find(".remove-media").remove();
-		var publiTitle = $(".container-publi .content").find(".montage-title input").val();
-		$(".container-publi .content").find(".montage-title").append("<h2>"+publiTitle+"</h2>");
-		$(".container-publi .content").find(".montage-title input").remove();
+		$(".container-publi .publi-medias").html(htmlContent);
+		$(".container-publi .publi-medias").find(".remove-media").remove();
+		var publiTitle = $(".container-publi .publi-medias").find(".montage-title input").val();
+		$(".container-publi .publi-medias").find(".montage-title").append("<h2>"+publiTitle+"</h2>");
+		$(".container-publi .publi-medias").find(".montage-title input").remove();
 
-		$(".container-publi .content").find(".mediaContent")
+		$(".container-publi .publi-medias").find(".mediaContent")
 			.removeClass("clone-media")
 			.removeClass("pep-active")
 			.removeClass("pep-ease")

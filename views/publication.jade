@@ -8,8 +8,8 @@ html
 
     nav.titleAndActions
       div.buttons.alignRight
-        .button.sidebyside
-          a(href="/select/#{session}/#{projet}/capture" class="btn icon capture"  data-toggle="tooltip" data-placement="alignRight" title= "Interface de capture")
+        .button.sidebyside.capture
+          a(href="/select/#{session}/#{projet}/capture" class="btn icon capture"  data-toggle="tooltip" data-placement="right" title= "Interface de capture")
             include templates/images/capture.svg
         .title.centered Publication
         .button.sidebyside
@@ -18,7 +18,10 @@ html
 
 
     div.container-publi
+      div.montage-title 
+        h2 #{projetFormat}
       div.content
+        ul.publi-medias
 
     //- scripts
     include templates/footer.jade

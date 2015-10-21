@@ -458,12 +458,17 @@ jQuery(document).ready(function($) {
 
 	function addTextMontage(){
 		$(".add-text-montage").on("click", function(){
-			$(".montage-medias").prepend("<li class='text-media'><textarea placeholder='Ajouter du texte'></textarea><button class='submit-text-montage'>Valider</button></li>");
+			$(".montage-medias").prepend("<li class='text-media'><textarea placeholder='Ajouter du texte'></textarea><button class='submit-text-montage'>Valider</button><button class='cancel-text-montage'>Annuler</button></li>");
+			$(".cancel-text-montage").on("click",function(){
+				var $parent = $(this).parent(".text-media");
+				$parent.remove();
+			});
 			$(".submit-text-montage").on("click", function(){
 				var textMontage = $(this).parent(".text-media").find("textarea").val();
 				var $parent = $(this).parent(".text-media");
 				$parent.find("textarea").remove();
 				$parent.find(".submit-text-montage").remove();
+				$parent.find(".cancel-text-montage").remove();
 				$parent
 				.append('<p>'+textMontage+'</p>')
 				.append("<div class='remove-media'><img src='/images/clear.svg'></div>");
