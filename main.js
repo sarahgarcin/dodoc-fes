@@ -547,25 +547,79 @@ module.exports = function(app, io){
 		var imageId = data.imageId;
 		var session = data.session;
 		var projet = data.projet;
+		var type = data.type;
 
 		var jsonFile = 'sessions/' + session + '/'+ projet+"/" +projet+'.json';
 		var data = fs.readFileSync(jsonFile,"UTF-8");
 		var jsonObj = JSON.parse(data);
-		for(var i in jsonObj["files"]["images"]){
-			console.log("image titre: " + jsonObj["files"]["images"][i].name + " - image id: " + imageId);
-			if(jsonObj["files"]["images"][i].name == imageId){
-				console.log(jsonObj["files"]["images"][i]);
-				jsonObj["files"]["images"][i]["titre"] = imageTitle;
-				jsonObj["files"]["images"][i]["description"] = imageDesc;
-				fs.writeFile(jsonFile, JSON.stringify(jsonObj), function(err) {
-			    if(err) {
-			        console.log(err);
-			    } else {
-			        console.log("The file was saved!");
-			    }
-			  });
-			}
+		switch(type){
+			case 'image':
+				for(var i in jsonObj["files"]["images"]){
+					//console.log("image titre: " + jsonObj["files"]["images"][i].name + " - image id: " + imageId);
+					if(jsonObj["files"]["images"][i].name == imageId){
+						console.log(jsonObj["files"]["images"][i]);
+						jsonObj["files"]["images"][i]["titre"] = imageTitle;
+						jsonObj["files"]["images"][i]["description"] = imageDesc;
+						fs.writeFile(jsonFile, JSON.stringify(jsonObj), function(err) {
+					    if(err) {
+					        console.log(err);
+					    } else {
+					        console.log("The file was saved!");
+					    }
+					  });
+					}
+				}
+				break;
+			case 'video':
+				for(var i in jsonObj["files"]["videos"]){
+					if(jsonObj["files"]["videos"][i].name == imageId){
+						console.log(jsonObj["files"]["videos"][i]);
+						jsonObj["files"]["videos"][i]["titre"] = imageTitle;
+						jsonObj["files"]["videos"][i]["description"] = imageDesc;
+						fs.writeFile(jsonFile, JSON.stringify(jsonObj), function(err) {
+					    if(err) {
+					        console.log(err);
+					    } else {
+					        console.log("The file was saved!");
+					    }
+					  });
+					}
+				}
+				break;
+			case 'stopmotion':
+				for(var i in jsonObj["files"]["stopmotion"]){
+					if(jsonObj["files"]["stopmotion"][i].name == imageId){
+						console.log(jsonObj["files"]["stopmotion"][i]);
+						jsonObj["files"]["stopmotion"][i]["titre"] = imageTitle;
+						jsonObj["files"]["stopmotion"][i]["description"] = imageDesc;
+						fs.writeFile(jsonFile, JSON.stringify(jsonObj), function(err) {
+					    if(err) {
+					        console.log(err);
+					    } else {
+					        console.log("The file was saved!");
+					    }
+					  });
+					}
+				}
+				break;
+			case 'son':
+				for(var i in jsonObj["files"]["audio"]){
+					if(jsonObj["files"]["audio"][i].name == imageId){
+						console.log(jsonObj["files"]["audio"][i]);
+						jsonObj["files"]["audio"][i]["titre"] = imageTitle;
+						jsonObj["files"]["audio"][i]["description"] = imageDesc;
+						fs.writeFile(jsonFile, JSON.stringify(jsonObj), function(err) {
+					    if(err) {
+					        console.log(err);
+					    } else {
+					        console.log("The file was saved!");
+					    }
+					  });
+					}
+				}
+				break;
 		}
+		
 
 	}
 

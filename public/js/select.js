@@ -91,41 +91,22 @@ jQuery(document).ready(function($) {
     	var extension = array[i].split('.').pop();
     	var identifiant =  array[i].replace("." + extension, "");
 			if(extension == "jpg"){
-				$('.mediaContainer').append("<li class='media images-bibli' id='"+ identifiant+"'><div class='mediaContent'><img src='https://"+domainUrl + "/" +app.session + "/"+ app.projet+"/"+array[i] + "' preload='none'></div></li>");
+				$('.mediaContainer').append("<li class='media images-bibli' id='"+ identifiant+"' data-type='image'><div class='mediaContent'><img src='https://"+domainUrl + "/" +app.session + "/"+ app.projet+"/"+array[i] + "' preload='none'></div></li>");
 			}
 			if(extension == "webm"){
-				$('.mediaContainer').append("<li class='media videos-bibli' id='"+ identifiant+"'><div class='mediaContent'><video preload='none' controls poster='https://"+domainUrl + "/"+app.session + "/"+ app.projet+ "/"+identifiant +"-thumb.png'><source src='https://"+domainUrl + "/"+app.session +"/"+ app.projet+ "/" + array[i] + "'></video></div></li>");
+				$('.mediaContainer').append("<li class='media videos-bibli' id='"+ identifiant+"' data-type='video'><div class='mediaContent'><video preload='none' controls poster='https://"+domainUrl + "/"+app.session + "/"+ app.projet+ "/"+identifiant +"-thumb.png'><source src='https://"+domainUrl + "/"+app.session +"/"+ app.projet+ "/" + array[i] + "'></video></div></li>");
 			}
 			if(extension == "mp4"){
-				$('.mediaContainer').append("<li class='media stopmotion-bibli' id='"+ identifiant+"'><div class='mediaContent'><video preload='none' controls poster='https://"+domainUrl + "/"+app.session +"/"+ app.projet+ "/"+identifiant +"-thumb.png'><source src='https://"+domainUrl + "/"+app.session +"/"+ app.projet+ "/" + array[i] + "'></video></div></li>");
+				$('.mediaContainer').append("<li class='media stopmotion-bibli' id='"+ identifiant+"' data-type='stopmotion'><div class='mediaContent'><video preload='none' controls poster='https://"+domainUrl + "/"+app.session +"/"+ app.projet+ "/"+identifiant +"-thumb.png'><source src='https://"+domainUrl + "/"+app.session +"/"+ app.projet+ "/" + array[i] + "'></video></div></li>");
 			}
 			if(extension == "wav"){
-				$('.mediaContainer').append("<li class='media sons-bibli' id='"+ identifiant+"'><div class='mediaContent'><audio src='https://"+domainUrl + "/"+app.session +"/"+ app.projet+ "/" + array[i] + "' preload='none' controls></div></li>");
+				$('.mediaContainer').append("<li class='media sons-bibli' id='"+ identifiant+"' data-type='son'><div class='mediaContent'><audio src='https://"+domainUrl + "/"+app.session +"/"+ app.projet+ "/" + array[i] + "' preload='none' controls></div></li>");
 			}
 		}
 
 		$.each(json["files"]["images"], function(i, val) {
 			timestampToDate(val['name']);
 			$("#" + val['name']).append("<h3 class='mediaTitre'>" +time+ "</h3>");
-		});
-		$.each(json["files"]["stopmotion"], function(i, val) {
-			timestampToDate(val['name']);
-			$("#" + val['name']).append("<h3 class='mediaTitre'>" +time + "</h3>");
-		});
-		$.each(json["files"]["videos"], function(i, val) {
-			timestampToDate(val['name']);
-			$("#" + val['name']).append("<h3 class='mediaTitre'>" +time + "</h3>");
-		});
-		$.each(json["files"]["audio"], function(i, val) {
-			timestampToDate(val['name']);
-			$("#" + val['name']).append("<h3 class='mediaTitre'>" +time+ "</h3>");
-		});
-
-		$(".media").on("mouseenter", function(){
-			$(this).css("cursor", 'pointer');
-		});
-
-		$.each(json["files"]["images"], function(i, val) {
 			if(val["titre"]){
 				$("#" + val['name']).attr("data-image-titre", val['titre']);
 			}
@@ -133,6 +114,41 @@ jQuery(document).ready(function($) {
 				$("#" + val['name']).attr("data-image-caption", val['description']);
 			}
 		});
+		$.each(json["files"]["stopmotion"], function(i, val) {
+			timestampToDate(val['name']);
+			$("#" + val['name']).append("<h3 class='mediaTitre'>" +time + "</h3>");
+			if(val["titre"]){
+				$("#" + val['name']).attr("data-image-titre", val['titre']);
+			}
+			if(val["description"]){
+				$("#" + val['name']).attr("data-image-caption", val['description']);
+			}
+		});
+		$.each(json["files"]["videos"], function(i, val) {
+			timestampToDate(val['name']);
+			$("#" + val['name']).append("<h3 class='mediaTitre'>" +time + "</h3>");
+			if(val["titre"]){
+				$("#" + val['name']).attr("data-image-titre", val['titre']);
+			}
+			if(val["description"]){
+				$("#" + val['name']).attr("data-image-caption", val['description']);
+			}
+		});
+		$.each(json["files"]["audio"], function(i, val) {
+			timestampToDate(val['name']);
+			$("#" + val['name']).append("<h3 class='mediaTitre'>" +time+ "</h3>");
+			if(val["titre"]){
+				$("#" + val['name']).attr("data-image-titre", val['titre']);
+			}
+			if(val["description"]){
+				$("#" + val['name']).attr("data-image-caption", val['description']);
+			}
+		});
+
+		$(".media").on("mouseenter", function(){
+			$(this).css("cursor", 'pointer');
+		});
+
 
 		dragMedia();
 		metaData();
@@ -142,43 +158,104 @@ jQuery(document).ready(function($) {
 		$(".media").on("click", function(){
 			var $this = $(this);
 			var idImage = $this.attr("id");
-			var imgURL = $(this).find("img").attr("src");
-			var imageTitre = $(this).attr("data-image-titre");
-			var imageDesc = $(this).attr("data-image-caption");
-			var newContentToAdd = '<img src ="'+imgURL+'" alt="media"><input class="image-text" placeholder="Titre de l\'image"><input class="image-caption" placeholder="Légende de l\'image"><button class="saveCaption">Enregistrer</button>';
-			var closeAddProjectFunction = function() {
-			};
-			fillPopOver(newContentToAdd, $(this), 700, 700, closeAddProjectFunction);
-			$("input.image-text").val(imageTitre);
-			$(".image-caption").val(imageDesc);
-			$(".popoverContainer .saveCaption").on("click", function(){
-				var titleImage = $(this).parent().children(".image-text").val();
-				var descriptionImage = $(this).parent().children(".image-caption").val();
-				$this.attr("data-image-titre", titleImage).attr("data-image-caption", descriptionImage);
-				socket.emit("sendMetaData", {imageTitre : titleImage, imagedescription: descriptionImage, imageId:idImage, session:app.session, projet:app.projet});
-				closePopover(closeAddProjectFunction);
-			});
-		})
+			var typeMedia = $this.attr("data-type");
+			switch(typeMedia){
+				case "image":
+					var imgURL = $(this).find("img").attr("src");
+					var imageTitre = $(this).attr("data-image-titre");
+					var imageDesc = $(this).attr("data-image-caption");
+					var newContentToAdd = '<img src ="'+imgURL+'" alt="media"><input class="image-text" placeholder="Titre de l\'image"><input class="image-caption" placeholder="Légende de l\'image"><button class="saveCaption">Enregistrer</button>';
+					var closeAddProjectFunction = function() {
+					};
+					fillPopOver(newContentToAdd, $(this), 700, 700, closeAddProjectFunction);
+					$("input.image-text").val(imageTitre);
+					$(".image-caption").val(imageDesc);
+					$(".popoverContainer .saveCaption").on("click", function(){
+						var titleImage = $(this).parent().children(".image-text").val();
+						var descriptionImage = $(this).parent().children(".image-caption").val();
+						$this.attr("data-image-titre", titleImage).attr("data-image-caption", descriptionImage);
+						socket.emit("sendMetaData", {type:typeMedia, imageTitre : titleImage, imagedescription: descriptionImage, imageId:idImage, session:app.session, projet:app.projet});
+						closePopover(closeAddProjectFunction);
+					});
+					break;
+				case "video":
+					var imgURL = $(this).find("video").attr("poster");
+					var videoSource = $(this).find("source").attr("src");
+					var imageTitre = $(this).attr("data-image-titre");
+					var imageDesc = $(this).attr("data-image-caption");
+					var newContentToAdd = '<video preload="none" controls="true" poster="'+imgURL+'"><source src="'+videoSource+'"></video><input class="image-text" placeholder="Titre de l\'image"><input class="image-caption" placeholder="Légende de l\'image"><button class="saveCaption">Enregistrer</button>';
+					var closeAddProjectFunction = function() {
+					};
+					fillPopOver(newContentToAdd, $(this), 700, 700, closeAddProjectFunction);
+					$("input.image-text").val(imageTitre);
+					$(".image-caption").val(imageDesc);
+					$(".popoverContainer .saveCaption").on("click", function(){
+						var titleImage = $(this).parent().children(".image-text").val();
+						var descriptionImage = $(this).parent().children(".image-caption").val();
+						$this.attr("data-image-titre", titleImage).attr("data-image-caption", descriptionImage);
+						socket.emit("sendMetaData", {type:typeMedia, imageTitre : titleImage, imagedescription: descriptionImage, imageId:idImage, session:app.session, projet:app.projet});
+						closePopover(closeAddProjectFunction);
+					});
+					break;
+				case "stopmotion":
+					var imgURL = $(this).find("video").attr("poster");
+					var videoSource = $(this).find("source").attr("src");
+					var imageTitre = $(this).attr("data-image-titre");
+					var imageDesc = $(this).attr("data-image-caption");
+					var newContentToAdd = '<video preload="none" controls="true" poster="'+imgURL+'"><source src="'+videoSource+'"></video><input class="image-text" placeholder="Titre de l\'image"><input class="image-caption" placeholder="Légende de l\'image"><button class="saveCaption">Enregistrer</button>';
+					var closeAddProjectFunction = function() {
+					};
+					fillPopOver(newContentToAdd, $(this), 700, 700, closeAddProjectFunction);
+					$("input.image-text").val(imageTitre);
+					$(".image-caption").val(imageDesc);
+					$(".popoverContainer .saveCaption").on("click", function(){
+						var titleImage = $(this).parent().children(".image-text").val();
+						var descriptionImage = $(this).parent().children(".image-caption").val();
+						$this.attr("data-image-titre", titleImage).attr("data-image-caption", descriptionImage);
+						socket.emit("sendMetaData", {type:typeMedia, imageTitre : titleImage, imagedescription: descriptionImage, imageId:idImage, session:app.session, projet:app.projet});
+						closePopover(closeAddProjectFunction);
+					});
+					break;
+					case "son":
+						var imgURL = $(this).find("audio").attr("src");
+						var imageTitre = $(this).attr("data-image-titre");
+						var imageDesc = $(this).attr("data-image-caption");
+						var newContentToAdd = '<audio src ="'+imgURL+'" preload="none" controls></audio><input class="image-text" placeholder="Titre de l\'image"><input class="image-caption" placeholder="Légende de l\'image"><button class="saveCaption">Enregistrer</button>';
+						var closeAddProjectFunction = function() {
+						};
+						fillPopOver(newContentToAdd, $(this), 700, 300, closeAddProjectFunction);
+						$("input.image-text").val(imageTitre);
+						$(".image-caption").val(imageDesc);
+						$(".popoverContainer .saveCaption").on("click", function(){
+							var titleImage = $(this).parent().children(".image-text").val();
+							var descriptionImage = $(this).parent().children(".image-caption").val();
+							$this.attr("data-image-titre", titleImage).attr("data-image-caption", descriptionImage);
+							socket.emit("sendMetaData", {type:typeMedia, imageTitre : titleImage, imagedescription: descriptionImage, imageId:idImage, session:app.session, projet:app.projet});
+							closePopover(closeAddProjectFunction);
+						});
+						break;
+			}
+		});
 	}
 
 	function displayNewImage(images){
 		timestampToDate(images.title);
-	   $('.mediaContainer').append("<li class='media images-bibli' id='"+ images.title+"'><div class='mediaContent'><img src='https://"+domainUrl + "/" +app.session +"/"+ app.projet+ "/"+ images.file + "' preload='none'></div><h3 class='mediaTitre'>" +time+ "</h3></li>");
+	   $('.mediaContainer').append("<li class='media images-bibli' id='"+ images.title+"' data-type='image'><div class='mediaContent'><img src='https://"+domainUrl + "/" +app.session +"/"+ app.projet+ "/"+ images.file + "' preload='none'></div><h3 class='mediaTitre'>" +time+ "</h3></li>");
 	}
 
 	function displayNewStopMotion(stopmotion){
 		timestampToDate(stopmotion.title);
-	  $('.mediaContainer').append("<li class='media stopmotion-bibli' id='"+ stopmotion.title+"'><div class='mediaContent'><video controls preload='none' poster='https://"+domainUrl + "/"+app.session +"/"+ app.projet+ "/"+stopmotion.title +"-thumb.png'><source src='https://"+domainUrl + "/"+app.session +"/"+ app.projet+ "/" + stopmotion.file + "' type='video/webm'></video></div><h3 class='mediaTitre'>" +time+ "</h3></li>");
+	  $('.mediaContainer').append("<li class='media stopmotion-bibli' id='"+ stopmotion.title+"' data-type='stopmotion'><div class='mediaContent'><video controls preload='none' poster='https://"+domainUrl + "/"+app.session +"/"+ app.projet+ "/"+stopmotion.title +"-thumb.png'><source src='https://"+domainUrl + "/"+app.session +"/"+ app.projet+ "/" + stopmotion.file + "' type='video/webm'></video></div><h3 class='mediaTitre'>" +time+ "</h3></li>");
 	}
 
 	function displayNewVideo(videos){
 		timestampToDate(videos.title);
-	  $('.mediaContainer').append("<li class='media videos-bibli' id='"+ videos.title+"'><div class='mediaContent'><video controls preload='none' poster='https://"+domainUrl + "/"+app.session +"/"+ app.projet+ "/"+videos.title +"-thumb.png'><source src='https://"+domainUrl + "/"+app.session +"/"+ app.projet+ "/" + videos.file + "' type='video/webm'></video></div><h3 class='mediaTitre'>" +time+ "</h3></li>");
+	  $('.mediaContainer').append("<li class='media videos-bibli' id='"+ videos.title+"' data-type='video'><div class='mediaContent'><video controls preload='none' poster='https://"+domainUrl + "/"+app.session +"/"+ app.projet+ "/"+videos.title +"-thumb.png'><source src='https://"+domainUrl + "/"+app.session +"/"+ app.projet+ "/" + videos.file + "' type='video/webm'></video></div><h3 class='mediaTitre'>" +time+ "</h3></li>");
 	}
 
 	function displayNewAudio(audio){
 		timestampToDate(audio.title);
- 	  $('.mediaContainer').append("<li class='media sons-bibli' id='"+ audio.title+"''><div class='mediaContent'><audio src='https://"+domainUrl + "/"+app.session +"/"+ app.projet+ "/" + audio.file + "' preload='none' controls></div><h3 class='mediaTitre'>" +time+ "</h3></li>");
+ 	  $('.mediaContainer').append("<li class='media sons-bibli' id='"+ audio.title+"' data-type='son'><div class='mediaContent'><audio src='https://"+domainUrl + "/"+app.session +"/"+ app.projet+ "/" + audio.file + "' preload='none' controls></div><h3 class='mediaTitre'>" +time+ "</h3></li>");
 	}
 
 	function displayMontage(html){
