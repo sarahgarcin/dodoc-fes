@@ -414,6 +414,11 @@ body.flux & .title {
 
 }
 
+.btn-back{
+	float:left;
+	margin:0 30px;
+}
+
 // DISPARITION / APPARITION DES BOUTONS DE LA NAVBAR
 // page select :
 .select {
@@ -1061,12 +1066,9 @@ audio {
 	.buffer {
 		background-color:#e5e5e5;
 		.button-add-media{
-			display: inline-block;
 	    position: relative;
-	    width: 60px;
-	    height: 60px;
 	    float: right;
-	    vertical-align: top;
+	    margin-top: 13px;
 		}
 		.mediaContainer {
 			height: auto;
@@ -1157,6 +1159,22 @@ audio {
 						background-color: @bleumarine;
 					}
 				}
+				&.texte-bibli{
+					.mediaContent{
+						border: 1px solid #000;											
+						height: 225px;
+						overflow-y: scroll;
+						padding: 10px;
+						h2{
+							margin-top: 0px;
+							font-size: 1em;
+						}
+						p{
+							font-size: 0.7em;
+							line-height: 1.2em;
+						}
+					}
+				}
 			}
 		}
 	}
@@ -1168,18 +1186,22 @@ audio {
 			width: 50%;
 			height: 72px;
 			position: fixed;
+			background-color: #FFF;
 			top:0;
 			z-index: 1000;
-			input{
-				border: none;
+			h1{
 				text-align: center;
-				font-size: 30px;
-				width:100%;
-				height:100%;
-				&:hover{
-					border: 2px solid @bleuvert;
-				}
 			}
+			// input{
+			// 	border: none;
+			// 	text-align: center;
+			// 	font-size: 30px;
+			// 	width:100%;
+			// 	height:100%;
+			// 	&:hover{
+			// 		border: 2px solid @bleuvert;
+			// 	}
+			// }
 
 		}
 		.add-text-montage{
@@ -1193,14 +1215,24 @@ audio {
 	  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.1);
 
 		.montage-medias{
-			margin-top: 100px;
+			padding-top: 100px;
 			min-height: 800px;
 			height:100%;
+			&.custom-state-active{
+				background-color: @bleuvert;
+			}
+			.ui-state-highlight{
+				background-color: @orange;
+				height: 20px;
+				display: block;
+				width:100%;
+			}
 			.media{
 				position: relative;
 				list-style: none;
-				margin: auto;
-				width:30%;
+				margin: 30px auto;
+				// width: 50% !important;
+    // 		height: 100% !important;
 				.remove-media{
 				  width: 30px;
 				  position: absolute;
@@ -1237,15 +1269,73 @@ audio {
 	}
 }
 
-// .buffer-media {
-// 	width:100%;
-// 	height: 100vh;
-// 	margin: auto;
-// 	position: absolute;
-// 	top:0;
-// 	left:0;
-// 	z-index:-1;
-// }
+//PopOver d'ajout de médias externes
+.popoverContainer{
+	.choix-media {
+		margin: auto;
+		div{
+			display: inline-block;
+			vertical-align: top;
+			cursor:pointer;
+			background-color: @rouge;
+			color:@orange;
+			font-weight: bold;
+			padding: 10px;
+			margin-right: 10px;
+			margin-bottom: 20px;
+			&:hover{
+				background-color: @orange;
+				color:@rouge;
+			}
+			&.active{
+				background-color: @orange;
+				color:@rouge;
+			}
+		}
+	}
+	.add-text{
+		textarea{
+		width: 100%;
+    height: 200px;
+    overflow-y: scroll;
+    margin-bottom: 10px;
+		}
+		.submit-text{
+			float:right;
+			background-color: @bleuvert;
+			width: 40%;
+			text-align: center;
+		}
+	}
+	.add-image-local{
+		.submit-local-image{
+			float:right;
+			background-color: @bleuvert;
+			width: 40%;
+			text-align: center;
+		}
+	}
+}
+
+//PopOver ajouter des meta données
+.popoverContainer{
+	img, video, audio, p{
+		margin-bottom: 20px;
+	}
+	button.saveCaption{
+		float:right;
+		background-color: @bleuvert;
+		width: 40%;
+		text-align: center;
+		border: 1px solid #CCC;
+    border-radius: 3px;
+    padding: 10px;
+    margin-bottom: .7em;
+    left: 0;
+    position: relative;
+    font-size: 16px;
+	}
+}
 
 .pep-dpa {background: @bleuvert; border-bottom: 4px dashed @bleumarine !important;}
 
@@ -1362,7 +1452,7 @@ audio {
 				}
 				&.sons-bibli{
   					
-  					audio {
+  				audio {
 						opacity: 1;
 						padding-top:33%;
 						background-color: @csons;
@@ -1488,7 +1578,7 @@ audio {
 	.popoverContainer {
 		padding:20px;
 		height: 100%;
-		overflow: hidden;
+		overflow-y: scroll;
 	}
 
 	// rendre tous les contenus de popoverContainer block

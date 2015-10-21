@@ -1,0 +1,9 @@
+<svg class="fond" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 38 38" enable-background="new 0 0 38 38" xml:space="preserve">
+<path fill="#F2682C" d="M19,37c9.9,0,18-8.1,18-18S28.9,1,19,1S1,9.1,1,19S9.1,37,19,37z"></path>
+
+	<rect x="10" y="17.5" fill="#FBB41D" width="20" height="3"></rect>
+
+	<rect x="6.8" y="13.1" transform="matrix(-0.7071 0.7071 -0.7071 -0.7071 35.1226 14.7814)" fill="#FBB41D" width="15.3" height="3.1"></rect>
+
+	<rect x="6.8" y="21.8" transform="matrix(-0.7071 -0.7071 0.7071 -0.7071 8.2525 50.0887)" fill="#FBB41D" width="15.3" height="3.1"></rect>
+</svg>

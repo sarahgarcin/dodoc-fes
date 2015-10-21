@@ -7515,6 +7515,10 @@ body.flux  .title {
   display: inline-block;
   float: right;
 }
+.btn-back {
+  float: left;
+  margin: 0 30px;
+}
 .select .button.btn-bibli {
   display: none !important;
 }
@@ -8012,12 +8016,9 @@ audio {
   background-color: #e5e5e5;
 }
 .container-bibli .buffer .button-add-media {
-  display: inline-block;
   position: relative;
-  width: 60px;
-  height: 60px;
   float: right;
-  vertical-align: top;
+  margin-top: 13px;
 }
 .container-bibli .buffer .mediaContainer {
   height: auto;
@@ -8084,6 +8085,20 @@ audio {
 .container-bibli .buffer .mediaContainer .media.sons-bibli .mediaContent {
   background-color: #0038bb;
 }
+.container-bibli .buffer .mediaContainer .media.texte-bibli .mediaContent {
+  border: 1px solid #000;
+  height: 225px;
+  overflow-y: scroll;
+  padding: 10px;
+}
+.container-bibli .buffer .mediaContainer .media.texte-bibli .mediaContent h2 {
+  margin-top: 0px;
+  font-size: 1em;
+}
+.container-bibli .buffer .mediaContainer .media.texte-bibli .mediaContent p {
+  font-size: 0.7em;
+  line-height: 1.2em;
+}
 .container-bibli .montage {
   overflow-y: scroll;
   position: relative;
@@ -8094,18 +8109,12 @@ audio {
   width: 50%;
   height: 72px;
   position: fixed;
+  background-color: #FFF;
   top: 0;
   z-index: 1000;
 }
-.container-bibli .montage .montage-title input {
-  border: none;
+.container-bibli .montage .montage-title h1 {
   text-align: center;
-  font-size: 30px;
-  width: 100%;
-  height: 100%;
-}
-.container-bibli .montage .montage-title input:hover {
-  border: 2px solid #48c2b5;
 }
 .container-bibli .montage .add-text-montage {
   position: fixed;
@@ -8114,15 +8123,23 @@ audio {
   cursor: pointer;
 }
 .container-bibli .montage .montage-medias {
-  margin-top: 100px;
+  padding-top: 100px;
   min-height: 800px;
   height: 100%;
+}
+.container-bibli .montage .montage-medias.custom-state-active {
+  background-color: #48c2b5;
+}
+.container-bibli .montage .montage-medias .ui-state-highlight {
+  background-color: #ffb520;
+  height: 20px;
+  display: block;
+  width: 100%;
 }
 .container-bibli .montage .montage-medias .media {
   position: relative;
   list-style: none;
-  margin: auto;
-  width: 30%;
+  margin: 30px auto;
 }
 .container-bibli .montage .montage-medias .media .remove-media {
   width: 30px;
@@ -8153,6 +8170,65 @@ audio {
   right: 0px;
   z-index: 200;
   cursor: pointer;
+}
+.popoverContainer .choix-media {
+  margin: auto;
+}
+.popoverContainer .choix-media div {
+  display: inline-block;
+  vertical-align: top;
+  cursor: pointer;
+  background-color: #fe414d;
+  color: #ffb520;
+  font-weight: bold;
+  padding: 10px;
+  margin-right: 10px;
+  margin-bottom: 20px;
+}
+.popoverContainer .choix-media div:hover {
+  background-color: #ffb520;
+  color: #fe414d;
+}
+.popoverContainer .choix-media div.active {
+  background-color: #ffb520;
+  color: #fe414d;
+}
+.popoverContainer .add-text textarea {
+  width: 100%;
+  height: 200px;
+  overflow-y: scroll;
+  margin-bottom: 10px;
+}
+.popoverContainer .add-text .submit-text {
+  float: right;
+  background-color: #48c2b5;
+  width: 40%;
+  text-align: center;
+}
+.popoverContainer .add-image-local .submit-local-image {
+  float: right;
+  background-color: #48c2b5;
+  width: 40%;
+  text-align: center;
+}
+.popoverContainer img,
+.popoverContainer video,
+.popoverContainer audio,
+.popoverContainer p {
+  margin-bottom: 20px;
+}
+.popoverContainer button.saveCaption {
+  float: right;
+  background-color: #48c2b5;
+  width: 40%;
+  text-align: center;
+  border: 1px solid #CCC;
+  border-radius: 3px;
+  padding: 10px;
+  margin-bottom: .7em;
+  left: 0;
+  position: relative;
+  font-size: 16px;
 }
 .pep-dpa {
   background: #48c2b5;
@@ -8326,7 +8402,7 @@ audio {
 .popover .popoverContainer {
   padding: 20px;
   height: 100%;
-  overflow: hidden;
+  overflow-y: scroll;
 }
 .popover .popoverContainer > * {
   display: block !important;

@@ -8,9 +8,12 @@ html
 
     nav.titleAndActions
       div.buttons.alignRight
+        .button.sidebyside
+          a(href="/select/#{session}/#{projet}/capture" class="btn icon capture"  data-toggle="tooltip" data-placement="alignRight" title= "Interface de capture")
+            include templates/images/capture.svg
         .title.centered Publication
         .button.sidebyside
-          a(href="/select/#{session}/#{projet}" class="btn icon bibli" data-toggle="tooltip" data-placement="left" title= __("Bibliothèque de médias"))
+          a(href="/select/#{session}/#{projet}" class="btn icon bibli" data-toggle="tooltip" data-placement="left" title= "Bibliothèque de médias")
             include templates/images/icones-01.svg
 
 

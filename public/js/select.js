@@ -13,7 +13,6 @@ jQuery(document).ready(function($) {
 
 	function initEvents(){
 		addMedia();
-		$(".montage-title input").focus();
 		
 		$(document).on('click',function(event){
 			if($(event.target).parent().attr("class") == 'remove-media'){
@@ -58,13 +57,13 @@ jQuery(document).ready(function($) {
 
 	function addMedia(){
 		$(".button-add-media").on("click", function(){;
-			var newContentToAdd = "<h3 class='popoverTitle'>Ajouter un média externe</h3><div class='choix-media'><div class='choix-texte'>TEXTE</div><div class='choix-local'>FICHIER LOCAL</div></div>";
+			var newContentToAdd = "<h3 class='popoverTitle'>Ajouter un média externe</h3><div class='choix-media'><div class='choix-texte'>Texte</div><div class='choix-local'>Fichier local</div></div>";
 			var closeAddProjectFunction = function() {
 			};
 			fillPopOver(newContentToAdd, $(this), 500, 200, closeAddProjectFunction);
 			imageData = null;
 			$(".choix-texte").on("click", function(){
-				var newContentToAdd = "<h3 class='popoverTitle'>Ajouter un média externe</h3><div class='choix-media'><div class='choix-texte'>TEXTE</div><div class='choix-local'>FICHIER LOCAL</div></div><div class='add-text'><input class='add-text-titre' placeholder='Écris ton titre ici'></input><textarea class='add-text-content' placeholder='Écris ton texte ici'></textarea><input type='submit' class='submit-text'></input></div>";
+				var newContentToAdd = "<h3 class='popoverTitle'>Ajouter un média externe</h3><div class='add-text'><input class='add-text-titre' placeholder='Écris ton titre ici'></input><textarea class='add-text-content' placeholder='Écris ton texte ici'></textarea><input type='submit' class='submit-text'></input></div>";
 				var closeAddProjectFunction = function() {
 				};
 				closePopover(closeAddProjectFunction);
@@ -76,7 +75,7 @@ jQuery(document).ready(function($) {
 				var closeAddProjectFunction = function() {
 				};
 				closePopover(closeAddProjectFunction);
-				fillPopOver(newContentToAdd, $(this), 500, 500, closeAddProjectFunction);
+				fillPopOver(newContentToAdd, $(this), 500, 200, closeAddProjectFunction);
 				var fileName;
 
 				uploadImage($("#localfile"));
@@ -200,10 +199,10 @@ jQuery(document).ready(function($) {
 					var imgURL = $(this).find("img").attr("src");
 					var imageTitre = $(this).attr("data-image-titre");
 					var imageDesc = $(this).attr("data-image-caption");
-					var newContentToAdd = '<img src ="'+imgURL+'" alt="media"><input class="image-text" placeholder="Titre de l\'image"><input class="image-caption" placeholder="Légende de l\'image"><button class="saveCaption">Enregistrer</button>';
+					var newContentToAdd = '<img src ="'+imgURL+'" alt="media"><input class="image-text" placeholder="Titre du média"><input class="image-caption" placeholder="Légende du média"><button class="saveCaption">Enregistrer</button>';
 					var closeAddProjectFunction = function() {
 					};
-					fillPopOver(newContentToAdd, $(this), 700, 700, closeAddProjectFunction);
+					fillPopOver(newContentToAdd, $(this), 700, 710, closeAddProjectFunction);
 					$("input.image-text").val(imageTitre);
 					$(".image-caption").val(imageDesc);
 					$(".popoverContainer .saveCaption").on("click", function(){
@@ -219,10 +218,10 @@ jQuery(document).ready(function($) {
 					var videoSource = $(this).find("source").attr("src");
 					var imageTitre = $(this).attr("data-image-titre");
 					var imageDesc = $(this).attr("data-image-caption");
-					var newContentToAdd = '<video preload="none" controls="true" poster="'+imgURL+'"><source src="'+videoSource+'"></video><input class="image-text" placeholder="Titre de l\'image"><input class="image-caption" placeholder="Légende de l\'image"><button class="saveCaption">Enregistrer</button>';
+					var newContentToAdd = '<video preload="none" controls="true" poster="'+imgURL+'"><source src="'+videoSource+'"></video><input class="image-text" placeholder="Titre du média"><input class="image-caption" placeholder="Légende du média"><button class="saveCaption">Enregistrer</button>';
 					var closeAddProjectFunction = function() {
 					};
-					fillPopOver(newContentToAdd, $(this), 700, 700, closeAddProjectFunction);
+					fillPopOver(newContentToAdd, $(this), 700, 710, closeAddProjectFunction);
 					$("input.image-text").val(imageTitre);
 					$(".image-caption").val(imageDesc);
 					$(".popoverContainer .saveCaption").on("click", function(){
@@ -238,10 +237,10 @@ jQuery(document).ready(function($) {
 					var videoSource = $(this).find("source").attr("src");
 					var imageTitre = $(this).attr("data-image-titre");
 					var imageDesc = $(this).attr("data-image-caption");
-					var newContentToAdd = '<video preload="none" controls="true" poster="'+imgURL+'"><source src="'+videoSource+'"></video><input class="image-text" placeholder="Titre de l\'image"><input class="image-caption" placeholder="Légende de l\'image"><button class="saveCaption">Enregistrer</button>';
+					var newContentToAdd = '<video preload="none" controls="true" poster="'+imgURL+'"><source src="'+videoSource+'"></video><input class="image-text" placeholder="Titre du média"><input class="image-caption" placeholder="Légende du média"><button class="saveCaption">Enregistrer</button>';
 					var closeAddProjectFunction = function() {
 					};
-					fillPopOver(newContentToAdd, $(this), 700, 700, closeAddProjectFunction);
+					fillPopOver(newContentToAdd, $(this), 700, 710, closeAddProjectFunction);
 					$("input.image-text").val(imageTitre);
 					$(".image-caption").val(imageDesc);
 					$(".popoverContainer .saveCaption").on("click", function(){
@@ -256,7 +255,7 @@ jQuery(document).ready(function($) {
 						var imgURL = $(this).find("audio").attr("src");
 						var imageTitre = $(this).attr("data-image-titre");
 						var imageDesc = $(this).attr("data-image-caption");
-						var newContentToAdd = '<audio src ="'+imgURL+'" preload="none" controls></audio><input class="image-text" placeholder="Titre de l\'image"><input class="image-caption" placeholder="Légende de l\'image"><button class="saveCaption">Enregistrer</button>';
+						var newContentToAdd = '<audio src ="'+imgURL+'" preload="none" controls></audio><input class="image-text" placeholder="Titre du média"><input class="image-caption" placeholder="Légende du média"><button class="saveCaption">Enregistrer</button>';
 						var closeAddProjectFunction = function() {
 						};
 						fillPopOver(newContentToAdd, $(this), 700, 300, closeAddProjectFunction);
@@ -275,10 +274,10 @@ jQuery(document).ready(function($) {
 						var textContent = $(this).find("p").html();
 						var imageTitre = $(this).attr("data-image-titre");
 						var imageDesc = $(this).attr("data-image-caption");
-						var newContentToAdd = '<h2>'+textTitre+'</h2><p>'+textContent+'</p><input class="image-text" placeholder="Titre de l\'image"><input class="image-caption" placeholder="Légende de l\'image"><button class="saveCaption">Enregistrer</button>';
+						var newContentToAdd = '<h2>'+textTitre+'</h2><p>'+textContent+'</p><input class="image-text" placeholder="Titre du média"><input class="image-caption" placeholder="Légende du média"><button class="saveCaption">Enregistrer</button>';
 						var closeAddProjectFunction = function() {
 						};
-						fillPopOver(newContentToAdd, $(this), 700, 700, closeAddProjectFunction);
+						fillPopOver(newContentToAdd, $(this), 700, 710, closeAddProjectFunction);
 						$("input.image-text").val(imageTitre);
 						$(".image-caption").val(imageDesc);
 						$(".popoverContainer .saveCaption").on("click", function(){
@@ -369,6 +368,7 @@ jQuery(document).ready(function($) {
 				cursor: 'move',
 				helper: 'clone',
 				scroll: true,
+				scrollSensitivity: 100,
 				connectToSortable: '.montage-medias',
 				appendTo: '.montage-medias',
 				start: function () {},
@@ -379,20 +379,23 @@ jQuery(document).ready(function($) {
 		$(".montage-medias").sortable({
 		    sort: function () {},
 		    placeholder: 'ui-state-highlight',
-		    receive: function () {},
-		    update: function (event, ui) {
+		    receive: function (event, ui) {
+		    	console.log($(ui.helper));
+			    $(ui.helper).children("h3").remove();
+		    	$(ui.helper).append("<div class='remove-media'><img src='/images/clear.svg'></div>");
 		    	var montageContent = $(".montage-medias").html();
-					socket.emit("saveMontage", montageContent, app.session);
+			  	socket.emit("saveMontage", montageContent, app.session);
+		    },
+		    update: function (event, ui) {
+		    	//var montageContent = $(".montage-medias").html();
+					//socket.emit("saveMontage", montageContent, app.session);
 		    }
 		});
 
 		$(".montage-medias").droppable({
+			activeClass: "custom-state-active",
 	    drop: function (event, ui) {
-	    	$(ui.draggable).children("h3").remove();
-	    	$(ui.draggable)
-	    	.append("<div class='remove-media'><img src='/images/clear.svg'></div>");
-	    	var montageContent = $(".montage-medias").html();
-		  	socket.emit("saveMontage", montageContent, app.session);
+	    	//console.log("drop");
 	    }
 		});
 	}
