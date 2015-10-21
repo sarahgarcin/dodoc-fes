@@ -7540,8 +7540,9 @@ body.flux  .title {
   padding: 0;
 }
 .col-wrapper .list-wrapper ul .vignette {
-  width: 31.5%;
+  width: 18.9%;
   display: inline-block;
+  vertical-align: top;
   background-color: #FFF;
   padding: 10px 24px 20px 24px;
   margin: 10px;

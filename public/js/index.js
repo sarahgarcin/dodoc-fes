@@ -34,10 +34,10 @@ function onSocketError(reason) {
 function onlistSessions(req) {
 	var sessionName = req.name.replace(/_/g," ");
 	if(req.thumb != "none"){
-		$(".session .list-session ul").prepend('<li class="session-project vignette"><a href="'+domainUrl+'select/'+req.name+'"><h2>'+sessionName+'</h2><p class="description">'+req.description+'</p><img src="' + domainUrl +req.name+'/'+ req.name +'-thumb.jpg"></a><div class="delete"><img src="/images/clear.svg"></div></li>');
+		$(".session .list-session ul").append('<li class="session-project vignette"><a href="'+domainUrl+'select/'+req.name+'"><h2>'+sessionName+'</h2><p class="description">'+req.description+'</p><img src="' + domainUrl +req.name+'/'+ req.name +'-thumb.jpg"></a><div class="delete"><img src="/images/clear.svg"></div></li>');
 	}
 	else{
-		$(".session .list-session ul").prepend('<li class="session-project vignette"><a href="'+domainUrl+'select/'+req.name+'"><h2>'+sessionName+'</h2><p class="description">'+req.description+'</p></a><div class="delete"><img src="/images/clear.svg"></div></li>')
+		$(".session .list-session ul").append('<li class="session-project vignette"><a href="'+domainUrl+'select/'+req.name+'"><h2>'+sessionName+'</h2><p class="description">'+req.description+'</p></a><div class="delete"><img src="/images/clear.svg"></div></li>')
 	}
 	deleteSession();
 	//modifySession();

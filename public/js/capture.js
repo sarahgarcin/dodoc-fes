@@ -246,7 +246,7 @@ jQuery(document).ready(function($) {
       navigator.getMedia(
         {
           video: true,
-          audio: true
+          audio: false
         },
         function (stream) {
           if (navigator.mozGetUserMedia) {
