@@ -6,8 +6,8 @@ DoDoc
 DoDoc is a documentation tool for children in classrooms. 
 DoDoc is a research project of [l'atelier des chercheurs](http://latelier-des-chercheurs.fr/).
 Dodoc is both a web documentation platform and a physical device.
-[!dodoc](http://www.lopendoc.org/lopendocresearch/wp-content/uploads/sites/5/2015/06/schema-dodoc-02.png)
-[!dodoc](http://latelier-des-chercheurs.fr/img/img-dodoc-fes0.jpg)
+![dodoc](http://www.lopendoc.org/lopendocresearch/wp-content/uploads/sites/5/2015/06/schema-dodoc-02.png)
+![dodoc](http://latelier-des-chercheurs.fr/img/img-dodoc-fes0.jpg)
 
 ##How to install
 
