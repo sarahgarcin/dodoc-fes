@@ -16,7 +16,7 @@ Dodoc is both a web documentation platform and a physical device.
 
 ###Install nodejs on your computer
 
-You can install nodejs from this page [](https://nodejs.org/)   
+You can install nodejs from this page [https://nodejs.org/](https://nodejs.org/)   
 Once installed, you can verify that it's installed correctly by typing in the terminal   
 ```node -v```
 
@@ -28,16 +28,16 @@ Once you are in the right directory enter the command:
 ```npm install```
 
 ###Install ffmpeg
-Official page [](https://www.ffmpeg.org/)
+Official page [https://www.ffmpeg.org/](https://www.ffmpeg.org/)
 
 ####On Linux
 Install ffmpeg from your package manager.
 
 ####On windows (it works on every version of windows)
-Follow this tutorial: [](http://adaptivesamples.com/how-to-install-ffmpeg-on-windows/)
+Follow this tutorial: [http://adaptivesamples.com/how-to-install-ffmpeg-on-windows/](http://adaptivesamples.com/how-to-install-ffmpeg-on-windows/)
 
 ####On Mac OSX
-Follow this tutorial: [](http://www.renevolution.com/how-to-install-ffmpeg-on-mac-os-x/)
+Follow this tutorial: [http://www.renevolution.com/how-to-install-ffmpeg-on-mac-os-x/](http://www.renevolution.com/how-to-install-ffmpeg-on-mac-os-x/)
 
 ###Add the missing files
 - Create a new folder named "sessions" into your dodoc directory.
@@ -48,7 +48,7 @@ Run the server in the terminal
 ```node server.js```
 
 Go to browser and go to the url (For now dodoc works only on Google Chrome or Chromium)
-[](https://localhost:8080)
+[https://localhost:8080](https://localhost:8080)
 Your browser is going to tell that the website is unsafe, go on. 
 
 
