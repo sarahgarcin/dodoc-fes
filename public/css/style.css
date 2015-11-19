@@ -8041,6 +8041,15 @@ audio {
   padding: 15px;
   margin: 0px;
 }
+.container-bibli .buffer .mediaContainer .media h4 {
+  margin: 10px 0 0;
+  font-size: 0.9em;
+  font-weight: bold;
+}
+.container-bibli .buffer .mediaContainer .media p {
+  margin: 0;
+  font-size: 0.9em;
+}
 .container-bibli .buffer .mediaContainer .media .mediaTitre {
   margin: 0;
   margin-top: 5px;
@@ -8161,6 +8170,15 @@ audio {
   right: 0px;
   z-index: 200;
   cursor: pointer;
+}
+.container-bibli .montage .montage-medias .media h4 {
+  margin: 10px 0 0;
+  font-size: 0.9em;
+  font-weight: bold;
+}
+.container-bibli .montage .montage-medias .media p {
+  margin: 0;
+  font-size: 0.9em;
 }
 .container-bibli .montage .montage-medias .text-media {
   width: 70%;

@@ -129,53 +129,63 @@ jQuery(document).ready(function($) {
 
 		$.each(json["files"]["images"], function(i, val) {
 			timestampToDate(val['name']);
-			$("#" + val['name']).append("<h3 class='mediaTitre'>" +time+ "</h3>");
+			// $("#" + val['name']).append("<h3 class='mediaTitre'>" +time+ "</h3>");
 			if(val["titre"]){
 				$("#" + val['name']).attr("data-image-titre", val['titre']);
+				$("#" + val['name']).append("<h4>"+val['titre']+"</h4>");
 			}
 			if(val["description"]){
 				$("#" + val['name']).attr("data-image-caption", val['description']);
+				$("#" + val['name']).append("<p>"+val['description']+"</p>");
 			}
 		});
 		$.each(json["files"]["stopmotion"], function(i, val) {
 			timestampToDate(val['name']);
-			$("#" + val['name']).append("<h3 class='mediaTitre'>" +time + "</h3>");
+			// $("#" + val['name']).append("<h3 class='mediaTitre'>" +time + "</h3>");
 			if(val["titre"]){
 				$("#" + val['name']).attr("data-image-titre", val['titre']);
+				$("#" + val['name']).append("<h4>"+val['titre']+"</h4>");
 			}
 			if(val["description"]){
 				$("#" + val['name']).attr("data-image-caption", val['description']);
+				$("#" + val['name']).append("<p>"+val['description']+"</p>");
 			}
 		});
 		$.each(json["files"]["videos"], function(i, val) {
 			timestampToDate(val['name']);
-			$("#" + val['name']).append("<h3 class='mediaTitre'>" +time + "</h3>");
+			// $("#" + val['name']).append("<h3 class='mediaTitre'>" +time + "</h3>");
 			if(val["titre"]){
 				$("#" + val['name']).attr("data-image-titre", val['titre']);
+				$("#" + val['name']).append("<h4>"+val['titre']+"</h4>");
 			}
 			if(val["description"]){
 				$("#" + val['name']).attr("data-image-caption", val['description']);
+				$("#" + val['name']).append("<p>"+val['description']+"</p>");
 			}
 		});
 		$.each(json["files"]["audio"], function(i, val) {
 			timestampToDate(val['name']);
-			$("#" + val['name']).append("<h3 class='mediaTitre'>" +time+ "</h3>");
+			// $("#" + val['name']).append("<h3 class='mediaTitre'>" +time+ "</h3>");
 			if(val["titre"]){
 				$("#" + val['name']).attr("data-image-titre", val['titre']);
+				$("#" + val['name']).append("<h4>"+val['titre']+"</h4>");
 			}
 			if(val["description"]){
 				$("#" + val['name']).attr("data-image-caption", val['description']);
+				$("#" + val['name']).append("<p>"+val['description']+"</p>");
 			}
 		});
 
 		$.each(json["files"]["texte"], function(i, val) {
 			timestampToDate(val['name']);
-			$('.mediaContainer').append("<li class='media texte-bibli' id='"+ val['name']+"' data-type='texte'><div class='mediaContent'><h2>"+val['titre']+"</h2><p>"+val['contenu']+"</p></div><h3 class='mediaTitre'>" +time+ "</h3></li>");
+			$('.mediaContainer').append("<li class='media texte-bibli' id='"+ val['name']+"' data-type='texte'><div class='mediaContent'><h2>"+val['titre']+"</h2><p>"+val['contenu']+"</p></div></li>");
 			if(val["meta-titre"]){
 				$("#" + val['name']).attr("data-image-titre", val['titre']);
+				$("#" + val['name']).append("<h4>"+val['titre']+"</h4>");
 			}
 			if(val["description"]){
 				$("#" + val['name']).attr("data-image-caption", val['description']);
+				$("#" + val['name']).append("<p>"+val['description']+"</p>");
 			}
 		});
 
@@ -210,6 +220,8 @@ jQuery(document).ready(function($) {
 						$this.attr("data-image-titre", titleImage).attr("data-image-caption", descriptionImage);
 						socket.emit("sendMetaData", {type:typeMedia, imageTitre : titleImage, imagedescription: descriptionImage, imageId:idImage, session:app.session, projet:app.projet});
 						closePopover(closeAddProjectFunction);
+						$this.remove(".meta-data");
+						$this.append("<div class='meta-data'><h4>"+titleImage+"</h4><p>"+descriptionImage+"</p></div>");
 					});
 					break;
 				case "video":
@@ -229,6 +241,8 @@ jQuery(document).ready(function($) {
 						$this.attr("data-image-titre", titleImage).attr("data-image-caption", descriptionImage);
 						socket.emit("sendMetaData", {type:typeMedia, imageTitre : titleImage, imagedescription: descriptionImage, imageId:idImage, session:app.session, projet:app.projet});
 						closePopover(closeAddProjectFunction);
+						$this.remove(".meta-data");
+						$this.append("<div class='meta-data'><h4>"+titleImage+"</h4><p>"+descriptionImage+"</p></div>");
 					});
 					break;
 				case "stopmotion":
@@ -248,6 +262,8 @@ jQuery(document).ready(function($) {
 						$this.attr("data-image-titre", titleImage).attr("data-image-caption", descriptionImage);
 						socket.emit("sendMetaData", {type:typeMedia, imageTitre : titleImage, imagedescription: descriptionImage, imageId:idImage, session:app.session, projet:app.projet});
 						closePopover(closeAddProjectFunction);
+						$this.remove(".meta-data");
+						$this.append("<div class='meta-data'><h4>"+titleImage+"</h4><p>"+descriptionImage+"</p></div>");
 					});
 					break;
 					case "son":
@@ -266,6 +282,8 @@ jQuery(document).ready(function($) {
 							$this.attr("data-image-titre", titleImage).attr("data-image-caption", descriptionImage);
 							socket.emit("sendMetaData", {type:typeMedia, imageTitre : titleImage, imagedescription: descriptionImage, imageId:idImage, session:app.session, projet:app.projet});
 							closePopover(closeAddProjectFunction);
+						$this.remove(".meta-data");
+						$this.append("<div class='meta-data'><h4>"+titleImage+"</h4><p>"+descriptionImage+"</p></div>");
 						});
 						break;
 					case "texte":
@@ -285,6 +303,8 @@ jQuery(document).ready(function($) {
 							$this.attr("data-image-titre", titleImage).attr("data-image-caption", descriptionImage);
 							socket.emit("sendMetaData", {type:typeMedia, imageTitre : titleImage, imagedescription: descriptionImage, imageId:idImage, session:app.session, projet:app.projet});
 							closePopover(closeAddProjectFunction);
+						$this.remove(".meta-data");
+						$this.append("<div class='meta-data'><h4>"+titleImage+"</h4><p>"+descriptionImage+"</p></div>");
 						});
 						break;
 			}
