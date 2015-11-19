@@ -132,11 +132,11 @@ jQuery(document).ready(function($) {
 			// $("#" + val['name']).append("<h3 class='mediaTitre'>" +time+ "</h3>");
 			if(val["titre"]){
 				$("#" + val['name']).attr("data-image-titre", val['titre']);
-				$("#" + val['name']).append("<h4>"+val['titre']+"</h4>");
+				$("#" + val['name']).append("<h4 class='meta-data'>"+val['titre']+"</h4>");
 			}
 			if(val["description"]){
 				$("#" + val['name']).attr("data-image-caption", val['description']);
-				$("#" + val['name']).append("<p>"+val['description']+"</p>");
+				$("#" + val['name']).append("<p class='meta-data'>"+val['description']+"</p>");
 			}
 		});
 		$.each(json["files"]["stopmotion"], function(i, val) {
@@ -144,11 +144,11 @@ jQuery(document).ready(function($) {
 			// $("#" + val['name']).append("<h3 class='mediaTitre'>" +time + "</h3>");
 			if(val["titre"]){
 				$("#" + val['name']).attr("data-image-titre", val['titre']);
-				$("#" + val['name']).append("<h4>"+val['titre']+"</h4>");
+				$("#" + val['name']).append("<h4 class='meta-data'>"+val['titre']+"</h4>");
 			}
 			if(val["description"]){
 				$("#" + val['name']).attr("data-image-caption", val['description']);
-				$("#" + val['name']).append("<p>"+val['description']+"</p>");
+				$("#" + val['name']).append("<p class='meta-data'>"+val['description']+"</p>");
 			}
 		});
 		$.each(json["files"]["videos"], function(i, val) {
@@ -156,11 +156,11 @@ jQuery(document).ready(function($) {
 			// $("#" + val['name']).append("<h3 class='mediaTitre'>" +time + "</h3>");
 			if(val["titre"]){
 				$("#" + val['name']).attr("data-image-titre", val['titre']);
-				$("#" + val['name']).append("<h4>"+val['titre']+"</h4>");
+				$("#" + val['name']).append("<h4 class='meta-data'>"+val['titre']+"</h4>");
 			}
 			if(val["description"]){
 				$("#" + val['name']).attr("data-image-caption", val['description']);
-				$("#" + val['name']).append("<p>"+val['description']+"</p>");
+				$("#" + val['name']).append("<p class='meta-data'>"+val['description']+"</p>");
 			}
 		});
 		$.each(json["files"]["audio"], function(i, val) {
@@ -168,11 +168,11 @@ jQuery(document).ready(function($) {
 			// $("#" + val['name']).append("<h3 class='mediaTitre'>" +time+ "</h3>");
 			if(val["titre"]){
 				$("#" + val['name']).attr("data-image-titre", val['titre']);
-				$("#" + val['name']).append("<h4>"+val['titre']+"</h4>");
+				$("#" + val['name']).append("<h4 class='meta-data'>"+val['titre']+"</h4>");
 			}
 			if(val["description"]){
 				$("#" + val['name']).attr("data-image-caption", val['description']);
-				$("#" + val['name']).append("<p>"+val['description']+"</p>");
+				$("#" + val['name']).append("<p class='meta-data'>"+val['description']+"</p>");
 			}
 		});
 
@@ -181,11 +181,11 @@ jQuery(document).ready(function($) {
 			$('.mediaContainer').append("<li class='media texte-bibli' id='"+ val['name']+"' data-type='texte'><div class='mediaContent'><h2>"+val['titre']+"</h2><p>"+val['contenu']+"</p></div></li>");
 			if(val["meta-titre"]){
 				$("#" + val['name']).attr("data-image-titre", val['titre']);
-				$("#" + val['name']).append("<h4>"+val['titre']+"</h4>");
+				$("#" + val['name']).append("<h4 class='meta-data'>"+val['titre']+"</h4>");
 			}
 			if(val["description"]){
 				$("#" + val['name']).attr("data-image-caption", val['description']);
-				$("#" + val['name']).append("<p>"+val['description']+"</p>");
+				$("#" + val['name']).append("<p class='meta-data'>"+val['description']+"</p>");
 			}
 		});
 
@@ -220,7 +220,7 @@ jQuery(document).ready(function($) {
 						$this.attr("data-image-titre", titleImage).attr("data-image-caption", descriptionImage);
 						socket.emit("sendMetaData", {type:typeMedia, imageTitre : titleImage, imagedescription: descriptionImage, imageId:idImage, session:app.session, projet:app.projet});
 						closePopover(closeAddProjectFunction);
-						$this.remove(".meta-data");
+						$this.find(".meta-data").remove();
 						$this.append("<div class='meta-data'><h4>"+titleImage+"</h4><p>"+descriptionImage+"</p></div>");
 					});
 					break;
@@ -241,7 +241,7 @@ jQuery(document).ready(function($) {
 						$this.attr("data-image-titre", titleImage).attr("data-image-caption", descriptionImage);
 						socket.emit("sendMetaData", {type:typeMedia, imageTitre : titleImage, imagedescription: descriptionImage, imageId:idImage, session:app.session, projet:app.projet});
 						closePopover(closeAddProjectFunction);
-						$this.remove(".meta-data");
+							$this.find(".meta-data").remove();
 						$this.append("<div class='meta-data'><h4>"+titleImage+"</h4><p>"+descriptionImage+"</p></div>");
 					});
 					break;
@@ -262,7 +262,7 @@ jQuery(document).ready(function($) {
 						$this.attr("data-image-titre", titleImage).attr("data-image-caption", descriptionImage);
 						socket.emit("sendMetaData", {type:typeMedia, imageTitre : titleImage, imagedescription: descriptionImage, imageId:idImage, session:app.session, projet:app.projet});
 						closePopover(closeAddProjectFunction);
-						$this.remove(".meta-data");
+							$this.find(".meta-data").remove();
 						$this.append("<div class='meta-data'><h4>"+titleImage+"</h4><p>"+descriptionImage+"</p></div>");
 					});
 					break;
@@ -282,7 +282,7 @@ jQuery(document).ready(function($) {
 							$this.attr("data-image-titre", titleImage).attr("data-image-caption", descriptionImage);
 							socket.emit("sendMetaData", {type:typeMedia, imageTitre : titleImage, imagedescription: descriptionImage, imageId:idImage, session:app.session, projet:app.projet});
 							closePopover(closeAddProjectFunction);
-						$this.remove(".meta-data");
+							$this.find(".meta-data").remove();
 						$this.append("<div class='meta-data'><h4>"+titleImage+"</h4><p>"+descriptionImage+"</p></div>");
 						});
 						break;
@@ -303,8 +303,8 @@ jQuery(document).ready(function($) {
 							$this.attr("data-image-titre", titleImage).attr("data-image-caption", descriptionImage);
 							socket.emit("sendMetaData", {type:typeMedia, imageTitre : titleImage, imagedescription: descriptionImage, imageId:idImage, session:app.session, projet:app.projet});
 							closePopover(closeAddProjectFunction);
-						$this.remove(".meta-data");
-						$this.append("<div class='meta-data'><h4>"+titleImage+"</h4><p>"+descriptionImage+"</p></div>");
+							$this.find(".meta-data").remove();
+							$this.append("<div class='meta-data'><h4>"+titleImage+"</h4><p>"+descriptionImage+"</p></div>");
 						});
 						break;
 			}
