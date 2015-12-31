@@ -11,13 +11,16 @@ html
 
       div.buffer.demi
 
-        div.buffer-header 
+        div.buffer-header
           nav.titleAndActions
             div.buttons
               .button.sidebyside
-                a(href="/select/#{session}/#{projet}/capture" class="btn icon capture"  data-toggle="tooltip" data-placement="right" title="Interface de capture")
+                a.navbar-brand(href='/')
+                  include ../public/images/dodoc-logo-04.svg  
+              .button.sidebyside
+                a(href="/select/#{session}/#{projet}/capture" class="btn icon capture"  data-toggle="tooltip" data-placement="bottom" title="Interface de capture")
                   include templates/images/capture.svg
-              div(class ="button-add-media button btn icon" data-toggle="tooltip" data-placement="left" title="" data-original-title="Ajouter un media")
+              div(class ="button-add-media button btn icon" data-toggle="tooltip" data-placement="bottom" title="" data-original-title="Ajouter un media")
                 include templates/images/add.svg
               .title.centered= 'Bibliothèque de médias'
 
@@ -31,8 +34,8 @@ html
           div.montage-title
             h1 #{projetFormat}
             //input(type="text" value= "Titre")
-          div(class="add-text-montage btn icon publish"  data-toggle="tooltip" data-placement="right" title="Ajouter du texte")
-            include templates/images/pen.svg
+          //- div(class="add-text-montage btn icon publish"  data-toggle="tooltip" data-placement="right" title="Ajouter du texte")
+          //-   include templates/images/pen.svg
           ul.montage-medias
 
 

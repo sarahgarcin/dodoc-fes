@@ -110,7 +110,7 @@ button{
 }
 
 .demi {
-	flex:1;
+	//flex:1;
 	overflow-y: scroll;
 	vertical-align: top;
 }
@@ -189,7 +189,7 @@ body.flux & .title {
 
 }
 
-.navbar-header {
+//".navbar-header {
  	
 	.navbar-brand {
 
@@ -250,8 +250,9 @@ body.flux & .title {
 		padding-left: 15px;
 		padding-right: 15px;
 		border-left: 1px solid #eee;
+
 	}
-}
+//}
 
 .buttons:before,
 .buttons:after {
@@ -263,7 +264,7 @@ body.flux & .title {
 }
 .buttons {
 	background-color: #f9f9f9;
-	height: 72px;
+	height: 56px;
 
 }
 
@@ -293,8 +294,8 @@ body.flux & .title {
 		height: 100%;
 		text-align: center;
 
-		font-size: 24px;
-		line-height: 72px;
+		font-size: 20px;
+		line-height: 55px;
 
 		z-index: 0;
 	}
@@ -303,13 +304,14 @@ body.flux & .title {
 
 		border-radius: 0.25em;
 		padding: 6px;
-		margin: 6px 10px;
+		margin: 6px 0px;
 
 		cursor: pointer;
 		color: #000;
 
 		-webkit-font-smoothing: antialiased;
 		z-index: 2;
+		float: left;
 
 	}
 
@@ -339,8 +341,8 @@ body.flux & .title {
 }
 
 .btn.icon {
-  width: 48px;
-  height: 48px;
+  width: 32px;
+  height: 32px;
   padding:0;
   border-radius: 50%;
 
@@ -359,7 +361,7 @@ body.flux & .title {
 
 	+ .tooltip {
 	    width: 110px;
-	    font-size: 16px;
+	    font-size: 14px;
 		.tooltip-inner {
 
 		}
@@ -533,7 +535,7 @@ body.flux & .title {
 			border:none;
 			margin: 0;
 			outline: none;
-			font-size: 1em;
+			font-size: 0.8em;
 			padding: 5px 15px;
 			margin:5px;
 
@@ -997,14 +999,14 @@ audio {
 	.buffer {
 		background-color:#e5e5e5;
 		position: relative;
+		flex:3;
 		.buffer-header{
 			position: fixed;
-			width:49%;
+			width:72.6%;
 			z-index:300;
 		}
 		.button-add-media{
 	    position: relative;
-	    float: right;
 	    margin-top: 13px;
 		}
 		.mediaContainer {
@@ -1113,10 +1115,10 @@ audio {
 						padding: 10px;
 						h2{
 							margin-top: 0px;
-							font-size: 1em;
+							font-size: 0.8em;
 						}
 						p{
-							font-size: 0.7em;
+							font-size: 0.6em;
 							line-height: 1.2em;
 						}
 					}
@@ -1131,15 +1133,18 @@ audio {
 	.montage {
 		overflow-y: scroll;
 		position: relative;
+		flex:1;
 		.montage-title{
-			width: 49%;
-			height: 72px;
+			width: 24%;
+			height: 56px;
 			position: fixed;
 			background-color: #FFF;
 			top:0;
 			z-index: 1000;
 			h1{
 				text-align: center;
+				font-size: 20px;
+    		line-height: 15px;
 			}
 			// input{
 			// 	border: none;
@@ -1179,7 +1184,8 @@ audio {
 			.media{
 				position: relative;
 				list-style: none;
-				margin: 50px auto;
+				width:100% !important ;
+				//margin: 50px auto;
 				// width: 50% !important;
     // 		height: 100% !important;
    			&:last-child{

@@ -399,7 +399,7 @@ jQuery(document).ready(function($) {
 		    placeholder: 'ui-state-highlight',
 		    receive: function (event, ui) {
 		     $(ui.helper).css({
-            width: "70%",
+            width: "100%",
             height:"auto",
           });
 			    $(ui.helper).children("h3").remove();
