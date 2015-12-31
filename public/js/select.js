@@ -486,6 +486,10 @@ jQuery(document).ready(function($) {
 
 	function timestampToDate(timestamp){
     var date = new Date(timestamp);
+   	console.log(date.getFullYear());
+   	var day = date.getDate();
+   	var month = date.getMonth();
+   	var year = date.getFullYear();
 		// hours part from the timestamp
 		var hours = date.getHours();
 		// minutes part from the timestamp
